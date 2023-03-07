@@ -1,0 +1,162 @@
+{% extends 'finlab/elements/layouts/admin.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block additional_css %}
+
+{% endblock %}
+
+
+{% block message %}
+{% include 'finlab/elements/alert.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Salut, {{ request.user.first_name }} {{ request.user.last_name }}!</h4>
+                    <p class="mb-0">Ci-dessous, vous trouverez les détails du compte de {{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">App</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile card card-body px-3 pt-3 pb-0">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <div class="cover-photo rounded"></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-photo">
+
+                                <a class="test-popup-link" href="/media/{{ gestionnaire_obj.gestionnaire.avatar }}">
+                                    <img src="/media/{{ gestionnaire_obj.gestionnaire.avatar }}" class="img-fluid rounded-circle test-popup-link" alt="">
+                                </a>
+
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name px-3 pt-2">
+                                    <h4 class="text-primary mb-0">{{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }}</h4>
+
+                                </div>
+                                <div class="profile-email px-2 pt-2">
+
+                                    <h4 class="text-muted mb-0">{{ gestionnaire_obj.gestionnaire.email }}</h4>
+                                </div>
+                                <div class="dropdown ms-auto">
+                                    <a href="#" class="btn btn-primary light sharp" data-bs-toggle="dropdown" aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li class="dropdown-item"><i class="fa fa-user-circle text-primary me-2"></i> View profile</li>
+                                        <li class="dropdown-item"><i class="fa fa-users text-primary me-2"></i> Add to btn-close friends</li>
+                                        <li class="dropdown-item"><i class="fa fa-plus text-primary me-2"></i> Add to group</li>
+                                        <li class="dropdown-item"><i class="fa fa-ban text-primary me-2"></i> Block</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Rôle <br><br>
+
+                                {% for g in gestionnaire_obj.gestionnaire.groups.all %}
+                                <span class="badge badge-xs badge-primary"> {{ g.name }} </span>
+                                 {% endfor %}
+                            </h4>
+
+                            {% if perms.auth.change_group %}
+                            <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:groups' %}"><i class="fa fa-pencil"></i></a></span>
+                            {% endif %}
+                        </div>
+
+                    </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">{{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }} Permissions</h4>
+                        {% if perms.auth.change_permission %}
+                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=gestionnaire_obj.gestionnaire.id %}"><i class="fa fa-pencil"></i></a></span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% for u_per in user_perms %}
+
+                            <span class="badge light badge-secondary mb-2">{{ u_per }}</span>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+
+                    <div class="card-header">
+                        <h4 class="card-title">Agence</h4>
+                        {% if perms.auth.change_permission %}
+                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=gestionnaire_obj.gestionnaire.id %}"><i class="fa fa-pencil"></i></a></span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" novalidate autocomplete="off">
+                           {% csrf_token %}
+                           <div class="row">
+                              <div class="mb-3 col-md-6">
+                                  <label class="form-label">Agence</label>
+                                 {{ form.agence|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Agence" }}
+                                 <div class="text-danger w-100 d-block mt-1">
+                                 {{ form.agence.errors }}
+                                 </div>
+                              </div>
+                               <div class="mb-3 col-md-6">
+                                   <label class="form-label">Zone</label>
+                                   <input class="form-control" type="text" readonly="" placeholder="Zone" value="{{ gestionnaire_obj.agence.zone }}">
+                                </div>
+                           </div>
+                            <a href="{% url 'administration:gestionnaire' %}" class="btn btn-secondary mt-5">Annuler</a>
+                            <button type="submit" class="btn btn-primary mt-5">Sauvegarder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        </div>
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+<script type="text/javascript">
+    $('.test-popup-link').magnificPopup({
+      type: 'image'
+      // other options
+    });
+</script>
+{% endblock %}

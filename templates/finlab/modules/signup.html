@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+    <head>
+        {% load static custom_tags widget_tweaks %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="keywords" content="" />
+        <meta name="author" content="" />
+        <meta name="robots" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{{ dz_array.public.title }}" />
+        <meta property="og:title" content="{{ dz_array.public.title }}" />
+        <meta property="og:description" content="{{ dz_array.public.title }}" />
+        <meta property="og:image" content="{{  dz_array.public.social_image_url }}" />
+        <meta name="format-detection" content="telephone=no">
+        <!-- PAGE TITLE HERE -->
+        <title>{{ dz_array.public.title }}</title>
+        <!-- FAVICONS ICON -->
+        <link rel="shortcut icon" type="image/png" href="{% static dz_array.public.favicon %}" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons"rel="stylesheet">
+    
+        {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css|getdata:request.path %}
+        <link rel="stylesheet" href="{% static cssurl %}" >
+        {% endfor %}
+        
+        
+        {% for cssurl in dz_array.global.css %}
+        <link rel="stylesheet" href="{% static cssurl %}" >
+        {% endfor %}
+        
+        {% block additional_css %}
+        {% endblock %}
+        
+    </head>
+
+    <body class="vh-100">
+        <div class="authincation h-100">
+            <div class="container h-100">
+                <div class="row justify-content-center h-100 align-items-center">
+                    <div class="col-md-6">
+                        <div class="authincation-content">
+                            <div class="row no-gutters">
+                                <div class="col-xl-12">
+                                    
+                                    <div class="auth-form page-r-logo">
+                                        <div class="text-center mb-3">
+                                            <a href="{% url 'finlab:index' %}"><img src="{% static 'finlab/images/logo-full.png' %}" alt="" class="dark-logo"></a>
+                                            <a href="{% url 'finlab:index' %}"><img src="{% static 'finlab/images/logo-full-light.png' %}" alt="" class="light-logo m-auto"></a>
+                                        </div>
+                                        {% if form %}
+                                        <h4 class="text-center mb-4">Sign up your account</h4>
+                                        <form method="post" autocomplete="off">{% csrf_token %}
+                                            {% include 'finlab/elements/alert.html' %}
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="mb-1"><strong>First Name</strong></label>
+                                                        {{ form.first_name|attr:"class:form-control"|attr:"placeholder:First Name"|attr:"type:text" }}   
+                                                    </div>
+                                                        <div class="text-danger w-100 d-block ">
+                                                        {{ form.first_name.errors }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="mb-1 "><strong>Last Name</strong></label>
+                                                        {{ form.last_name|attr:"class:form-control"|attr:"placeholder:Last Name"|attr:"type:text" }}   
+                                                    </div>
+                                                    <div class="text-danger w-100 d-block ">
+                                                        {{ form.last_name.errors }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="mb-1"><strong>Email</strong></label>
+                                                        {{ form.email|attr:"type:email"|attr:"class:form-control"|attr:"placeholder:Email" }}
+                                                    </div>
+                                                    <div class="text-danger w-100 d-block mt-1">
+                                                        {{ form.email.errors }}
+                                                    </div>
+                                                
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="mb-1"><strong>Password</strong></label>
+                                                        {{ form.password1|attr:"class:form-control"|attr:"placeholder:Password"|attr:"type:password" }}
+                                                    </div>
+                                                        <div class="text-danger w-100 d-block mt-1">
+                                                        {{ form.password1.errors }}
+                                                        </div>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label class="mb-1"><strong>Confirm Password</strong></label>
+                                                        {{ form.password2|attr:"class:form-control"|attr:"placeholder:Confirm Password"|attr:"type:password" }}
+                                                    </div>
+                                                        <div class="text-danger w-100 d-block mt-1">
+                                                        {{ form.password2.errors }}
+                                                        </div>
+                                                </div>
+                                                <div class="text-center mt-4">
+                                                    <button type="submit" class="btn text-white bg-primary btn-block w-100 ">Sign me up</button>
+                                                </div>
+                                            </div> 
+                                        </form>
+                                        <div class="new-account mt-3">
+                                            <p>Already have an account? <a class="text-primary" href="{% url 'finlab:login' %}">Sign in</a></p>
+                                        </div>
+                                        {% endif %}
+
+
+
+                                        {% if message %}
+                                        <div class="mt-4">
+                                            <h2 class="mb-3 text-center">Verification link sent!</h2>
+                                            <p>{{message|safe}}</p>
+                                        </div>
+        
+                                        {% endif %}
+
+
+                                    </div>
+                                    
+
+                               
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--**********************************
+	Scripts
+***********************************-->
+<!-- Required vendors -->
+{% for jsurl in dz_array.global.js.top %}
+<script src="{% static jsurl %}"></script>
+{% endfor %}
+
+{% for jsurl in dz_array.pagelevel.finlab.finlab_views.js|getdata:request.path %}
+<script src="{% static jsurl %}"></script>
+{% endfor %}
+
+{% for jsurl in dz_array.global.js.bottom %}
+<script src="{% static jsurl %}"></script>
+{% endfor %}
+
+{% block additional_js %}
+{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

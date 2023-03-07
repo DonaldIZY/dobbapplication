@@ -1,0 +1,73 @@
+:root {
+    --custom-green: #148d08;
+    --custom-red: #da1111;
+}
+
+
+/*============== AG-Grid Config  ===============*/
+.ag-theme-material {
+    --ag-header-foreground-color: #E67900;
+    --ag-header-background-color: #FFF;
+    --ag-header-cell-hover-background-color: #eee;
+    --ag-header-cell-moving-background-color: #eee;
+
+    --ag-control-panel-background-color: #eee;
+
+    --ag-header-column-separator-height: 100%;
+    --ag-header-column-separator-width: 5px;
+    --ag-header-column-separator-color: purple;
+
+    --ag-header-column-resize-handle-display: block;
+    --ag-header-column-resize-handle-height: 100%;
+    --ag-header-column-resize-handle-width: 1px;
+    --ag-header-column-resize-handle-color: #FFFFFF;
+
+    --ag-row-hover-color: #868482;
+    --ag-font-size: 11px !important;
+}
+
+.ag-header-group-cell-label {
+    text-align: center !important;
+}
+
+.ag-header-group-cell {
+    font-size: 22px;
+    color: #525254;
+    font-weight: 900;
+}
+
+.ag-theme-material .ag-header-cell-label {
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.negative-value {
+    color: var(--custom-red);
+}
+.positive-value {
+    color: var(--custom-green);
+}
+
+/*======================= En Ag-Grid config ==================================*/
+
+.table-header {
+    text-align: center;
+    height: 40px;
+    padding: 10px;
+    margin-top: 0;
+}
+.client-entrant {
+    background-color: var(--custom-green);
+    color: #fff !important;
+}
+.client-sortant {
+    background-color: var(--custom-red);
+    color: #ffffff;
+}
+
+.ag-table {
+    width:98%;
+    margin: auto
+}
+
+/*============== End Table CSS ===============*/

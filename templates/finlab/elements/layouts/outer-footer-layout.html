@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static custom_tags %}
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta name="robots" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{{ dz_array.public.title }}" />
+	<meta property="og:title" content="{{ dz_array.public.title }}" />
+	<meta property="og:description" content="{{ dz_array.public.title }}" />
+	<meta property="og:image" content="{{  dz_array.public.social_image_url }}" />
+	<meta name="format-detection" content="telephone=no">
+	<!-- PAGE TITLE HERE -->
+	<title>{{ dz_array.public.title }}</title>
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="{% static dz_array.public.favicon %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"rel="stylesheet">
+
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css|getdata:request.path %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+    
+    
+    {% for cssurl in dz_array.global.css %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+    
+    {% block additional_css %}
+    {% endblock %}
+	
+</head>
+<body>
+
+        <!--*******************
+            Preloader start
+        ********************-->
+        <div id="preloader">
+        <div class="loader"></div>
+        </div>
+        <!--*******************
+            Preloader end
+        ********************-->
+        <!--**********************************
+            Main wrapper start
+        ***********************************-->
+        <div id="main-wrapper" class="show">
+        
+            <!--**********************************
+                Nav header start
+            ***********************************-->
+            {% include 'finlab/elements/nav_header.html' %}
+            <!--**********************************
+                Nav header end
+            ***********************************-->
+            
+            <!--**********************************
+                Chat box start
+            ***********************************-->
+            {% include 'finlab/elements/chatbox.html' %}
+            <!--**********************************
+                Chat box End
+            ***********************************-->
+            <!--**********************************
+                Header start
+            ***********************************-->
+            {% include 'finlab/elements/header.html' %}
+                <!--**********************************
+                Header end ti-comment-alt
+            ***********************************-->
+
+            <!--**********************************
+                Sidebar start
+            ***********************************-->
+            {% include 'finlab/elements/sidebar.html' %}
+            <!--**********************************
+                Sidebar end
+            ***********************************-->
+
+            <div class="content-body">
+                <div class="container-fluid">
+                    {% block message %}
+                    {% endblock %}
+                    
+                    {% block content %}
+                    {% endblock %}                 
+                   
+                </div>
+            </div>
+
+           
+            
+
+        </div>
+        {% include 'finlab/elements/out-footer.html' %}
+        <!--**********************************
+            Main wrapper end
+        ***********************************-->
+
+    <!--**********************************
+            Modal
+    ***********************************-->
+        {% include 'finlab/elements/modal1.html' %}
+
+            <!--Modal--2-->
+
+        {% include 'finlab/elements/modal2.html' %}
+
+
+        <!--**********************************
+            Modal
+        ***********************************-->
+        <!--**********************************
+            Scripts
+        ***********************************-->
+
+
+
+        {% for jsurl in dz_array.global.js.top %}
+        <script src="{% static jsurl %}"></script>
+        {% endfor %}
+    
+        {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js|getdata:request.path %}
+        <script src="{% static jsurl %}"></script>
+        {% endfor %}
+    
+        {% for jsurl in dz_array.global.js.bottom %}
+        <script src="{% static jsurl %}"></script>
+        {% endfor %}
+    
+        {% block additional_js %}
+        {% endblock %}
+
+
+
+
+</body>
+</html>

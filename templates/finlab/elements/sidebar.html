@@ -1,0 +1,239 @@
+{% load static %}
+
+<div class="dlabnav">
+    <div class="dlabnav-scroll">	
+        <ul class="metismenu" id="menu">
+
+            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+                    <span class="nav-text">Comité Crédit</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'analytics:facturation' %}">facturation</a></li>
+                </ul>
+            </li>
+
+            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+                    <span class="nav-text">Monitoring</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'analytics:variation_top_200' %}">Variation Top 200</a></li>
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'analytics:ca_top_200' %}">Contribution Top 200</a></li>
+                </ul>
+            </li>
+
+            {% if perms.administration.view_zone or perms.administration.view_agence or perms.administration.view_gestionnaire %}
+            <li>
+                <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+                    <span class="nav-text">Administration</span>
+                </a>
+                <ul aria-expanded="false">
+{#                    {% if perms.administration.view_zone or perms.administration.change_zone or perms.administration.add_zone or perms.administration.delete_zone %}#}
+{#                        <li><a href="{% url 'administration:zone' %}">Zones</a></li>#}
+{#                    {% endif %}#}
+
+                    {% if perms.administration.view_agence or perms.administration.change_agence or perms.administration.add_agence or perms.administration.delete_agence %}
+                        <li><a href="{% url 'administration:equipe' %}">Équipe</a></li>
+                    {% endif %}
+                    {% if perms.administration.view_commercial or perms.administration.change_commercial or perms.administration.add_commercial or perms.administration.delete_commercial %}
+                        <li><a href="{% url 'administration:commercial' %}">Commerciaux</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endif %}
+
+
+
+            {% if perms.users.view_customuser or perms.auth.view_group or perms.auth.view_permission %}
+            <li>
+                <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+                    <span class="nav-text">Utilisateurs</span>
+                </a>
+                <ul aria-expanded="false">
+                    {% if perms.users.view_customuser or perms.users.change_customuser or perms.users.add_customuser or perms.users.delete_customuser %}
+                    <li><a href="{% url 'finlab:users' %}">Utilisateurs</a></li>
+                    {% endif %}
+                    {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
+                    <li><a href="{% url 'finlab:groups' %}">Rôles</a></li>
+                    {% endif %}
+                    {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                    <li><a href="{% url 'finlab:permissions' %}">Permissions</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endif %}
+
+{#            {% if request.user.is_superuser %}#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+<!-- {#                    <i class="material-icons-outlined">dashboard</i>#} -->
+{#                    <span class="nav-text">Dashboard</span>#}
+{#                </a>#}
+{#                <ul aria-expanded="false">#}
+{#                    <li><a href="{% url 'finlab:index' %}">Dashboard Light</a></li>#}
+{#                    <li><a href="{% url 'finlab:index-2' %}">Dashboard Dark</a></li>#}
+{#                    <li><a href="{% url 'finlab:banking' %}">Banking</a></li>#}
+{#                    <li><a href="{% url 'finlab:ticketing' %}">Ticketing</a></li>#}
+{#                    <li><a href="{% url 'finlab:crypto' %}">Crypto</a></li>#}
+{#                    <li><a href="{% url 'finlab:invoice' %}">Invoice</a></li>#}
+{#                    <li><a href="{% url 'finlab:contact' %}">Contact</a></li>#}
+{#                    <li><a href="{% url 'finlab:kanban' %}">Kanban</a></li>#}
+{#                </ul>#}
+{##}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                    <i class="material-icons">folder</i>#}
+{#                    <span class="nav-text">File Manager</span>#}
+{#                </a>#}
+{#                <ul aria-expanded="false">#}
+{#                    <li><a href="{% url 'finlab:file-manager' %}">File Manager</a></li>#}
+{#                    <li><a href="{% url 'finlab:user' %}">User</a></li>#}
+{#                    <li><a href="{% url 'finlab:calendar' %}">Calendar</a></li>#}
+{#                    <li><a href="{% url 'finlab:to-do-list' %}">To Do List</a></li>#}
+{#                    <li><a href="{% url 'finlab:chat' %}">Chat</a></li>#}
+{#                    <li><a href="{% url 'finlab:activity' %}">Activity</a></li>#}
+{#                </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                    <i class="material-icons"> app_registration </i>#}
+{#                    <span class="nav-text">Apps</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:app-profile' %}">Profile</a></li>#}
+{#                        <!-- <li><a href="./edit-profile.html">Edit Profile</a></li> -->#}
+{#                        <li><a href="{% url 'finlab:post-details' %}">Post Details</a></li>#}
+{#                        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Email</a>#}
+{#                            <ul aria-expanded="false">#}
+{#                                <li><a href="{% url 'finlab:email-compose' %}">Compose</a></li>#}
+{#                                <li><a href="{% url 'finlab:email-inbox' %}">Inbox</a></li>#}
+{#                                <li><a href="{% url 'finlab:email-read' %}">Read</a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <li><a href="{% url 'finlab:app-calendar' %}">Calendar</a></li>#}
+{#                        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Shop</a>#}
+{#                            <ul aria-expanded="false">#}
+{#                                <li><a href="{% url 'finlab:ecom-product-grid' %}">Product Grid</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-product-list' %}">Product List</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-product-detail' %}">Product Details</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-product-order' %}">Order</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-checkout' %}">Checkout</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-invoice' %}">Invoice</a></li>#}
+{#                                <li><a href="{% url 'finlab:ecom-customers' %}">Customers</a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                    <i class="material-icons"> assessment </i>#}
+{#                        <span class="nav-text">Charts</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:chart-flot' %}">Flot</a></li>#}
+{#                        <li><a href="{% url 'finlab:chart-morris' %}">Morris</a></li>#}
+{#                        <li><a href="{% url 'finlab:chart-chartjs' %}">Chartjs</a></li>#}
+{#                        <li><a href="{% url 'finlab:chart-chartist' %}">Chartist</a></li>#}
+{#                        <li><a href="{% url 'finlab:chart-sparkline' %}">Sparkline</a></li>#}
+{#                        <li><a href="{% url 'finlab:chart-peity' %}">Peity</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{##}
+{#                        <i class="material-icons"> favorite </i>#}
+{#                        <span class="nav-text">Bootstrap</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:ui-accordion'%}">Accordion</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-alert'%}">Alert</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-badge'%}">Badge</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-button'%}">Button</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-modal'%}">Modal</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-media-object'%}">Media Object</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-button-group'%}">Button Group</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-list-group'%}">List Group</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-card'%}">Cards</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-carousel'%}">Carousel</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-dropdown'%}">Dropdown</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-popover'%}">Popover</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-progressbar'%}">Progressbar</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-tab'%}">Tab</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-typography'%}">Typography</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-pagination'%}">Pagination</a></li>#}
+{#                        <li><a href="{% url 'finlab:ui-grid'%}">Grid</a></li>#}
+{##}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                        <i class="material-icons"> extension </i>#}
+{#                        <span class="nav-text">Plugins</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:uc-select2' %}">Select 2</a></li>#}
+{#                        <li><a href="{% url 'finlab:uc-nestable' %}">Nestedable</a></li>#}
+{#                        <li><a href="{% url 'finlab:uc-noui-slider' %}">Noui Slider</a></li>#}
+{#                        <li><a href="{% url 'finlab:uc-sweetalert' %}">Sweet Alert</a></li>#}
+{#                        <li><a href="{% url 'finlab:uc-toastr' %}">Toastr</a></li>#}
+{#                        <li><a href="{% url 'finlab:map-jqvmap' %}">Jqv Map</a></li>#}
+{#                        <li><a href="{% url 'finlab:uc-lightgallery' %}">Light Gallery</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                        <i class="material-icons"> widgets </i>#}
+{#                        <span class="nav-text">Widget</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:widget-chart' %}">Chart</a></li>#}
+{#                        <li><a href="{% url 'finlab:widget-card' %}">Card</a></li>#}
+{#                        <li><a href="{% url 'finlab:widget-list' %}">List</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                        <i class="material-icons"> insert_drive_file </i>#}
+{#                        <span class="nav-text">Forms</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:form-element' %}">Form Elements</a></li>#}
+{#                        <li><a href="{% url 'finlab:form-wizard' %}">Wizard</a></li>#}
+{#                        <li><a href="{% url 'finlab:form-ckeditor' %}">CkEditor</a></li>#}
+{#                        <li><a href="{% url 'finlab:form-pickers' %}">Pickers</a></li>#}
+{#                        <li><a href="{% url 'finlab:form-validation' %}">Form Validate</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                        <i class="material-icons"> table_chart </i>#}
+{#                        <span class="nav-text">Table</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        <li><a href="{% url 'finlab:table-bootstrap-basic' %}">Bootstrap</a></li>#}
+{#                        <li><a href="{% url 'finlab:table-datatable-basic' %}">Datatable</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">#}
+{#                        <i class="material-icons">article</i>#}
+{#                        <span class="nav-text">Pages</span>#}
+{#                    </a>#}
+{#                    <ul aria-expanded="false">#}
+{#                        {% comment %} <li><a href="{% url 'finlab:page-login' %}">Login</a></li>#}
+{#                        <li><a href="{% url 'finlab:page-register' %}">Register</a></li> {% endcomment %}#}
+{#                        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Error</a>#}
+{#                            <ul aria-expanded="false">#}
+{#                                <li><a href="{% url 'finlab:page-error-400' %}">Error 400</a></li>#}
+{#                                <li><a href="{% url 'finlab:page-error-403' %}">Error 403</a></li>#}
+{#                                <li><a href="{% url 'finlab:page-error-404' %}">Error 404</a></li>#}
+{#                                <li><a href="{% url 'finlab:page-error-500' %}">Error 500</a></li>#}
+{#                                <li><a href="{% url 'finlab:page-error-503' %}">Error 503</a></li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <li><a href="{% url 'finlab:page-lock-screen' %}">Lock Screen</a></li>#}
+{#                        <li><a href="{% url 'finlab:empty-page' %}">Empty Page</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#            {% endif %}#}
+
+        </ul>
+
+    </div>
+</div>

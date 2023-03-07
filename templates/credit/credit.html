@@ -1,0 +1,168 @@
+{% extends 'finlab/elements/layouts/outer-footer-layout.html' %}
+{% load static widget_tweaks %}
+
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block additional_css %}
+
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.users %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.table_datatable_basic %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
+{% endblock %}
+
+
+{% block message %}
+{% include 'finlab/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ page_title }}</h4>
+                {% if perms.credit.add_demandecredit %}
+                <span>
+                    <a href="{% url 'credit:add-credit' %}" class="sweet-add-credit btn btn-primary btn-sm content-justify-right">
+                        Nouveau Credit  <span class="btn-icon-end"><i class="fa fa-plus"></i></span>
+                    </a>
+                </span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example3" class="display" style="min-width: 845px">
+                        <thead>
+                            <tr>
+                                <th scope="col">Racine</th>
+                                <th scope="col">Nom du client</th>
+                                <th scope="col">Agences</th>
+                                <th scope="col">Chargé d'affaire</th>
+                                <th scope="col">Nb lignes</th>
+                                <th scope="col">Progression</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for credit in demande_credits %}
+                                <tr>
+                                     <td>
+                                        <a href="#">
+                                            <div class="d-flex align-items-center">
+                                                <span class="w-space-no">{{ credit.emprunteur.racine }}</span>
+                                            </div>
+                                         </a>
+                                    </td>
+                                    <td></td>
+
+                                     <td>
+                                        <span class="badge badge-{{ colors.dark }}">
+                                            <i class="fa-sharp fa-solid fa-building-columns" aria-hidden="true"></i> &nbsp;{{ credit.chg_initiateur.agence }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ credit.chg_initiateur }}</td>
+                                    <td><span class="badge badge-primary">{{ credit.nombre_total_credit }}%</span></td>
+                                    <td><span class="badge badge-primary">{{ credit.etape.progression }}%</span></td>
+                                    <td>
+{#                                        <div class="d-flex">#}
+{#                                            <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>#}
+{#                                            <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>#}
+{#                                        </div>#}
+
+                                        <span class="sweetalert d-flex">
+                                            <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
+                                                data-placement="top" title="Modifier">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
+                                                data-placement="top" title="Supprimer"><i class="fa fa-trash"></i>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+        <script src="{% static jsurl %}"></script>
+    {% endfor %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.users %}
+        <script src="{% static jsurl %}"></script>
+    {% endfor %}
+
+<script>
+    $('.sweet-success-cancel').on('click', function (event) {
+       event.preventDefault();
+       const url = $(this).attr('href');
+       console.log(url)
+
+       Swal.fire({
+           title: 'Êtes vous sûr ?',
+           text: "Cette opération est irreversible !",
+           type: "warning",
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonText: "Yes, delete it !!",
+           confirmButtonText: 'Delete',
+           confirmButtonColor: "#DD6B55"
+
+       }).then((result) => {
+           if (result.value) {
+               window.location.href = url;
+           } else if (result.dismiss === Swal.DismissReason.cancel) {
+               event.preventDefault();
+           }
+       })
+    });
+
+    $('.sweet-add-credit').on('click', function (event) {
+       event.preventDefault();
+       const url = $(this).attr('href');
+       console.log(url)
+
+       Swal.fire({
+           title: 'Type de client',
+           text: "Précisez s'il s'agit d'un client BACI ou d'un prospect",
+           type: "warning",
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonText: "Client BACI",
+           cancelButtonText: "Prospect",
+           confirmButtonColor: "#d97103",
+           cancelButtonColor: "#4f2c06"
+
+       }).then((result) => {
+           if (result.value) {
+               window.location.href = url;
+           } else if (result.dismiss === Swal.DismissReason.cancel) {
+             {#urls_decompose = url.split("/client/")  // Diviser la chaîne en deux parties en fonction du délimiteur#}
+             {#urls = urls_decompose[0]  // Récupérer la première partie, qui contient la partie que l'on souhaite garder#}
+             {#url_prospect = `${urls}/prospect/`#}
+             {#console.log(url_prospect)#}
+             event.preventDefault();
+           }
+       })
+    });
+</script>
+
+{% endblock %}
+
+

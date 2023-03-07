@@ -1,0 +1,162 @@
+{% extends 'finlab/elements/layouts/outer-footer-layout.html' %}
+{% load static widget_tweaks %}
+
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block additional_css %}
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.users %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+{% endblock %}
+
+
+{% block message %}
+{% include 'finlab/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ page_title }}</h4>
+                {% if perms.administration.add_equipe %}
+                <a href="{% url 'administration:add-equipe' %}" class="btn btn-primary btn-sm content-justify-right">
+                    ADD AGENCE  <span class="btn-icon-end"><i class="fa fa-plus"></i></span>
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-responsive-md ck-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nom de l'équipe</th>
+                                <th scope="col">Chef d'agence</th>
+                                <th scope="col">Gestionnaires</th>
+                                {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
+                                <th scope="col">Action</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for equipe_obj in equipes %}
+                            <tr>
+                                <a href="{% url 'administration:details-equipe' id=equipe_obj.id %}">
+                                    <div class="d-flex align-items-center">
+                                        <span class="w-space-no">{{ equipe_obj.name }}</span>
+                                    </div>
+                                 </a>
+                                <td>{{ equipe_obj.name }}</td>
+                                <td>{{ equipe_obj.manager }}</td>
+                                <td>
+                                    <span class="badge badge-{{ colors.dark }}">
+                                        <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe_obj.nb_commerciaux }}
+                                    </span>
+                                </td>
+
+                                {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
+                                <td>
+                                    <span class="sweetalert d-flex">
+                                        {% if perms.auth.change_equipe %}
+                                        <a href="{% url 'administration:edit-equipe' id=equipe_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
+                                            data-placement="top" title="Edit">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if perms.administration.delete_equipe %}
+                                        <a href="{% url 'administration:delete-equipe' id=equipe_obj.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
+                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i>
+                                        </a>
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                {% endif %}
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <nav mt-5>
+                    <p>
+                        <span class="current">
+                            Page {{ equipes.number }} of {{ equipes.paginator.num_pages }}.
+                        </span>
+                    </p>
+
+                    <ul class="pagination pagination-gutter  justify-content-end">
+                        <li class="page-item page-indicator ">
+                            <a class="page-link" href="{% if equipes.has_previous %}
+                                                        ?page={{ equipes.previous_page_number }}
+                                                        {% else %}
+                                                        javascript:void(0);
+                                                        {% endif %}">
+                                <i class="la la-angle-left"></i></a>
+                        </li>
+
+                        {% for i in equipes.paginator.page_range|slice:":3" %}
+                            <li class="page-item {% if equipes.number == i %}active{% endif %}">
+                                <a class="page-link" href="?page={{i}}">{{i}}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if equipes.number > 3 %}
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{ equipes.number }}">{{ equipes.number }}</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item page-indicator ">
+                            <a class="page-link"  href="{% if equipes.has_next %}
+                                                        ?page={{ equipes.next_page_number }}
+                                                        {% else %}
+                                                        javascript:void(0);
+                                                        {% endif %}">
+                                <i class="la la-angle-right"></i></a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block additional_js %}
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.users %}
+        <script src="{% static jsurl %}"></script>
+    {% endfor %}
+
+<script>
+    $('.sweet-success-cancel').on('click', function (event) {
+           event.preventDefault();
+           const url = $(this).attr('href');
+
+           Swal.fire({
+               title: 'Êtes vous sûr ?',
+               text: "Cette opération est irreversible!",
+               type: "warning",
+               icon: 'question',
+               showCancelButton: true,
+               confirmButtonText: "Yes, delete it !!",
+               confirmButtonText: 'Delete',
+               confirmButtonColor: "#DD6B55"
+
+           }).then((result) => {
+               if (result.value) {
+                   window.location.href = url;
+               } else if (result.dismiss === Swal.DismissReason.cancel) {
+                   event.preventDefault();
+               }
+           })
+       });
+</script>
+
+{% endblock %}
+
+

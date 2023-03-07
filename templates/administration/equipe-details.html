@@ -1,0 +1,257 @@
+{% extends 'finlab/elements/layouts/admin.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block additional_css %}
+
+{% endblock %}
+
+
+{% block message %}
+{% include 'finlab/elements/alert.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Salut, {{ request.user.first_name }} {{ request.user.last_name }}!</h4>
+                    <p class="mb-0">Ci-dessous, vous trouverez les détails sur la zone {{ zone_obj.zone_name }}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">App</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile card card-body px-3 pt-3 pb-0">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <div class="cover-photo rounded"></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-details">
+                                <div class="profile-name px-3 pt-2">
+                                    <h4 class="text-primary mb-0">Zone: {{ zone_obj.zone_name }}</h4>
+
+                                </div>
+                                <div class="profile-email px-2 pt-2">
+
+                                    <h4 class="text-muted mb-0">Créé le {{ zone_obj.date_create }}</h4>
+                                </div>
+                                <div class="dropdown ms-auto">
+                                    <a href="#" class="btn btn-primary light sharp" data-bs-toggle="dropdown" aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Chef de zone <br><br></h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-responsive-md">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom Complet</th>
+                                            <th>Email</th>
+                                            <th>Genre</th>
+                                            <th>Rôle</th>
+                                            <th>Téléphone</th>
+                                            <th>Status</th>
+
+                                            {% if perms.users.delete_gestionnaire or perms.users.change_gestionnaire or perms.auth.change_permission %}
+                                            <th></th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% csrf_token %}
+                                        <tr id="{{ zone_obj.zone_chief.id }}">
+                                            <td>
+                                                <a href="{% url 'administration:details-gestionnaire' id=gestionnaire.id %}">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="/media/{{ zone_obj.zone_chief.avatar }}" class="rounded-lg me-2" width="24" alt="">
+                                                        <span class="w-space-no">{{ zone_obj.zone_chief.first_name }} {{ zone_obj.zone_chief.last_name }}</span>
+                                                    </div>
+                                                 </a>
+                                            </td>
+                                            <td><strong>{{ zone_obj.zone_chief.email }}</strong></td>
+                                            <td>{{ zone_obj.zone_chief.gender }}</td>
+
+                                            <td>
+                                                {% for g in zone_obj.zone_chief.groups.all %}
+                                                <span class="badge  badge-xs light badge-primary">{{ g.name }}</span>
+                                                {% endfor %}
+                                            </td>
+
+                                            <td>{{ zone_obj.zone_chief.phone_number }}</td>
+
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    {% if zone_obj.zone_chief.is_active %}
+                                                    <i class="fa fa-circle text-success me-1"></i>
+                                                    {% else %}
+                                                    <i class="fa fa-circle text-dark me-1"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="sweetalert d-flex">
+                                                    {% if perms.auth.change_zone %}
+                                                    <a href="{% url 'administration:edit-zone' id=zone_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
+                                                    {% endif %}
+                                                    {% if perms.auth.view_zone %}
+                                                    <a href="{% url 'finlab:user-details' id=zone_obj.zone_chief.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fa fa-shield"></i></a>
+                                                    {% endif %}
+                                                    {% if perms.users.delete_zone %}
+                                                    <a href="{% url 'finlab:delete-user' id=zone_obj.zone_chief.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>
+                                                    {% endif %}
+                                                 </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Agence</h4>
+                        {% if perms.auth.add_zone %}
+                        <a href="{% url 'administration:add-equipe' %}" class="btn btn-primary btn-sm content-justify-right">
+                            ADD AGENCE  <span class="btn-icon-end"><i class="fa fa-plus"></i></span>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-responsive-md ck-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Chef d'équipe</th>
+                                        <th scope="col">Nb Commerciaux</th>
+                                        {% if perms.auth.change_equipe or perms.auth.delete_equipe %}
+                                        <th scope="col"></th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for equipe in equipes %}
+                                    <tr>
+                                        <td>{{ equipe.name }}</td>
+                                        <td>{{ equipe.manager }}</td>
+                                        <td>
+                                            <span class="badge badge-{{ colors.dark }}">
+                                                <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe.nb_commerciaux }}
+                                            </span>
+                                        </td>
+
+                                        {% if perms.auth.change_equipe or perms.auth.delete_equipe %}
+                                        <td>
+                                            <span class="sweetalert d-flex">
+                                                {% if perms.auth.change_agence %}
+                                                <a href="{% url 'administration:edit-equipe' id=equipe.id %}" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
+                                                    data-placement="top" title="Edit">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                {% endif %}
+                                                {% if perms.auth.delete_equipe %}
+                                                <a href="{% url 'administration:delete-agence' id=equipe.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
+                                                    data-placement="top" title="Delete"><i class="fa fa-trash"></i>
+                                                </a>
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav mt-5>
+                            <p>
+                                <span class="current">
+                                    Page {{ equipes.number }} of {{ equipes.paginator.num_pages }}.
+                                </span>
+                            </p>
+
+                            <ul class="pagination pagination-gutter  justify-content-end">
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link" href="{% if equipes.has_previous %}
+                                                                ?page={{ equipes.previous_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-left"></i></a>
+                                </li>
+
+                                {% for i in equipes.paginator.page_range|slice:":3" %}
+                                    <li class="page-item {% if equipes.number == i %}active{% endif %}">
+                                        <a class="page-link" href="?page={{i}}">{{i}}</a>
+                                    </li>
+                                {% endfor %}
+
+                                {% if equipes.number > 3 %}
+                                    <li class="page-item active">
+                                        <a class="page-link" href="?page={{ equipes.number }}">{{ equipes.number }}</a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link"  href="{% if equipes.has_next %}
+                                                                ?page={{ equipes.next_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-right"></i></a>
+                                </li>
+                            </ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+<script type="text/javascript">
+    $('.test-popup-link').magnificPopup({
+      type: 'image'
+      // other options
+    });
+</script>
+{% endblock %}
