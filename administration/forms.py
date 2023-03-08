@@ -27,11 +27,15 @@ class EquipeForm(forms.ModelForm):
 # Création d'un chargé d'affaire
 class CommercialForm(forms.ModelForm):
     Commercial_group = Group.objects.get(name="Commercial")
-    Commercial = forms.ModelChoiceField(queryset=CustomUser.objects.filter(
-        groups__in=[Commercial_group]
-    ).exclude(
-        Q(equipe__isnull=False)
-    ), required=True, label="Chargé d'affaire")
+    try:
+        Commercial = forms.ModelChoiceField(queryset=CustomUser.objects.filter(
+            groups__in=[Commercial_group]
+        ).exclude(
+            Q(equipe__isnull=False)
+        ), required=True, label="Commercial")
+    except CustomUser.DoesNotExist:
+        Commercial = None
+
     equipe = forms.ModelChoiceField(queryset=models.Equipe.objects.all(), required=True, label="Equipe")
 
     class Meta:

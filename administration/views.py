@@ -36,7 +36,7 @@ class DetailsEquipeView(LoginRequiredMixin, View):
         if request.user.has_perm('administration.change_equipe'):
             equipe_obj = get_object_or_404(models.Equipe, id=id)
             agence_stats = models.Equipe.objects.filter(zone=equipe_obj).annotate(
-                nb_commerciaux=Count('commercial', distinct=True)).order_by('agency_name')
+                nb_commerciaux=Count('commercial', distinct=True)).order_by('name')
             paginator = Paginator(agence_stats, 7)
             print(agence_stats[0].nb_commerciaux)
 
@@ -53,10 +53,10 @@ class DetailsEquipeView(LoginRequiredMixin, View):
 
 
 class EditEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Modifier les informations de l'agence"}
+    context = {"page_title": "Modifier les informations de l'équipe"}
 
     def get(self, request, id):
-        if request.user.has_perm('administration.change_agence'):
+        if request.user.has_perm('administration.change_equipe'):
             agence_obj = get_object_or_404(models.Equipe, id=id)
             form = forms.EquipeForm(instance=agence_obj)
             self.context["agence_obj"] = agence_obj
@@ -65,26 +65,26 @@ class EditEquipeView(LoginRequiredMixin, View):
             return render(request, "administration/equipe-add.html", self.context)
         else:
             messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page !")
-            return redirect("administration:agence")
+            return redirect("administration:equipe")
 
     def post(self, request, id):
-        if request.user.has_perm('administration.change_agence'):
+        if request.user.has_perm('administration.change_equipe'):
             agence_obj = get_object_or_404(models.Equipe, id=id)
             form = forms.EquipeForm(request.POST, instance=agence_obj)
             if form.is_valid():
                 agence_obj = form.save()
-                return redirect('administration:agence')
+                return redirect('administration:equipe')
             else:
                 messages.warning(request, 'Quelque a mal fonctionné !')
                 self.context['form'] = form
                 return render(request, 'administration/equipe-add.html', self.context)
         else:
             messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page !")
-            return redirect("administration:agence")
+            return redirect("administration:equipe")
 
 
 class AddEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Création d'agence"}
+    context = {"page_title": "Création d'équipe"}
 
     def get(self, request):
         form = forms.EquipeForm()
@@ -97,7 +97,7 @@ class AddEquipeView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             messages.success(request, 'Agence Crée avec Succès')
-            return redirect('administration:agence')
+            return redirect('administration:equipe')
         else:
             messages.warning(request, 'Il existe une agence portant ce nom')
             self.context['form'] = form
@@ -112,12 +112,12 @@ class DeleteEquipeView(View):
             if equipe_obj:
                 nom_agence = equipe_obj.name
                 equipe_obj.delete()
-                messages.success(request, f"Vous venez de supprimer l'agence {nom_agence}")
+                messages.success(request, f"Vous venez de supprimer l'équipe {nom_agence}")
             else:
                 messages.warning(request, "Cette agence n'existe pas")
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer une zone !")
-        return redirect('administration:agence')
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer une équipe !")
+        return redirect('administration:equipe')
 
 
 # ================================================= Gestionnaire View ==================================================
@@ -169,16 +169,21 @@ class AddCommercialView(LoginRequiredMixin, View):
     context = {"page_title": "Créer un Commercial"}
 
     def get(self, request):
-        form = forms.CommercialForm()
-        self.context['form'] = form
-        return render(request, 'administration/commercial-add.html', self.context)
+        Commercial_group = Group.objects.get(name="Commercial")
+        if Commercial_group:
+            form = forms.CommercialForm()
+            self.context['form'] = form
+            return render(request, 'administration/commercial-add.html', self.context)
+        else:
+            messages.debug(request, "Vous devez dans un premier temps créer le rôle 'Commercial'")
+            return redirect('administration:commercial')
 
     def post(self, request):
         form = forms.CommercialForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Succès de l'opération")
-            return redirect('administration:gestionnaire')
+            return redirect('administration:commercial')
         else:
             messages.warning(request, 'Oops, il semble avoir une erreur')
             self.context['form'] = form
@@ -198,7 +203,7 @@ class DeleteCommercialView(View):
             else:
                 messages.warning(request, "Ce chargé d'affaire n'existe pas dans nos bases")
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer un chargé d'affaire !")
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer un commercial !")
         return redirect('administration:commercial')
 
 
@@ -218,5 +223,5 @@ class DeleteMultipleCommercialView(View):
 
             response.status_code = 200
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer des chargés d'affaires !")
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer des commerciaux !")
         return response

@@ -31,7 +31,7 @@
                             <label class="form-label">
                                 Nom {% if form.name.field.required %}<span class="text-danger">*</span> {% endif %}
                             </label>
-                            {{ form.agency_name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Non de l'agence" }}
+                            {{ form.name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Non de l'agence" }}
                             <div class="text-danger w-100 d-block mt-1">{{ form.name.errors }}</div>
                         </div>
 
@@ -39,7 +39,7 @@
                             <label class="form-label">
                                 Manager {% if form.manager.field.required %}<span class="text-danger">*</span>{% endif %}
                             </label>
-                            {{ form.administration|attr:"class:form-control default-select form-control-lg" }}
+                            {{ form.manager|attr:"class:form-control default-select form-control-lg" }}
                             <div class="text-danger w-100 d-block mt-1 ">{{ form.manager.errors }}</div>
                         </div>
 
