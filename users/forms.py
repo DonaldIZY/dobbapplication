@@ -132,11 +132,11 @@ class EditUserForm(forms.ModelForm):
             'avatar': forms.FileInput(),
         }
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if not email.endswith('@banqueatlantique.net'):
-            raise forms.ValidationError("L'e-mail doit se terminer par '@banqueatlantique.net'")
-        return email
+    # def clean_email(self):
+    #     email = self.cleaned_data['email']
+    #     if not email.endswith('@banqueatlantique.net'):
+    #         raise forms.ValidationError("L'e-mail doit se terminer par '@banqueatlantique.net'")
+    #     return email
 
     def save(self, commit=True):
         # Save the provided password in hashed format

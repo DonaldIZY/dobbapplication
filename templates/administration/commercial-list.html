@@ -193,7 +193,7 @@ $('#delete_multiple_btn').on('click', function () {
         }else{
             console.log(id);
             $.ajax({
-                url:"{% url 'administration:delete-multiple-gestionnaire' %}",
+                url:"{% url 'administration:delete-multiple-commercial' %}",
                 method:"POST",
                 dataType:'json',
                 data:{
