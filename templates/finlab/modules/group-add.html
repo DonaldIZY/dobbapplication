@@ -18,7 +18,7 @@
        <div class="col-lg-12">
           <div class="card">
              <div class="card-header">
-                <h4 class="card-title">Add New Group </h4>
+                <h4 class="card-title">Création de Rôle </h4>
              </div>
              <div class="card-body">
                 <div id="message">
@@ -27,7 +27,7 @@
                    {% csrf_token %}
                    <div class="row">
                       <div class="mb-3 col-md-12">
-                         <label class="form-label">Name</label>
+                         <label class="form-label">Nom</label>
                          {{ form.name|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Name" }}
                       </div>
                       <div class="mb-3 col-md-12">
@@ -36,8 +36,8 @@
                         </div>
                       </div>
                    </div>
-                   <button type="submit" class="btn btn-secondary mt-5">Save</button>
-                   <a href="{% url 'finlab:groups' %}" class="btn btn-primary mt-5"> Back</a>
+                    <a href="{% url 'finlab:groups' %}" class="btn btn-primary mt-5"> Annuler</a>
+                   <button type="submit" class="btn btn-secondary mt-5">Sauvegarder</button>
                 </form>
              </div>
           </div>

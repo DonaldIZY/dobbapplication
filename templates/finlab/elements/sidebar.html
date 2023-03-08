@@ -25,7 +25,7 @@
                 </ul>
             </li>
 
-            {% if perms.administration.view_zone or perms.administration.view_agence or perms.administration.view_gestionnaire %}
+            {% if perms.administration.view_equipe or perms.administration.view_commercial %}
             <li>
                 <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <!-- <i class="material-icons-outlined">dashboard</i> -->
@@ -36,7 +36,7 @@
 {#                        <li><a href="{% url 'administration:zone' %}">Zones</a></li>#}
 {#                    {% endif %}#}
 
-                    {% if perms.administration.view_agence or perms.administration.change_agence or perms.administration.add_agence or perms.administration.delete_agence %}
+                    {% if perms.administration.view_equipe or perms.administration.change_equipe or perms.administration.add_equipe or perms.administration.delete_equipe %}
                         <li><a href="{% url 'administration:equipe' %}">Équipe</a></li>
                     {% endif %}
                     {% if perms.administration.view_commercial or perms.administration.change_commercial or perms.administration.add_commercial or perms.administration.delete_commercial %}

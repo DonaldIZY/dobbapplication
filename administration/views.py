@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
@@ -122,17 +122,42 @@ class DeleteEquipeView(View):
 
 # ================================================= Gestionnaire View ==================================================
 class CommercialView(LoginRequiredMixin, View):
-    def get(self, request):
-        # groupe_gestionnaire = Group.objects.get(name="chargé d'affaire")
-        gestionnaires_lise = models.Commercial.objects.filter()
-        paginator = Paginator(gestionnaires_lise, 7)  # Show 7 Users per page.
+    context = {
+        "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
+        "page_title": "Liste des Commerciaux"
+    }
 
-        context = {
-            "commerciaux": paginator.get_page(request.GET.get('page')),
-            "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
-            "page_title": "Liste des Commerciaux"
-        }
-        return render(request, "administration/commercial-list.html", context)
+    def get(self, request):
+        user = request.user
+        print(user)
+        try:
+            equipe = user.equipe
+            if equipe:
+                commerciaux = models.Commercial.objects.filter(equipe=equipe).order_by('id')
+                print(commerciaux)
+                for commercial in commerciaux:
+                    print(commercial.commercial.email)
+                print('V 1')
+                paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
+                self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+                return render(request, "administration/commercial-list.html", self.context)
+            else:
+                pass
+        except models.Equipe.DoesNotExist:
+            pass
+
+        if user.has_perm('administration.view_commercial'):
+            commerciaux = models.Commercial.objects.all().order_by('id')
+            print(commerciaux)
+            print('V 2')
+            paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
+            self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+            return render(request, "administration/commercial-list.html", self.context)
+        else:
+            messages.warning(request, "Vous êts pas autorisez à accéder à cette page")
+            return HttpResponseForbidden("Vous êts pas autorisez à accéder à cette page")
+            # À utiliser en production
+            # raise PermissionDenied()
 
 
 class DetailsCommercialView(LoginRequiredMixin, View):

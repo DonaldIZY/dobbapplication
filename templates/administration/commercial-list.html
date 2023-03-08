@@ -69,7 +69,7 @@
                         <tbody>
                             {% csrf_token %}
                             {% for commercial_obj in commerciaux %}
-                            <tr id="{{ gestionnaire.id }}">
+                            <tr id="{{ commercial_obj.id }}">
                                 <td>
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input name="user_id[]" type="checkbox" class="form-check-input" value="{{ commercial_obj.id }}">
@@ -78,12 +78,12 @@
                                 </td>
 
                                 <td>
-                                    <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">
-                                        <div class="d-flex align-items-center">
-                                            <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">
-                                            <span class="w-space-no">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</span>
-                                        </div>
-                                     </a>
+{#                                    <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">#}
+{#                                        <div class="d-flex align-items-center">#}
+{#                                            <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">#}
+{#                                            <span class="w-space-no">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</span>#}
+{#                                        </div>#}
+{#                                     </a>#}
                                 </td>
                                 <td><strong>{{ commercial_obj.commercial.email }}</strong></td>
                                 <td>{{ commercial_obj.commercial.gender }}</td>
@@ -107,15 +107,15 @@
                                 </td>
                                 <td>
                                     <div class="sweetalert d-flex">
-                                        {% if perms.administration.change_commercial %}
-                                        <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
-                                        {% endif %}
-                                            {% if perms.auth.change_permission %}
-                                            <a href="{% url 'finlab:assign-permissions-to-user' id=user.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fa fa-shield"></i></a>
-                                            {% endif %}
-                                        {% if perms.administration.delete_commercial %}
-                                        <a href="{% url 'administration:delete-commercial' id=commercial_obj.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>
-                                        {% endif %}
+{#                                        {% if perms.administration.change_commercial %}#}
+{#                                        <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>#}
+{#                                        {% endif %}#}
+{#                                            {% if perms.auth.change_permission %}#}
+{#                                            <a href="{% url 'finlab:assign-permissions-to-user' id=user.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fa fa-shield"></i></a>#}
+{#                                            {% endif %}#}
+{#                                        {% if perms.administration.delete_commercial %}#}
+{#                                        <a href="{% url 'administration:delete-commercial' id=commercial_obj.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>#}
+{#                                        {% endif %}#}
                                      </div>
                                 </td>
                             </tr>

@@ -1,4 +1,4 @@
-
+{% load static widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 
@@ -46,9 +46,9 @@
                         <div class="form-input-content text-center error-page">
                             <h1 class="error-text  fw-bold">403</h1>
                             <h4><i class="fa fa-times-circle text-danger"></i> Forbidden Error!</h4>
-                            <p>You do not have permission to view this resource.</p>
+                            <p>Vous n'avez pas l'autorisation de visualiser cette ressource.</p>
                             <div>
-                                <a class="btn btn-primary" href="{% url 'finlab:index' %}">Back to Home</a>
+                                <a class="btn btn-primary" href="{% url 'finlab:index' %}">Retour à l'accueil</a>
                             </div>
                         </div>
                     </div>

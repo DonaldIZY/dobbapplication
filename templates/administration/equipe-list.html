@@ -23,7 +23,7 @@
                 <h4 class="card-title">{{ page_title }}</h4>
                 {% if perms.administration.add_equipe %}
                 <a href="{% url 'administration:add-equipe' %}" class="btn btn-primary btn-sm content-justify-right">
-                    ADD AGENCE  <span class="btn-icon-end"><i class="fa fa-plus"></i></span>
+                    Ajouter  <span class="btn-icon-end"><i class="fa fa-plus"></i></span>
                 </a>
                 {% endif %}
             </div>
@@ -32,11 +32,11 @@
                     <table class="table table-responsive-md ck-table">
                         <thead>
                             <tr>
-                                <th scope="col">Nom de l'équipe</th>
-                                <th scope="col">Chef d'agence</th>
-                                <th scope="col">Gestionnaires</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Chef d'équipe</th>
+                                <th scope="col">Nombre de commerciaux</th>
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
-                                <th scope="col">Action</th>
+                                <th scope="col">Actions</th>
                                 {% endif %}
                             </tr>
                         </thead>

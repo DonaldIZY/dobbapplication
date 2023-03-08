@@ -31,7 +31,7 @@
                             <label class="form-label">
                                 Nom {% if form.name.field.required %}<span class="text-danger">*</span> {% endif %}
                             </label>
-                            {{ form.name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Non de l'agence" }}
+                            {{ form.name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Non de l'équipe" }}
                             <div class="text-danger w-100 d-block mt-1">{{ form.name.errors }}</div>
                         </div>
 
@@ -55,16 +55,16 @@
 
 
 {% block additional_js %}
-<script type="text/javascript">
-    var demo1 = $('select[name=permissions]').bootstrapDualListbox(
-        {
-            preserveSelectionOnMove: 'moved',
-            moveOnSelect: true,
-            moveAllLabel: 'Move all',
-            moveSelectedLabel: 'Move selected'
-        }
-    );
-</script>
+{#<script type="text/javascript">#}
+{#    var demo1 = $('select[name=permissions]').bootstrapDualListbox(#}
+{#        {#}
+{#            preserveSelectionOnMove: 'moved',#}
+{#            moveOnSelect: true,#}
+{#            moveAllLabel: 'Move all',#}
+{#            moveSelectedLabel: 'Move selected'#}
+{#        }#}
+{#    );#}
+{#</script>#}
 {% endblock %}
 
 

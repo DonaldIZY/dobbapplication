@@ -20,18 +20,18 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Users Table</h4>
+                    <h4 class="card-title">Utilisateurs</h4>
                     
                     <div class="d-flex">
 
                         {% if perms.users.delete_customuser %}
                        
-                        <button type="submit" id="delete_multiple_btn" class="btn light btn-outline-primary btn-sm me-2 ">Delete</button>
+                        <button type="submit" id="delete_multiple_btn" class="btn light btn-outline-primary btn-sm me-2 ">Supprimer</button>
                         
                         {% endif %}
 
                         {% if perms.users.add_customuser %}
-                        <a href="{% url 'finlab:add-user' %}" class="btn btn-primary btn-sm ">ADD USER  <span class="btn-icon-end">
+                        <a href="{% url 'finlab:add-user' %}" class="btn btn-primary btn-sm ">Ajouter  <span class="btn-icon-end">
                             <i class="fa fa-plus"></i></span>
                         </a>
                         {% endif %}
@@ -51,17 +51,17 @@
                                         </div>
                                     </th>
                                    
-                                    <th>Full Name</th>
+                                    <th>Nom Complet</th>
                                     <th>Email</th>
-                                    <th>Gender</th>
-                                    <th>Groups</th>
+                                    <th>Genre</th>
+                                    <th>Rôle</th>
 {#                                    <th>Mobile</th>#}
-                                    <th>Date of Birth</th>
+                                    <th>Date de naissance</th>
                                     <th>Status</th>
 
 
                                     {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
-                                    <th></th>
+                                    <th>Action</th>
                                     {% endif %}
 
 
@@ -199,7 +199,7 @@ $(document).ready(function(){
 
 $('#delete_multiple_btn').on('click', function () {
 
-    if(confirm("Are you sure you want to delete items? ")){
+    if(confirm("Êtes-vous sûr de vouloir supprimer des éléments ? ")){
         var id = [];
        
         $(':checkbox:checked').each(function(i){
@@ -207,7 +207,7 @@ $('#delete_multiple_btn').on('click', function () {
         });
 
         if(id.length===0){
-            alert("Please select items to delete")
+            alert("Veuillez sélectionner les éléments à supprimer")
         }else{
             console.log(id);
             $.ajax({
@@ -260,13 +260,13 @@ $('#delete_multiple_btn').on('click', function () {
            const url = $(this).attr('href');
    
            Swal.fire({
-               title: 'Are you sure?',
-               text: "You won't be able to revert this!",
+               title: 'Êtes-vous sûr ?',
+               text: "Cette action est irréversible !",
                type: "warning",
                icon: 'question',
                showCancelButton: true,
-               confirmButtonText: "Yes, delete it !!",
-               confirmButtonText: 'Delete',
+               confirmButtonText: "Supprimer",
+               cancelButtonText: 'Annuler',
                confirmButtonColor: "#DD6B55"
                
            }).then((result) => {
