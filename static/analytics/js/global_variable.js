@@ -1,9 +1,10 @@
 var color_red = "#b43825";
-var color_orange = "#e17204";
-var color_green = "#346944";
+var color_orange = "#f16e00";
+var color_green = "#00b038";
 var color_sombre = '#3b3b3b';
 var color_blue = '#04668a';
 var color_silver = '#919494';
+var color_black = '#383838';
 
 function getCookie(name) {
   "use strict";

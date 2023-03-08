@@ -28,10 +28,11 @@
 		<div class="row">
 			<div class="col-xl-12">
 				<div class="page-titles style1">
+					<!-- Titre du dashboard -->
 					<div class="d-flex align-items-center">
 						<h2 class="heading">Dashboard <span class="graph-title">{{ heading }}</span> </h2>
-						<!-- <p class="text-warning ms-2">Welcome Back Yatin Sharma !</p> -->
 					</div>
+					<!-- Liste déroulante et date picker -->
                     <div class="d-flex justify-content-between">
                         <select class="image-select default-select dashboard-select" id="univers" aria-label="Default">
                             <option value="Mobile" selected>Mobile</option>
@@ -52,30 +53,31 @@
                             </div>
 					    </div>
                     </div>
-
-				
 				</div>
 			</div>
 		</div>
         <!-- --Fin Bar de titre-- -->
 
-        <!-- ---- Evo Facture--- -->
+        <!-- Evolution du parc actif et de la facturation -->
 		<div class="row">
 			<!-- --column-- -->
 			<div class="col-lg-12 wow fadeInUp" data-wow-delay="1s">
-				<!-- ----card Evo Facture--- -->
+				<!-- card Evolution du parc actif et de la facturation -->
 				<div class="card statistic" style="background-color: #fff">
 					<div class="row">
+						<!-- titre du graphe -->
 						<div class="col-xl-9">
 							<div class="card-header border-0 flex-wrap pb-2">
 								<div class="chart-title mb-2 ">
 									<h2 class="heading text-black">Evolution du parc actif et du CA <span class="graph-title">{{ product_type }}</span> </h2>
 								</div>
 							</div>
+							
 							<div class="card-body pt-0 custome-tooltip pe-0">
 								<div id="facture" style="height: 350px"></div>
 							</div>
 						</div>
+						<!-- date picker -->
 						<div class="col-xl-3">
 							<div class="statistic-content">
 								<div class="d-flex justify-content-between">
@@ -186,7 +188,7 @@
 					<div class="card-header pb-0 border-0 flex-wrap">
 						<div class="mb-2 mb-sm-0">
 							<div class="chart-title mb-3">
-								<h2 class="heading">Evolution de la facturation <span class="graph-title">{{ product_type }}</span> </h2>
+								<h2 class="heading">Statut de la clientèle <span class="graph-title">{{ product_type }}</span> </h2>
                                 <!-- <p>Sur la période de 01/03/2022 à 01/05/2022</p> -->
 							</div>
 						</div>
@@ -209,16 +211,18 @@
 		</div>
         <!-- ----/Evolution de la Facturation par période--- -->
 
-        <!-- ----Hausse-Baise de la Facturation par période--- -->
+        <!-- Fluctuations du CA -->
         <div class="row">
             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.5s">
 				<div class="card crypto-chart ">
 					<div class="card-header pb-0 border-0 flex-wrap">
+						<!-- titre du graphe -->
 						<div class="mb-2 mb-sm-0">
 							<div class="chart-title mb-3">
-								<h2 class="heading">Evolution de la facturation <span class="graph-title">{{ product_type }}</span></h2>
+								<h2 class="heading">Fluctuations du CA <span class="graph-title">{{ product_type }}</span></h2>
 							</div>
 						</div>
+						<!-- date picker -->
 						<div class="p-static">
 							<div class="d-flex align-items-center">
 								<select class="image-select default-select dashboard-select" aria-label="Default">
@@ -228,10 +232,10 @@
 								</select>
 							</div>
 						</div>
-
 					</div>
+					<!-- Graphique -->
 					<div class="card-body pt-2 custome-tooltip pb-0">
-						<div id="diff-facturation" style="height: 400px"></div>
+						<div class="d-flex dashboard" id="diff-facturation" style="height: 300px"></div>
 					</div>
 				</div>
 			</div>

@@ -26,9 +26,16 @@ console.log(url);
 /* jshint ignore:end */
 
 // =====================================================================================================================
-// Options Evo facture
+// GRAPHIQUE : EVOLUTION DU PARC ACTIF ET DU CA 
+
 let domParcActif = document.getElementById('facture');
 let chartParcActif = echarts.init(domParcActif);
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartParcActif.resize();
+});
+
 let optionParcActif = {
   responsive: true,
   grid: grid,
@@ -130,6 +137,7 @@ let optionParcActif = {
 
 // =====================================================================================================================
 // Option evolution de la facturation
+
 let tooltip = {
   trigger: 'axis',
   axisPointer: {
@@ -150,11 +158,11 @@ let legende = {
   data: [
     {
       name: 'Hausse',
-      itemStyle: { color: color_red}
+      itemStyle: { color: color_green}
     },
     {
       name: 'Baisse',
-      itemStyle: { color: '#1c571'}
+      itemStyle: { color: color_red}
     }
   ]
 };
@@ -163,8 +171,16 @@ let yaxis = { type: 'value', show: false };
 
 let barWidth = '50%';
 
+// GRAPHIQUE : STATUT DE LA CLIENTELE
+
 let domFacturationYTD = document.getElementById('evo');
 let chartYTD = echarts.init(domFacturationYTD);
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartYTD.resize();
+});
+
 let optionFacturationYTD = {
       tooltip: tooltip,
       legend: legende,
@@ -196,14 +212,15 @@ let optionFacturationYTD = {
           stack: 'Total',
           barWidth: barWidth,
           itemStyle: {
-            borderColor: 'transparent',
+            borderWidth :1,
+            borderType : 'solid',
             // ...setColor(color_red),
-            color: color_red,
+            color: color_black,
             borderRadius: 3,
           },
           label: {
             show: true,
-            position: 'bottom'
+            position: 'bottom',
           },
         },
         {
@@ -212,24 +229,33 @@ let optionFacturationYTD = {
           stack: 'Total',
           barWidth: barWidth,
           itemStyle: {
-            borderColor: 'transparent',
+            borderWidth :1,
+            borderType : 'solid',
             // définir la couleur du graph
             // ...setColor(color_green),
-            color: color_green,
-            borderRadius: 3,
+            opacity : 0.75,
+            color: '#f16e00',
           },
           label: {
             show: true,
             position: 'top',
-            fontWeight: 900,
+            fontWeight: 500,
           },
         },
       ]
     };
 
 // =====================================================================================================================
+// GRAPHIQUE : FLUCTUATIONS DU CA
+
 let domEvoMoM = document.getElementById('diff-facturation');
 let chartEvoMoM = echarts.init(domEvoMoM);
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartEvoMoM.resize();
+});
+
 let optionEvoMoM = {
     grid: grid,
     tooltip: {
@@ -266,6 +292,8 @@ let optionEvoMoM = {
         stack: 'Total',
         barWidth: barWidth,
         itemStyle: {
+          borderWidth :1,
+          borderType : 'solid',
           borderColor: 'transparent',
           // ...setColor(color_red),
           color: color_red,
@@ -273,7 +301,7 @@ let optionEvoMoM = {
         },
         label: {
           show: true,
-          position: 'inside'
+          position: 'bottom'
         },
       },
       {
@@ -282,6 +310,8 @@ let optionEvoMoM = {
         stack: 'Total',
         barWidth: barWidth,
         itemStyle: {
+          borderWidth :1,
+          borderType : 'solid',
           borderColor: 'transparent',
           // ...setColor(color_green),
           color: color_green,
@@ -289,7 +319,7 @@ let optionEvoMoM = {
         },
         label: {
           show: true,
-          position: 'inside'
+          position: 'top'
         },
       }
     ]
