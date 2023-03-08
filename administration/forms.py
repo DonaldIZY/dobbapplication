@@ -28,13 +28,13 @@ class EquipeForm(forms.ModelForm):
 class CommercialForm(forms.ModelForm):
     Commercial_group = Group.objects.get(name="Commercial")
     try:
-        Commercial = forms.ModelChoiceField(queryset=CustomUser.objects.filter(
+        commercial = forms.ModelChoiceField(queryset=CustomUser.objects.filter(
             groups__in=[Commercial_group]
         ).exclude(
             Q(equipe__isnull=False)
         ), required=True, label="Commercial")
     except CustomUser.DoesNotExist:
-        Commercial = None
+        commercial = None
 
     equipe = forms.ModelChoiceField(queryset=models.Equipe.objects.all(), required=True, label="Equipe")
 
