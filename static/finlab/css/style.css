@@ -317,9 +317,17 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   box-shadow: 0 10px 10px 0 rgba(0,0,0,0.3);
 }
 
+
 span.graph-title{
   color: #F16E00;
 }
+
+.dashboard-graph{
+  width: 100%;
+  height: 100%;
+}
+
+
 
 
 *,
@@ -1995,7 +2003,7 @@ textarea.form-control-lg {
   background-size: contain;
   border: 1px solid rgba(0, 0, 0, 0.25);
   appearance: none;
-  color-adjust: exact; }
+  color: exact; }
   .form-check-input[type="checkbox"] {
     border-radius: 0.25em; }
   .form-check-input[type="radio"] {

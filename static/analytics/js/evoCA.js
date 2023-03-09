@@ -1,5 +1,4 @@
 /* jshint esversion: 6 */
-
 let url = window.location.href;
 let rich = {
   title: {
@@ -65,8 +64,11 @@ let rich = {
 };
 
 // =====================================================================================================================
+// GRAPHIQUE : EVOLUTION MOM DE LA CONTRIBUTION (MONITORING)
+
 const domMoMCAF = document.getElementById('ca-top-200');
-const chartMoMCAF = echarts.init(domMoMCAF);
+const chartMoMCAF = echarts.init(domMoMCAF, null, {renderer: 'canvas', force: true});
+
 let optionMoMCAF = {
   grid: grid,
   tooltip: {
@@ -85,34 +87,50 @@ let optionMoMCAF = {
       }
     }
   },
-  toolbox: {
-    feature: {
-      saveAsImage: {show: true}
-    }
-  },
+  // toolbox: {
+  //   feature: {
+  //     saveAsImage: {show: true}
+  //   }
+  // },
   legend: {
     data: ['CAF YTD (mxof)', 'Contribution totale au CAF'],
+    align: 'left',
+    textStyle: {
+      fontFamily: fontFamily, //Changer la police celle du HTML
+      fontSize: '80%',
+      fontWeight: 600
+    }
   },
   xAxis: [
     {
       type: 'category',
       axisTick: {show: false},
       axisLine: {show: false},
+      axisLabel: {
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+        },
+        fontSize: '80%',
+        fontWeight: 600
+      }
     }
   ],
   yAxis: [
     {
       type: 'value',
       name: 'Parc Actif',
-      axisLabel: {formatter: '{value}'},
-      interval: 100,
+      axisLabel: {
+        formatter: '{value}',
+        fontSize: '80%'
+      },
+      interval: 30,
       show: false
     },
     {
       type: 'value',
       name: 'CA Parc Actif',
       axisLabel: {formatter: '{value} M'},
-      interval: 0.1,
+      interval: 30,
       show: false
     }
   ],
@@ -120,19 +138,29 @@ let optionMoMCAF = {
     {
       name: 'CAF YTD (mxof)',
       type: 'bar',
-      barWidth: '60%',
+      barWidth: '90%',
       itemStyle: {
-        borderColor: 'transparent',
+        // borderColor: 'transparent',
+        borderWidth: 1,
+        borderType: 'solid',
+        borderColor: color_blue_1,
+        shadowColor: color_blue_1,
+        shadowBlur: 0.15,
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {offset: 0, color: '#f8a750'},
-          {offset: 0.5, color: '#f68504'},
-          {offset: 1, color: color_orange}
+          {offset: 0, color: color_blue_2},
+          {offset: 0.5, color: color_blue_1},
+          {offset: 1, color: color_blue}
         ]),
-        barBorderRadius: 3,
+        barBorderRadius: 2,
       },
+      // étiquettes des barres
       label: {
         show: true,
-        fontWeight: 900,
+        fontSize: '80%',
+        fontWeight: 500,
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+      },
         position: 'inside',
         color: '#FFF',
         formatter: function (d) {
@@ -163,12 +191,16 @@ let optionMoMCAF = {
         color: color_sombre,
         borderRadius: 3,
       },
+      // étiquettes de la courbe
       label: {
         show: true,
         color: '#dedede',
         position: 'inside',
         backgroundColor: color_sombre,
-        fontWeight: 900,
+        fontSize: '80%',
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+        },
         borderRadius: 2,
         padding: 3,
 
@@ -188,9 +220,36 @@ let optionMoMCAF = {
   ]
 };
 
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartMoMCAF.resize();
+  var fontSize = document.getElementById('chartMoMCAF').offsetWidth / 50;
+  chartMoMCAF.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }]
+  })
+});
+
 // =====================================================================================================================
-const chartDomCAUnivers = document.getElementById('ca-univers');
-const chartCAUnivers = echarts.init(chartDomCAUnivers);
+// GRAPHIQUE : CONTRIBUTION PAR UNIVERS 
+
+let chartDomCAUnivers = document.getElementById('ca-univers');
+let chartCAUnivers = echarts.init(chartDomCAUnivers, null, {renderer: 'canvas', force: true});
+
 let optionCAUnivers = {
   tooltip: {
     trigger: 'item',
@@ -219,75 +278,10 @@ let optionCAUnivers = {
   ]
 };
 
-// =====================================================================================================================
-// let domTest = document.getElementById('test');
-// let charTest = echarts.init(domTest);
-// optiontest = {
-//   xAxis: {
-//     type: 'category',
-//     data: ['Mon', 'Tue', 'Sat', 'Sun']
-//   },
-//   yAxis: {
-//     type: 'value'
-//   },
-//   series: [
-//     {
-//       name: 'Placeholder',
-//       type: 'bar',
-//       stack: 'Total',
-//       silent: true,
-//       barWidth: '50%',
-//       itemStyle: {
-//         borderColor: 'transparent',
-//         color: 'transparent',
-//         borderRadius: 3,
-//       },
-//       emphasis: {
-//         itemStyle: {
-//           borderColor: 'transparent',
-//           color: 'transparent'
-//         }
-//       },
-//       data: [
-//         0,
-//         30,
-//         19,
-//         0
-//       ],
-//     },
-//     {
-//       data: [
-//         {
-//           value: 500,
-//           itemStyle: {
-//             color: '#a90000'
-//           }
-//         },
-//         0,
-//         0,
-//         478
-//       ],
-//       barWidth: '50%',
-//       itemStyle: {
-//         borderColor: 'transparent',
-//         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-//           {offset: 0, color: '#b4b6b6'},
-//           {offset: 0.5, color: '#a1a1a1'},
-//           {offset: 1, color: color_silver}
-//         ]),
-//         barBorderRadius: 3,
-//       },
-//       type: 'bar',
-//       markPoint: {
-//         data: [
-//           { type: 'max', name: 'Max' },
-//         ]
-//       },
-//     }
-//   ]
-// };
 
-// Option evolution de la facturation
+//==============================================================================================================
+// GRAPHIQUE : CONTRIBUTION PAR UNIVERS EN BATON
+
 let tooltip = {
   trigger: 'axis',
   axisPointer: {
@@ -304,13 +298,27 @@ let tooltip = {
     return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + '<strong>' + tar.value + '</strong>';
   }
 };
-let xaxis = { type: 'category', axisTick: {show: false}, axisLine: {show: false}, data: ['Mon', 'Tue', 'Sat', 'Sun']};
+
+let xaxis = {
+  type: 'category', 
+  axisTick: {show: false}, 
+  axisLine: {show: false},
+  axisLabel: {
+    textStyle: {
+      fontFamily: fontFamily, // changer la police en celle HTML
+      fontSize: '80%',
+      fontWeight: 600
+      },
+    data: ['Janvier', 'Février', 'Mars', 'Avril']
+    }
+};
 let yaxis = { type: 'value', show: false };
 
-let barWidth = '50%';
+let barWidth = '80%';
 
 let domTest = document.getElementById('test');
-let charTest = echarts.init(domTest);
+let charTest = echarts.init(domTest, null, {renderer: 'canvas', force: true});
+
 let optiontest = {
     tooltip: tooltip,
     grid: grid,
@@ -343,17 +351,54 @@ let optiontest = {
         stack: 'Total',
         barWidth: barWidth,
         itemStyle: {
-          borderColor: 'transparent',
-          borderRadius: 3,
-          color: color_silver,
+          borderWidth: 1,
+          borderType: 'solid',
+          borderColor: color_blue_1,
+          shadowColor: color_blue_1,
+          shadowBlur: 0.15,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: color_blue_2},
+            {offset: 0.5, color: color_blue_1},
+            {offset: 1, color: color_blue}
+          ]),
+          barBorderRadius: 1,
         },
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          fontSize: '80%',
+          fontWeight: 600,
+          textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            }
         },
       },
     ]
   };
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  charTest.resize();
+  var fontSize = document.getElementById('charTest').offsetWidth / 50;
+  charTest.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }]
+  })
+});
 optiontest && charTest.setOption(optiontest);
 
 // =====================================================================================================================

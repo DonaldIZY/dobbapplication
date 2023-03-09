@@ -29,12 +29,7 @@ console.log(url);
 // GRAPHIQUE : EVOLUTION DU PARC ACTIF ET DU CA 
 
 let domParcActif = document.getElementById('facture');
-let chartParcActif = echarts.init(domParcActif);
-
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartParcActif.resize();
-});
+let chartParcActif = echarts.init(domParcActif, null, {renderer: 'canvas', force: true});
 
 let optionParcActif = {
   responsive: true,
@@ -48,35 +43,55 @@ let optionParcActif = {
       }
     }
   },
-  toolbox: {
-    feature: {
-      saveAsImage: {show: true}
-    }
-  },
+
+  //Option de téléchargement de l'image du graphe
+  //toolbox: {
+  //   feature: {
+  //     saveAsImage: {show: true}
+  //   }
+  // },
   legend: {
     data: ['Parc Actif', 'CA Parc Actif'],
     align: 'left',
+    textStyle: {
+      fontFamily: fontFamily, //Changer la police celle du HTML
+      fontSize: '80%',
+      fontWeight: 600
+    }
   },
   xAxis: [
     {
       type: 'category',
       axisTick: {show: false},
       axisLine: {show: false},
+      axisLabel: {
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+      },
+        fontSize: '80%',
+        fontWeight: 600
+      }
     }
   ],
   yAxis: [
     {
       type: 'value',
       name: 'Parc Actif',
-      axisLabel: {formatter: '{value}'},
-      interval: 50,
+      axisLabel: {
+        formatter: '{value}',
+        fontSize: '80%'     
+      },
+      interval: 100,
       show: false
     },
     {
       type: 'value',
       interval: 100,
       name: 'CA Parc Actif',
-      axisLabel: {formatter: '{value} M'},
+      axisLabel: {
+        formatter: '{value} M',
+        fontSize: '80%'
+      },
       show: false
     }
   ],
@@ -84,7 +99,9 @@ let optionParcActif = {
     {
       name: 'Parc Actif',
       type: 'bar',
-      barWidth: '70%',
+      barWidth: '50%',
+      // barCategoryGap: '10%', // espacement entre les barres
+      // barGap: '40%', // espacement entre les séries
       tooltip: {
         valueFormatter: function (value) {
           'use strict';
@@ -92,18 +109,28 @@ let optionParcActif = {
         }
       },
       itemStyle: {
-        borderColor: 'transparent',
+        // borderColor: 'transparent',
+        borderWidth: 1,
+        borderType: 'solid',
+        borderColor: color_blue_1,
+        shadowColor: color_blue_1,
+        shadowBlur: 0.15,
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {offset: 0, color: '#b4b6b6'},
-          {offset: 0.5, color: '#a1a1a1'},
-          {offset: 1, color: color_silver}
+          {offset: 0, color: color_blue_2},
+          {offset: 0.5, color: color_blue_1},
+          {offset: 1, color: color_blue}
         ]),
-        barBorderRadius: 3,
+        barBorderRadius: 2,
       },
+      //étiquettes de barres
       label: {
         show: true,
-        fontWeight: 900,
+        fontWeight: 500,
+        fontSize: '80%',
         position: 'inside',
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+      },
         color: '#FFF',
       },
     },
@@ -122,12 +149,16 @@ let optionParcActif = {
         color: color_sombre,
         borderRadius: 3,
       },
+      //étiquettes de la courbe
       label: {
         show: true,
         color: '#dedede',
         position: 'inside',
         backgroundColor: color_sombre,
-        fontWeight: 900,
+        fontSize: '80%',
+        textStyle: {
+          fontFamily: fontFamily // changer la police en celle HTML
+        },
         borderRadius: 2,
         padding: 3,
       },
@@ -135,8 +166,33 @@ let optionParcActif = {
   ]
 };
 
+// Gérer la responsivité du graphe et de ses étiquettes en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartParcActif.resize();
+  var fontSize = document.getElementById('chartParcActif').offsetWidth / 50;
+  chartParcActif.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }]
+  })
+});
+
+
 // =====================================================================================================================
-// Option evolution de la facturation
+// Options de statut de la clientèle
 
 let tooltip = {
   trigger: 'axis',
@@ -158,28 +214,44 @@ let legende = {
   data: [
     {
       name: 'Hausse',
-      itemStyle: { color: color_green}
+      textStyle: {
+        fontFamily: fontFamily, //Changer la police celle du HTML
+        fontSize: '80%',
+        fontWeight: 600
+      },
+      itemStyle: { color: color_blue}
     },
     {
       name: 'Baisse',
+      textStyle: {
+        fontFamily: fontFamily, //Changer la police celle du HTML
+        fontSize: '80%',
+        fontWeight: 600
+      },
       itemStyle: { color: color_red}
     }
   ]
 };
-let xaxis = { type: 'category', axisTick: {show: false}, axisLine: {show: false}, };
+let xaxis = {
+  type: 'category', 
+  axisTick: {show: false}, 
+  axisLine: {show: false},
+  axisLabel: {
+    textStyle: {
+      fontFamily: fontFamily, // changer la police en celle HTML
+      fontSize: '80%',
+      fontWeight: 600
+      },
+    }
+};
 let yaxis = { type: 'value', show: false };
 
-let barWidth = '50%';
+let barWidth = '80%';
 
 // GRAPHIQUE : STATUT DE LA CLIENTELE
 
 let domFacturationYTD = document.getElementById('evo');
-let chartYTD = echarts.init(domFacturationYTD);
-
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartYTD.resize();
-});
+let chartYTD = echarts.init(domFacturationYTD, null, {renderer: 'canvas', force: true});
 
 let optionFacturationYTD = {
       tooltip: tooltip,
@@ -212,14 +284,25 @@ let optionFacturationYTD = {
           stack: 'Total',
           barWidth: barWidth,
           itemStyle: {
-            borderWidth :1,
-            borderType : 'solid',
-            // ...setColor(color_red),
-            color: color_black,
-            borderRadius: 3,
+            borderWidth: 1,
+            borderType: 'solid',
+            borderColor: color_red_1,
+            shadowColor: color_red_1,
+            shadowBlur: 0.15,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: color_red},
+              {offset: 0.5, color: color_red_1},
+              {offset: 1, color: color_red_2}
+            ]),
+            barBorderRadius: 1,
           },
           label: {
             show: true,
+            fontSize: '80%',
+            fontWeight: 600,
+            textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            },
             position: 'bottom',
           },
         },
@@ -229,27 +312,60 @@ let optionFacturationYTD = {
           stack: 'Total',
           barWidth: barWidth,
           itemStyle: {
-            borderWidth :1,
-            borderType : 'solid',
-            // définir la couleur du graph
-            // ...setColor(color_green),
-            opacity : 0.75,
-            color: '#f16e00',
+            borderWidth: 1,
+            borderType: 'solid',
+            borderColor: color_blue_1,
+            shadowColor: color_blue_1,
+            shadowBlur: 0.15,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: color_blue_2},
+              {offset: 0.5, color: color_blue_1},
+              {offset: 1, color: color_blue}
+            ]),
+            barBorderRadius: 1,
           },
           label: {
             show: true,
             position: 'top',
-            fontWeight: 500,
+            fontSize: '80%',
+            fontWeight: 600,
+            textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            }
           },
         },
       ]
     };
 
+    // Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartYTD.resize();
+  var fontSize = document.getElementById('chartYTD').offsetWidth / 50;
+  chartYTD.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }]
+  })
+});
+
 // =====================================================================================================================
 // GRAPHIQUE : FLUCTUATIONS DU CA
 
 let domEvoMoM = document.getElementById('diff-facturation');
-let chartEvoMoM = echarts.init(domEvoMoM);
+let chartEvoMoM = echarts.init(domEvoMoM, null, {renderer: 'canvas', force: true});
 
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
@@ -277,7 +393,7 @@ let optionEvoMoM = {
         itemStyle: {
           borderColor: 'transparent',
           color: 'transparent',
-          borderRadius: 3,
+          borderRadius: 1,
         },
         emphasis: {
           itemStyle: {
@@ -292,16 +408,26 @@ let optionEvoMoM = {
         stack: 'Total',
         barWidth: barWidth,
         itemStyle: {
-          borderWidth :1,
-          borderType : 'solid',
-          borderColor: 'transparent',
-          // ...setColor(color_red),
-          color: color_red,
-          borderRadius: 3,
+          borderWidth: 1,
+          borderType: 'solid',
+          borderColor: color_red_1,
+          shadowColor: color_red_1,
+          shadowBlur: 0.15,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: color_red},
+            {offset: 0.5, color: color_red_1},
+            {offset: 1, color: color_red_2}
+          ]),
+          barBorderRadius: 1,
         },
         label: {
           show: true,
-          position: 'bottom'
+          position: 'bottom',
+          fontSize: '80%',
+          fontWeight: 600,
+          textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            }
         },
       },
       {
@@ -310,20 +436,54 @@ let optionEvoMoM = {
         stack: 'Total',
         barWidth: barWidth,
         itemStyle: {
-          borderWidth :1,
-          borderType : 'solid',
-          borderColor: 'transparent',
-          // ...setColor(color_green),
-          color: color_green,
-          borderRadius: 3,
+          borderWidth: 1,
+          borderType: 'solid',
+          borderColor: color_blue_1,
+          shadowColor: color_blue_1,
+          shadowBlur: 0.15,
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: color_blue_2},
+            {offset: 0.5, color: color_blue_1},
+            {offset: 1, color: color_blue}
+          ]),
+          barBorderRadius: 1,
         },
         label: {
           show: true,
-          position: 'top'
+          position: 'top',
+          fontSize: '80%',
+          fontWeight: 600,
+          textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            }
         },
       }
     ]
   };
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+window.addEventListener('resize', function() {
+  chartEvoMoM.resize();
+  var fontSize = document.getElementById('chartEvoMoM').offsetWidth / 50;
+  chartEvoMoM.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSize + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }]
+  })
+});
 
 // =====================================================================================================================
 function getData(univers) {
