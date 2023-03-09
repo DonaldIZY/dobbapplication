@@ -36,6 +36,10 @@ let optionParcActif = {
   grid: grid,
   tooltip: {
     trigger: 'axis',
+    textStyle: {
+      fontFamily: fontFamily,
+      fontSize: '100%'
+    },
     axisPointer: {
       type: 'shadow',
       crossStyle: {
@@ -186,6 +190,11 @@ window.addEventListener('resize', function() {
       textStyle: {
         fontSize: fontSize + '%'
       }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
     }]
   })
 });
@@ -196,6 +205,10 @@ window.addEventListener('resize', function() {
 
 let tooltip = {
   trigger: 'axis',
+  textStyle: {
+    fontFamily: fontFamily,
+    fontSize: '100%'
+  },
   axisPointer: {
     type: 'shadow'
   },
@@ -357,6 +370,11 @@ window.addEventListener('resize', function() {
       textStyle: {
         fontSize: fontSize + '%'
       }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
     }]
   })
 });
@@ -367,10 +385,6 @@ window.addEventListener('resize', function() {
 let domEvoMoM = document.getElementById('diff-facturation');
 let chartEvoMoM = echarts.init(domEvoMoM, null, {renderer: 'canvas', force: true});
 
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartEvoMoM.resize();
-});
 
 let optionEvoMoM = {
     grid: grid,
@@ -378,6 +392,10 @@ let optionEvoMoM = {
       trigger: 'axis',
       axisPointer: {
         type: 'shadow'
+      },
+      textStyle: {
+        fontFamily: fontFamily,
+        fontSize: '100%'
       },
     },
     legend: legende,
@@ -478,6 +496,11 @@ window.addEventListener('resize', function() {
       }
     }],
     legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    tooltip: [{
       textStyle: {
         fontSize: fontSize + '%'
       }

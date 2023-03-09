@@ -73,6 +73,10 @@ let optionMoMCAF = {
   grid: grid,
   tooltip: {
     trigger: 'axis',
+    textStyle: {
+      fontFamily: fontFamily,
+      fontSize: '100%'
+    },
     formatter: function (params) {
       return `<style>background-color: '#FFF'; color: '#525254FF'</style>
               ${params[0].name} <br/>
@@ -240,6 +244,11 @@ window.addEventListener('resize', function() {
       textStyle: {
         fontSize: fontSize + '%'
       }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
     }]
   })
 });
@@ -253,6 +262,10 @@ let chartCAUnivers = echarts.init(chartDomCAUnivers, null, {renderer: 'canvas', 
 let optionCAUnivers = {
   tooltip: {
     trigger: 'item',
+    textStyle: {
+      fontFamily: fontFamily,
+      fontSize: '100%'
+    },
     formatter: (param) => {
       'use strict';
       return `CA Univers <br/>
@@ -286,6 +299,10 @@ let tooltip = {
   trigger: 'axis',
   axisPointer: {
     type: 'shadow'
+  },
+  textStyle: {
+    fontFamily: fontFamily,
+    fontSize: '100%'
   },
   formatter: function (params) {
     'use strict';
@@ -393,6 +410,11 @@ window.addEventListener('resize', function() {
       }
     }],
     legend: [{
+      textStyle: {
+        fontSize: fontSize + '%'
+      }
+    }],
+    tooltip: [{
       textStyle: {
         fontSize: fontSize + '%'
       }
