@@ -151,14 +151,6 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type):
 
 
 def getHausseBasse(univers, debut_periode, fin_periode):
-    # request = f"""
-    #     select dates, sum(activations+montee_en_valeur+retour_de_suspension) / {M} as hausse,
-    #     sum(baisse_en_valeur+suspension) / {M} as baisse
-    #     from public.var_facture
-    #     where univers='{univers}' and (dates between '{debut_periode}' and '{fin_periode}')
-    #     group by dates
-    #     order by dates
-    # """
 
     request = f"""
         SELECT date_facture as dates,

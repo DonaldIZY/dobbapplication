@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 
     <!-- -- Datepicker -- -->
-{#    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}#}
-{#    <link rel="stylesheet" href="{% static cssurl %}" >#}
-{#    {% endfor %}#}
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
 
 {% endblock %}
 
@@ -232,12 +232,12 @@ $(function () {
 
     console.log(e)
 
-    {#let date = document.getElementById('select-date');#}
-    {#console.log(date.attributes);#}
+    let date = document.getElementById('select-date');
+    console.log(date.attributes);
 
-    {#let element = document.getElementById('datepicker')#;}
-    {#console.log(element.attributes);#}
-    {#console.log(element.ownerDocument.activeElement.clientHeight);#}
+    let element = document.getElementById('datepicker')#;}
+    console.log(element.attributes);
+    console.log(element.ownerDocument.activeElement.clientHeight);
 
     let elements = document.getElementsByClassName('datepicker-fac');
     for (let ele of elements) {
