@@ -52,7 +52,7 @@
 	</div>
 </div>
 
-<!-- Première ligne du dashboard de facturation (Comité-crédit) -->
+<!-- Première ligne du tableau de bord de facturation (Comité-crédit) -->
 <div class="row">
 	<!-- carte evolution du CA -->
 	<div class="wow fadeInUp" data-wow-delay="0.25s">
@@ -106,7 +106,7 @@
 	</div>
 </div>	
 
-<!-- Deuxième ligne du dashboard de facturation (Comité-crédit) -->
+<!-- Deuxième ligne du tableau de bord de facturation (Comité-crédit) -->
 <div class="row">
 	<!-- Statut de la clientèle -->
 	<div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -116,7 +116,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title mb-3">
-						<h2 class="heading">Statut de la clientèle <span class="graph-title">{{ product_type }}</span> </h2>
+						<h2 class="heading">Statut de la clientèle MoM <span class="graph-title">{{ product_type }}</span> </h2>
 						<!-- <p>Sur la période de 01/03/2022 à 01/05/2022</p> -->
 					</div>
 				</div>
@@ -145,6 +145,37 @@
 				<!-- titre du graphe -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title mb-3">
+						<h2 class="heading">Statut de la clientèle YTD <span class="graph-title">{{ product_type }}</span></h2>
+					</div>
+				</div>
+				<!-- date picker -->
+				<div class="p-static">
+					<div class="d-flex align-items-center">
+						<select class="image-select default-select dashboard-select" aria-label="Default">
+							<option selected>Ce mois</option>
+							<option value="1">Cette semaine</option>
+							<option value="2">Aujourd'hui</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<!-- Graphique -->
+			<div class="card-body p-2 custome-tooltip">
+				<div class="dashboard-graph" id="evo-ytd" style="height: 250px"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<!-- Fluctuations du CA -->
+	<div class="col-lg-12 wow fadeInUp" data-wow-delay="0.75s">
+		<div class="card crypto-chart ">
+			<div class="card-header border-0 flex-wrap">
+				<!-- titre du graphe -->
+				<div class="mb-2 mb-sm-0">
+					<div class="chart-title mb-3">
 						<h2 class="heading">Fluctuations du CA <span class="graph-title">{{ product_type }}</span></h2>
 					</div>
 				</div>
@@ -166,6 +197,7 @@
 		</div>
 	</div>
 </div>
+
 {% endblock %}
 
 
