@@ -1,6 +1,17 @@
-var color_red = "#b43825";
+//Récupération de la police du HTML
+var fontFamily = window.getComputedStyle(document.body).getPropertyValue('font-family');
+
+//Variations de rouge (Baisse)
+var color_red = "#AD1919";
+var color_red_1 = "#D44235";
+var color_red_2 = "#FC6552";
+//Variations de bleu (Hausse)
+var color_blue = "#004E68";
+var color_blue_1 = "#4898B5";
+var color_blue_2 = "#73C0DE";
+
 var color_orange = "#f16e00";
-var color_green = "#00b038";
+var color_green = "#006B5E";
 var color_sombre = '#3b3b3b';
 var color_blue = '#04668a';
 var color_silver = '#919494';
