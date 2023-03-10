@@ -53,7 +53,7 @@ class DetailsEquipeView(LoginRequiredMixin, View):
 
 
 class EditEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Modifier les informations du segment"}
+    context = {"page_title": "Modifier un segment"}
 
     def get(self, request, id):
         if request.user.has_perm('administration.change_equipe'):
@@ -84,7 +84,7 @@ class EditEquipeView(LoginRequiredMixin, View):
 
 
 class AddEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Création de segment"}
+    context = {"page_title": "Créer un segment"}
 
     def get(self, request):
         form = forms.EquipeForm()
@@ -171,7 +171,7 @@ class DetailsCommercialView(LoginRequiredMixin, View):
                 "gestionnaire_obj": commercial_obj,
                 "user_group_perms": commercial_obj.commercial.get_group_permissions(),
                 "user_perms": commercial_obj.commercial.get_user_permissions(),
-                "page_title": "Information du commercial",
+                "page_title": "Informations du commercial",
                 "form": form
             }
             return render(request, "administration/commercial-details.html", context)
@@ -191,7 +191,7 @@ class DetailsCommercialView(LoginRequiredMixin, View):
 
 
 class AddCommercialView(LoginRequiredMixin, View):
-    context = {"page_title": "Créer un commercial"}
+    context = {"page_title": "Affecter un commercial"}
 
     def get(self, request):
         Commercial_group = Group.objects.get(name="Commercial")

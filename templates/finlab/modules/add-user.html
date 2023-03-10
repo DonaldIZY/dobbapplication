@@ -20,9 +20,8 @@
             <div class="card card-bx author-profile mb-3">
                <div class="card-body">
 
-                     <div class="author-profile mb-3 mt-3">
+                     <div class="author-profile mb-3 mt-3">            
                         
-
                         <div class="avatar-upload">
                            <div class="avatar-edit">
                               {{ form.avatar|attr:"type:file" }}
@@ -42,147 +41,151 @@
                      </div>
                      {% endif %}
 
-{#                  <div class="info-list">#}
-{#                     <ul>#}
-{#                        <li><a href="{% url 'finlab:app-profile' %}">Models</a><span>36</span></li>#}
-{#                        <li><a href="{% url 'finlab:app-profile' %}">Gallery</a><span>3</span></li>#}
-{#                        <li><a href="{% url 'finlab:app-profile' %}">Lessons</a><span>1</span></li>#}
-{#                     </ul>#}
-{#                  </div>#}
-               </div>
-{#               <div class="card-footer">#}
-{#                  <div class="input-group mb-3">#}
-{#                     <div class="form-control rounded text-center">Portfolio</div>#}
-{#                  </div>#}
-{#                  <div class="input-group">#}
-{#                     <a href="https://www.dexignlab.com/" class="form-control text-primary rounded text-start ">https:/dexignlab.com/</a>#}
-{#                  </div>#}
-{#               </div>#}
+                  <!-- {#                  <div class="info-list">#}
+                  {#                     <ul>#}
+                  {#                        <li><a href="{% url 'finlab:app-profile' %}">Models</a><span>36</span></li>#}
+                  {#                        <li><a href="{% url 'finlab:app-profile' %}">Gallery</a><span>3</span></li>#}
+                  {#                        <li><a href="{% url 'finlab:app-profile' %}">Lessons</a><span>1</span></li>#}
+                  {#                     </ul>#}
+                  {#                  </div>#}
+                                 </div>
+                  {#               <div class="card-footer">#}
+                  {#                  <div class="input-group mb-3">#}
+                  {#                     <div class="form-control rounded text-center">Portfolio</div>#}
+                  {#                  </div>#}
+                  {#                  <div class="input-group">#}
+                  {#                     <a href="https://www.dexignlab.com/" class="form-control text-primary rounded text-start ">https:/dexignlab.com/</a>#}
+                  {#                  </div>#}
+                  {#               </div>#} -->
             </div>
          </div>
       </div>
-      <div class="col-xl-9 col-lg-8">
-         <div class="card  card-bx mb-3">
-            <div class="card-header">
-               <h6 class="title">Configuration du compte</h6>
-            </div>
+   </div>
+   <div class="col-xl-9 col-lg-8">
+      <div class="card  card-bx mb-3">
+         <div class="card-header">
+            <h6 class="title">Configuration du compte</h6>
+         </div>
 
-             <div  class="profile-form" >
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Prénom {% if form.first_name.field.required %}<span class="text-danger">*</span> {% endif %}</label>
-                        {{ form.first_name|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Prénom" }}
-                        <div class="text-danger w-100 d-block mt-1">
-                        {{ form.first_name.errors }}
-                        </div>
+            <div  class="profile-form" >
+            <div class="card-body">
+               <div class="row">
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Prénom {% if form.first_name.field.required %}<span class="text-danger">*</span> {% endif %}</label>
+                     {{ form.first_name|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Prénom" }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.first_name.errors }}
                      </div>
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Nom {% if form.last_name.field.required %}<span class="text-danger">*</span> {% endif %}</label>
-                        {{ form.last_name|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Nom" }}
-                        <div class="text-danger w-100 d-block mt-1">
-                        {{ form.last_name.errors }}
-                        </div>
+                  </div>
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Nom {% if form.last_name.field.required %}<span class="text-danger">*</span> {% endif %}</label>
+                     {{ form.last_name|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Nom" }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.last_name.errors }}
                      </div>
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Rôle {% if form.groups.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        {{ form.groups|attr:"class:multi-select form-control"|attr:"name:groups[]" }}
-                        <div class="text-danger w-100 d-block mt-1">
-                        {{ form.groups.errors }}
-                        </div>
+                  </div>
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Rôle {% if form.groups.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     {{ form.groups|attr:"class:multi-select form-control"|attr:"name:groups[]" }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.groups.errors }}
                      </div>
-                     <div class="col-sm-6  d-flex align-items-center mb-0">
-                        <div class="form-check custom-checkbox mb-0 checkbox-primary">
-                              {{ form.is_active|attr:"class:form-check-input"|attr:"type:checkbox"|attr:"checked" }}
-                              <label class="form-check-label" for="is_active">Actif ?</label>
-                        </div>
+                  </div>
+                  <div class="col-sm-6  d-flex align-items-center mb-0">
+                     <div class="form-check custom-checkbox mb-0 checkbox-primary">
+                           {{ form.is_active|attr:"class:form-check-input"|attr:"type:checkbox"|attr:"checked" }}
+                           <label class="form-check-label" for="is_active">Actif ?</label>
+                     </div>
 
-                    </div>
-                     <div class="col-sm-6 mb-3">
+                  </div>
+                  <div class="col-sm-6 mb-3">
+                     <!-- Genre -->
+                     <label class="form-label">Genre {% if form.gender.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     {{ form.gender|attr:"class:form-control default-select form-control-lg" }}
+                     <div class="text-danger w-100 d-block mt-1 ">
+                     {{ form.gender.errors }}
+                     </div>
+
+                  </div>
+                  <!-- Date de naissance -->
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Date de naissance {% if form.dob.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     {{ form.dob|attr:"class:form-control"|attr:"type:date"}} 
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.dob.errors }}
+                     </div>
+                  </div>
+                  <!-- Mobile -->
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Mobile {% if form.phone_number.field.required %}<span class="text-danger">*</span> {% endif %} </label>
+                     {{ form.phone_number|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:(+225) 07xxxxxxxx" }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.phone_number.errors }}
+                     </div>
+                  </div>
+                  <!-- Email -->
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Email {% if form.email.field.required %}<span class="text-danger">*</span> {% endif %}</label>
+                     {{ form.email|attr:"type:email"|attr:"class:form-control"|attr:"placeholder:Email" }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.email.errors }}
+                     </div>
+                  </div>
+                  
+                  <!-- Description des tâches -->
+                  <div class="col-sm-12 mb-3">
+                     <label class="form-label">À propos {% if form.about.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     {{ form.about|attr:"class:form-control"|attr:"style:height: 144px;"|attr:"placeholder:Description des tâches..." }}
+                     <div class="text-danger w-100 d-block mt-1">
+                     {{ form.about.errors }}
+                     </div>
+                  </div>
+
+                  <!-- Gestion des mots de passe -->
+                  {% if form.password1 %}
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Mot de passe {% if form.password1.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     <div class="input-group transparent-append">
                         
-                        <label class="form-label">Genre {% if form.gender.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        {{ form.gender|attr:"class:form-control default-select form-control-lg" }}
-                        <div class="text-danger w-100 d-block mt-1 ">
-                        {{ form.gender.errors }}
-                        </div>
-
-                     </div>
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Date de naissance {% if form.dob.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        {{ form.dob|attr:"class:form-control"|attr:"type:date"}} 
+                        
+                        {{ form.password1|attr:"class:form-control"|attr:"placeholder:Mot de passe"|attr:"id:dz-password"|attr:"type:password" }}
+                        <span class="input-group-text show-pass"> 
+                        <i class="fa fa-eye-slash"></i>
+                        <i class="fa fa-eye"></i>
+                        </span>
                         <div class="text-danger w-100 d-block mt-1">
-                        {{ form.dob.errors }}
+                        {{ form.password1.errors }}
                         </div>
+
                      </div>
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Téléphone {% if form.phone_number.field.required %}<span class="text-danger">*</span> {% endif %} </label>
-                        {{ form.phone_number|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:+123456789" }}
+                  </div>
+                  <div class="col-sm-6 mb-3">
+                     <label class="form-label">Confirmer le mot de passe {% if form.password2.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                     <div class="input-group transparent-append">
+                        
+                        
+                        {{ form.password2|attr:"class:form-control"|attr:"placeholder:Confirmer le mot de passe"|attr:"id:dz-con-password"|attr:"type:password" }}
+                        <span class="input-group-text show-con-pass"> 
+                        <i class="fa fa-eye-slash"></i>
+                        <i class="fa fa-eye"></i>
+                        </span>
                         <div class="text-danger w-100 d-block mt-1">
-                        {{ form.phone_number.errors }}
+                        {{ form.password2.errors }}
                         </div>
                      </div>
-                     <div class="col-sm-6 mb-3">
-                        <label class="form-label">Email {% if form.email.field.required %}<span class="text-danger">*</span> {% endif %}</label>
-                        {{ form.email|attr:"type:email"|attr:"class:form-control"|attr:"placeholder:Email" }}
-                        <div class="text-danger w-100 d-block mt-1">
-                        {{ form.email.errors }}
-                        </div>
-                     </div>
-                    
-
-                     <div class="col-sm-12 mb-3">
-                        <label class="form-label">A propos {% if form.about.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        {{ form.about|attr:"class:form-control"|attr:"style:height: 144px;"|attr:"placeholder:Description des tâches..." }}
-                        <div class="text-danger w-100 d-block mt-1">
-                        {{ form.about.errors }}
-                        </div>
-                     </div>
+                  </div>
+                  {% endif %}
 
 
-                     {% if form.password1 %}
-                     <div class="col-sm-6 mb-3">
-                       <label class="form-label">Mot de passe {% if form.password1.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        <div class="input-group transparent-append">
-                           
-                           
-                           {{ form.password1|attr:"class:form-control"|attr:"placeholder:Password"|attr:"id:dz-password"|attr:"type:password" }}
-                           <span class="input-group-text show-pass"> 
-                           <i class="fa fa-eye-slash"></i>
-                           <i class="fa fa-eye"></i>
-                           </span>
-                           <div class="text-danger w-100 d-block mt-1">
-                           {{ form.password1.errors }}
-                           </div>
-
-                        </div>
-                     </div>
-                     <div class="col-sm-6 mb-3">
-                       <label class="form-label">Confirmer le mot de passe {% if form.password2.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                        <div class="input-group transparent-append">
-                         
-                           
-                           {{ form.password2|attr:"class:form-control"|attr:"placeholder:Confirm Password"|attr:"id:dz-con-password"|attr:"type:password" }}
-                           <span class="input-group-text show-con-pass"> 
-                           <i class="fa fa-eye-slash"></i>
-                           <i class="fa fa-eye"></i>
-                           </span>
-                           <div class="text-danger w-100 d-block mt-1">
-                           {{ form.password2.errors }}
-                           </div>
-                        </div>
-                     </div>
-                     {% endif %}
-
-
-                  </div><!--RowEnd-->
-               </div>
-               <div class="card-footer d-flex justify-content-between align-items-center mb-3">
-                  <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                  <a href="{% url 'change_password' %}" class="text-primary btn-link">Modifier votre mot de passe?</a>
-               </div>
+               </div><!--RowEnd-->
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center mb-3">
+               <button type="submit" class="btn btn-primary">Sauvegarder</button>
+               <a href="{% url 'change_password' %}" class="text-primary btn-link">Modifier votre mot de passe?</a>
             </div>
          </div>
       </div>
+   </div>
    </div>	
 </form>
 
