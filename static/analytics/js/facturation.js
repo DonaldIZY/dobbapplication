@@ -555,12 +555,12 @@ function getData(univers) {
 
       // =================================================================================================================
       // Evolution de la facturation
-      let evoBaisseYTD = data.evo_ytd.baisse.map(evoFormat);
-      let evoHausseYTD = data.evo_ytd.hausse.map(evoFormat);
-      optionFacturationYTD.xAxis.data = data.evo_ytd.axis;
-      optionFacturationYTD.series[0].data = data.evo_ytd.val;
-      optionFacturationYTD.series[1].data = evoBaisseYTD;
-      optionFacturationYTD.series[2].data = evoHausseYTD;
+      let evoBaisseMoM = data.evo_mom.baisse.map(evoFormat);
+      let evoHausseMoM = data.evo_mom.hausse.map(evoFormat);
+      optionFacturationYTD.xAxis.data = data.evo_mom.axis;
+      optionFacturationYTD.series[0].data = data.evo_mom.val;
+      optionFacturationYTD.series[1].data = evoBaisseMoM;
+      optionFacturationYTD.series[2].data = evoHausseMoM;
       optionFacturationYTD && chartYTD.setOption(optionFacturationYTD);
 
       // =================================================================================================================
