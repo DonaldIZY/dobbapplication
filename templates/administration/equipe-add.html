@@ -31,7 +31,7 @@
                             <label class="form-label">
                                 Nom {% if form.name.field.required %}<span class="text-danger">*</span> {% endif %}
                             </label>
-                            {{ form.name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Non de l'équipe" }}
+                            {{ form.name|attr:"type:text"|attr:"class:form-control form-control-lg"|attr:"placeholder:Nom du segment" }}
                             <div class="text-danger w-100 d-block mt-1">{{ form.name.errors }}</div>
                         </div>
 
@@ -44,8 +44,8 @@
                         </div>
 
                     </div>
-                    <a href="{% url 'administration:equipe' %}" class="btn btn-primary mt-5"> Annuler</a>
-                    <button type="submit" class="btn btn-secondary mt-5">Sauvegarder</button>
+                    <button type="submit" class="btn btn-primary mt-5">Sauvegarder</button>
+                    <a href="{% url 'administration:equipe' %}" class="btn light btn-outline-primary mt-5"> Annuler</a>
                 </form>
             </div>
         </div>
@@ -55,7 +55,7 @@
 
 
 {% block additional_js %}
-{#<script type="text/javascript">#}
+<!-- {#<script type="text/javascript">#}
 {#    var demo1 = $('select[name=permissions]').bootstrapDualListbox(#}
 {#        {#}
 {#            preserveSelectionOnMove: 'moved',#}
@@ -65,6 +65,4 @@
 {#        }#}
 {#    );#}
 {#</script>#}
-{% endblock %}
-
-
+{% endblock %} -->

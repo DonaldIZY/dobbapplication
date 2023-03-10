@@ -44,7 +44,7 @@
 				</span>
 				<div class="calender-picker">
 					<h6 class="fs-14 mb-0 ms-2 font-w600">Choisir la date</h6>
-{#                                <input class="form-control" type="text" readonly="" id="select-date">#}
+{#                        <input class="form-control" type="text" readonly="" id="select-date">#}
 					<input name="datepicker" class="form-control" id="select-date">
 				</div>
 			</div>
@@ -219,32 +219,6 @@
     <script src="{% static 'analytics/js/facturation.js' %}"></script>
 
 <script>
-$(function () {
-	let e = $(".datepicker-fac").datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        minDate: '01/01/2021',
-        maxDate: '31/12/2023',
-        format: "yyyy",
-        viewMode: "years",
-        minViewMode: "years"
-	}).datepicker('update', new Date());
-
-    console.log(e)
-
-    let date = document.getElementById('select-date');
-    console.log(date.attributes);
-
-    let element = document.getElementById('datepicker')#;}
-    console.log(element.attributes);
-    console.log(element.ownerDocument.activeElement.clientHeight);
-
-    let elements = document.getElementsByClassName('datepicker-fac');
-    for (let ele of elements) {
-        console.log(ele.attributes)
-    }
-
-});
 
 $(document).ready(function(){
 $(".booking-calender .fa.fa-clock-o").removeClass(this);
@@ -252,4 +226,32 @@ $(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
 });
 $('.my-select').selectpicker();
 </script>
+{% endblock %}
+<script>
+	$(function () {
+		let e = $(".datepicker-fac").datepicker({
+			autoclose: true,
+			todayHighlight: true,
+			minDate: '01/01/2021',
+			maxDate: '31/12/2023',
+			format: "yyyy",
+			viewMode: "years",
+			minViewMode: "years"
+		}).datepicker('update', new Date());
+	
+		console.log(e)
+	
+		let elements = document.getElementsByClassName('datepicker-fac');
+		for (let ele of elements) {
+			console.log(ele.attributes)
+		}
+	
+	});
+	
+	$(document).ready(function(){
+	$(".booking-calender .fa.fa-clock-o").removeClass(this);
+	$(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
+	});
+	$('.my-select').selectpicker();
+	</script>
 {% endblock %}

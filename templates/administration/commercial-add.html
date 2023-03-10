@@ -38,15 +38,15 @@
 
                         <div class="col-sm-12 mb-3">
                             <label class="form-label">
-                                Equipe {% if form.equipe.field.required %}<span class="text-danger">*</span>{% endif %}
+                                Segment {% if form.equipe.field.required %}<span class="text-danger">*</span>{% endif %}
                             </label>
                             {{ form.equipe|attr:"class:form-control default-select form-control-lg" }}
                             <div class="text-danger w-100 d-block mt-1 ">{{ form.equipe.errors }}</div>
                         </div>
 
                     </div>
-                    <a href="{% url 'administration:commercial' %}" class="btn btn-primary mt-5"> Annuler</a>
-                    <button type="submit" class="btn btn-secondary mt-5">Sauvegarder</button>
+                    <button type="submit" class="btn btn-primary mt-5">Sauvegarder</button>
+                    <a href="{% url 'administration:commercial' %}" class="btn light btn-outline-primary mt-5"> Annuler</a>
                 </form>
             </div>
         </div>

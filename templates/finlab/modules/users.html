@@ -31,7 +31,7 @@
                         {% endif %}
 
                         {% if perms.users.add_customuser %}
-                        <a href="{% url 'finlab:add-user' %}" class="btn btn-primary btn-sm ">Ajouter  <span class="btn-icon-end">
+                        <a href="{% url 'finlab:add-user' %}" class="btn btn-primary btn-sm ">Ajouter<span class="btn-icon-end">
                             <i class="fa fa-plus"></i></span>
                         </a>
                         {% endif %}
@@ -41,31 +41,28 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-responsive-md">
-                            <thead>
+                        <table class="table table-responsive-md table-bordered">
+                            <thead class="thead-black">
                                 <tr>
-                                    <th style="width:50px;">
+                                    <th style="width:15px;">
                                         <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                             <input  type="checkbox" class="form-check-input" id="checkAll" value="">
                                             <label class="form-check-label" for="checkAll"></label>
                                         </div>
                                     </th>
                                    
-                                    <th>Nom Complet</th>
-                                    <th>Email</th>
-                                    <th>Genre</th>
+                                    <th>Nom et prénoms</th>
                                     <th>Rôle</th>
-{#                                    <th>Mobile</th>#}
+                                    <th>Email</th>
+                                    <!-- <th>Genre</th> -->
+                                    <th>Mobile</th>
                                     <th>Date de naissance</th>
-                                    <th>Status</th>
+                                    <th>Statut</th>
 
 
                                     {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
                                     <th>Action</th>
-                                    {% endif %}
-
-
-                                   
+                                    {% endif %}                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,8 +75,6 @@
                                             <label class="form-check-label" for="checkbox-{{ user.id }}"></label>
                                         </div>
                                     </td>
-
-
                                     <td>
                                         <a href="{% url 'finlab:user-details' id=user.id %}">
                                         <div class="d-flex align-items-center">
@@ -88,19 +83,17 @@
                                         </div>
                                     </a>
                                     </td>
-                                    <td><strong>{{ user.email }}</strong></td>
-                                    <td>{{ user.gender }}</td>
-                                    
-                                   
                                     <td>	
                                         {% for g in user.groups.all %}
                                         <span class="badge  badge-xs light badge-primary">{{ g.name }}</span>
                                         {% endfor %}
                                     </td>
-{#                                    <td>{{ user.phone_number }}</td>#}
-                                    <td>{{ user.dob }}</td>
+                                    <td><strong>{{ user.email }}</strong></td>       
+                                    <td>{{ user.phone_number }}</td>                             
+                                    <!-- <td>{{ user.gender }}</td> -->
+                                    <td class="d-flex align-items-center justify-content-center">{{ user.dob }}</td>
                                     <td>
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center justify-content-center">
                                             {% if user.is_active %}
                                             <i class="fa fa-circle text-success me-1"></i> 
                                             {% else %} 
@@ -111,17 +104,17 @@
                                     
                                     </td>
                                     <td>
-                                        <div class="sweetalert d-flex">
+                                        <div class="sweetalert d-flex align-items-center justify-content-center">
                                            
 
                                                 {% if perms.users.change_customuser %}
                                                 <a href="{% url 'finlab:edit-user' id=user.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
                                                 {% endif %}
                                                 {% if perms.auth.change_permission %}
-                                                <a href="{% url 'finlab:assign-permissions-to-user' id=user.id %}" class="btn btn-success shadow btn-xs sharp me-1"><i class="fa fa-shield"></i></a>
+                                                <a href="{% url 'finlab:assign-permissions-to-user' id=user.id %}" class="btn btn-outline-dark shadow btn-xs sharp me-1"><i class="fa fa-shield"></i></a>
                                                 {% endif %}
                                                 {% if perms.users.delete_customuser %}
-                                                <a href="{% url 'finlab:delete-user' id=user.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>
+                                                <a href="{% url 'finlab:delete-user' id=user.id %}" class="btn btn-dark shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>
                                                 {% endif %}
                                             
                                     </div>
@@ -137,7 +130,7 @@
 
                         <p>
                             <span class="current">
-                            Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.
+                            Page {{ user_list.number }} / {{ user_list.paginator.num_pages }}
                            </span> 
                            </p>
                            
