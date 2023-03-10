@@ -17,12 +17,14 @@ class FacturationView(LoginRequiredMixin, View):
         self.univers = set_univers
 
         # Obtention des données
-        parc_actif = data.getParcAtif(univers=set_univers, table='volume')
-        ca_parc_actif = data.getParcAtif(univers=set_univers, table='facture')
+        parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
+                                      fin_periode='2022-11-01')
+        ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
+                                         fin_periode='2022-11-01')
         evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', periode_cloture='2021-12-31')
-        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-10-01',
-                                     fin_periode='2022-11-01', periode_cloture='2021-10-01')
+                                     fin_periode='2022-11-01', evo_type="ytd")
+        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
+                                     fin_periode='2022-11-01', evo_type="mom")
         evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01', fin_periode='2022-11-01')
 
         # Préparation de la réponse
@@ -36,7 +38,8 @@ class FacturationView(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
     def get(self, request):
-        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers, "menu_wallet": True}
+        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
+                    "menu_wallet": True}
         return render(request, 'analytics/facturation/facturation.html', greeting)
 
 

@@ -1,9 +1,9 @@
 from pprint import pprint
 
 from sqlalchemy import create_engine, text
-from datetime import datetime
 import pandas as pd
 import numpy as np
+from datetime import datetime, timedelta
 
 import locale
 from analytics import utils
@@ -19,36 +19,48 @@ connection = engine.connect()
 M = 1000000
 
 
-def extremitePeriode(univers, extremite_periode):
+def extremitePeriode(univers, date):
     request = f"""
-        SELECT SUM(activations + montee_en_valeur + retour_de_suspension + baisse_en_valeur + suspension) / {M}
-        as "CA {extremite_periode}"
-        FROM public.facture
-        WHERE univers='{univers}' and dates = '{extremite_periode}'
+        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        WHERE univers='{univers}' and date_facture = '{date}' 
+        and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension');
     """
     return request
 
 
-def getParcAtif(univers, table):
-    # Cette requête permet d'obtenir la somme du parc actif (ou le CA) par mois
+def extremiteYTD(univers, date):
+    date = datetime.strptime(date, "%Y-%m-%d")
+    date_ytd = date - timedelta(days=365)
+    date_ytd = datetime.strftime(date_ytd, "%Y-%m-%d")
+    date = datetime.strftime(date, "%Y-%m-%d")
 
     request = f"""
-        SELECT dates, SUM(activations + base_stable + retour_de_suspension + montee_en_valeur + baisse_en_valeur) 
-        as parc_actif
-        FROM public.{table}
-        WHERE univers='{univers}' and dates > '2021-12-31'
+        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        WHERE univers='{univers}' and (date_facture BETWEEN '{date_ytd}' AND '{date}') 
+        and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension');
+    """
+    return request
+
+
+def getParcAtif(univers, get, debut_periode, fin_periode):
+    # Cette requête permet d'obtenir la somme du parc actif (ou le CA) par mois
+
+    select_type = "count(id)"
+    if get == 'ca':
+        select_type = "sum(montant)"
+
+    request = f"""
+        SELECT date_facture as dates, {select_type} as parc_actif from public.base_dobb
+        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}')
+        and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension')
         GROUP BY dates
-        ORDER BY dates
+        ORDER BY dates;
     """
 
     df = pd.read_sql(sql=text(request), con=connection)
     df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore')
     df['dates'] = df['dates'].dt.strftime('%b-%y')
     df['dates'] = df['dates'].astype(str)
-
-    if table != 'volume':
-        # Le CA étant trop grand, nous divisons par 1 million pour une meilleure lecture
-        df['parc_actif'] = df['parc_actif'] / 1000000
 
     # Convertir toutes les colonnes numériques en entier
     m = df.select_dtypes(np.number)
@@ -71,11 +83,11 @@ def getCumule(liste_hausse, liste_baisse):
         else:
             # C2 = C1 + hausse1 ou C2 = C1 - baisse1
             if liste_hausse[i] > 0:
-                if liste_hausse[i+1] > 0:
+                if liste_hausse[i + 1] > 0:
                     val = stokes[i] + liste_hausse[i]
                     stokes.append(val)
                 else:
-                    val = (stokes[i] + liste_hausse[i]) - liste_baisse[i+1]
+                    val = (stokes[i] + liste_hausse[i]) - liste_baisse[i + 1]
                     stokes.append(val)
             else:
                 val = stokes[i] - liste_baisse[i]
@@ -84,20 +96,28 @@ def getCumule(liste_hausse, liste_baisse):
     return stokes
 
 
-def getEvoPeriode(univers, debut_periode, fin_periode, periode_cloture):
-    # Réalisé dans la période par parc
+def getEvoPeriode(univers, debut_periode, fin_periode, evo_type):
+    # Réalisé dans la période par parc (statut)
     request = f"""
-        SELECT SUM(activations) / {M} as "Activation", sum(montee_en_valeur) / {M} as "Montée en valeur", 
-        sum(retour_de_suspension) / {M} as "Retour de suspension", sum(baisse_en_valeur) / {M} as "Baisse en valeur", 
-        sum(suspension) / {M} as "Suspension"
-        FROM public.var_facture
-        WHERE univers='{univers}' and (dates BETWEEN '{debut_periode}' AND '{fin_periode}');
-     """
+        SELECT 
+            COALESCE(sum(case when (statut='Activation') then dif_montant end), 0) as "Activation",
+            COALESCE(sum(case when (statut='Montée en valeur') then dif_montant end), 0) as "Montée en valeur",
+            COALESCE(sum(case when (statut='Retour de suspension') then dif_montant end), 0) as "Retour de suspension",
+            COALESCE(sum(case when (statut='Baisse en valeur') then dif_montant end), 0) as "Baisse en valeur",
+            COALESCE(sum(case when (statut='Suspension') then dif_montant end), 0) as "Suspension"
+            from public.base_dobb
+        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}');
+    """
 
-    # Total réalisé en debut de période
-    cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode)), con=connection)
-    # Total réalisé en fin de période
-    cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode)), con=connection)
+    # Détermine le CA de début et fin de période selon qu'il s'agisse de
+    if evo_type == 'ytd':
+        cumule_debut_periode = pd.read_sql(sql=text(extremiteYTD(univers, debut_periode)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremiteYTD(univers, fin_periode)), con=connection)
+
+    else:
+        cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode)), con=connection)
+
     # Réalisé dans au cours de la période
     ca_periode_en_cours = pd.read_sql(sql=text(request), con=connection)
 
@@ -121,8 +141,6 @@ def getEvoPeriode(univers, debut_periode, fin_periode, periode_cloture):
     cumule = getCumule(data['hausse'].tolist(), data['baisse'].tolist())
     data['cumsum'] = cumule
 
-    # print(data)
-
     axis = data['axis'].tolist()
     val = data['cumsum'].tolist()
     hausse = data['hausse'].tolist()
@@ -133,13 +151,23 @@ def getEvoPeriode(univers, debut_periode, fin_periode, periode_cloture):
 
 
 def getHausseBasse(univers, debut_periode, fin_periode):
+    # request = f"""
+    #     select dates, sum(activations+montee_en_valeur+retour_de_suspension) / {M} as hausse,
+    #     sum(baisse_en_valeur+suspension) / {M} as baisse
+    #     from public.var_facture
+    #     where univers='{univers}' and (dates between '{debut_periode}' and '{fin_periode}')
+    #     group by dates
+    #     order by dates
+    # """
+
     request = f"""
-        select dates, sum(activations+montee_en_valeur+retour_de_suspension) / {M} as hausse,
-        sum(baisse_en_valeur+suspension) / {M} as baisse
-        from public.var_facture
-        where univers='{univers}' and (dates between '{debut_periode}' and '{fin_periode}')
+        SELECT date_facture as dates,
+            sum(case when (statut in ('Activation', 'Montée en valeur', 'Retour de suspension')) then dif_montant else NULL end) as hausse,
+            sum(case when (statut in ('Baisse en valeur', 'Suspension')) then dif_montant else NULL end) as baisse
+            from public.base_dobb
+        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}')
         group by dates
-        order by dates
+        order by dates;
     """
 
     ca_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode)), con=connection)
@@ -261,4 +289,3 @@ def CAUnivers():
     }
     # data_final = {f"{col}": float(round(df_2022[col].sum(), 2)) for col in df_2022.columns}
     return data_final
-

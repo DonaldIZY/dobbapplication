@@ -202,7 +202,6 @@ window.addEventListener('resize', function() {
 
 // =====================================================================================================================
 // Options de statut de la clientèle
-
 let tooltip = {
   trigger: 'axis',
   textStyle: {
@@ -263,10 +262,10 @@ let barWidth = '80%';
 
 // GRAPHIQUE : STATUT DE LA CLIENTELE
 
-let domFacturationYTD = document.getElementById('evo');
-let chartYTD = echarts.init(domFacturationYTD, null, {renderer: 'canvas', force: true});
+let domFacturationMoM = document.getElementById('evo');
+let chartMoM = echarts.init(domFacturationMoM, null, {renderer: 'canvas', force: true});
 
-let optionFacturationYTD = {
+let optionFacturationMoM = {
       tooltip: tooltip,
       legend: legende,
       grid: grid,
@@ -376,8 +375,129 @@ window.addEventListener('resize', function() {
         fontSize: fontSize + '%'
       }
     }]
-  })
+  });
 });
+
+
+
+
+
+// GRAPHIQUE : STATUT DE LA CLIENTELE YTD
+let domFacturationYTD = document.getElementById('evo-ytd');
+let chartYTD = echarts.init(domFacturationYTD, null, {renderer: 'canvas', force: true});
+
+let optionFacturationYTD = {
+      tooltip: tooltip,
+      legend: legende,
+      grid: grid,
+      xAxis: xaxis,
+      yAxis: yaxis,
+      series: [
+        {
+          name: 'Placeholder',
+          type: 'bar',
+          stack: 'Total',
+          silent: true,
+          barWidth: barWidth,
+          itemStyle: {
+            borderColor: 'transparent',
+            color: 'transparent',
+            borderRadius: 3,
+          },
+          emphasis: {
+            itemStyle: {
+              borderColor: 'transparent',
+              color: 'transparent'
+            }
+          },
+        },
+        {
+          name: 'Baisse',
+          type: 'bar',
+          stack: 'Total',
+          barWidth: barWidth,
+          itemStyle: {
+            borderWidth: 1,
+            borderType: 'solid',
+            borderColor: color_red_1,
+            shadowColor: color_red_1,
+            shadowBlur: 0.15,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: color_red},
+              {offset: 0.5, color: color_red_1},
+              {offset: 1, color: color_red_2}
+            ]),
+            barBorderRadius: 1,
+          },
+          label: {
+            show: true,
+            fontSize: '80%',
+            fontWeight: 600,
+            textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            },
+            position: 'bottom',
+          },
+        },
+        {
+          name: 'Hausse',
+          type: 'bar',
+          stack: 'Total',
+          barWidth: barWidth,
+          itemStyle: {
+            borderWidth: 1,
+            borderType: 'solid',
+            borderColor: color_blue_1,
+            shadowColor: color_blue_1,
+            shadowBlur: 0.15,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {offset: 0, color: color_blue_2},
+              {offset: 0.5, color: color_blue_1},
+              {offset: 1, color: color_blue}
+            ]),
+            barBorderRadius: 1,
+          },
+          label: {
+            show: true,
+            position: 'top',
+            fontSize: '80%',
+            fontWeight: 600,
+            textStyle: {
+              fontFamily: fontFamily // changer la police en celle HTML
+            }
+          },
+        },
+      ]
+    };
+
+// Gérer la responsivité du graphe en fonction de son conteneur
+// window.addEventListener('resize', function() {
+//   chartYTD.resize();
+//   var fontSize = document.getElementById('chartYTD').offsetWidth / 50;
+//   chartYTD.setOption({
+//     xAxis: {
+//       axisLabel: {fontSize: fontSize + '%'}
+//     },
+//     yAxis: {
+//       axisLabel: {fontSize: fontSize + '%'}
+//     },
+//     series: [{
+//       label: {
+//         fontSize: fontSize + '%'
+//       }
+//     }],
+//     legend: [{
+//       textStyle: {
+//         fontSize: fontSize + '%'
+//       }
+//     }],
+//     tooltip: [{
+//       textStyle: {
+//         fontSize: fontSize + '%'
+//       }
+//     }]
+//   });
+// });
 
 // =====================================================================================================================
 // GRAPHIQUE : FLUCTUATIONS DU CA
@@ -554,7 +674,16 @@ function getData(univers) {
       optionParcActif && chartParcActif.setOption(optionParcActif);
 
       // =================================================================================================================
-      // Evolution de la facturation
+      // Evolution de la facturation MoM
+      let evoBaisseMoM = data.evo_mom.baisse.map(evoFormat);
+      let evoHausseMoM = data.evo_mom.hausse.map(evoFormat);
+      optionFacturationMoM.xAxis.data = data.evo_mom.axis;
+      optionFacturationMoM.series[0].data = data.evo_mom.val;
+      optionFacturationMoM.series[1].data = evoBaisseMoM;
+      optionFacturationMoM.series[2].data = evoHausseMoM;
+      optionFacturationMoM && chartMoM.setOption(optionFacturationMoM);
+
+      // Evolution de la facturation YTD
       let evoBaisseYTD = data.evo_ytd.baisse.map(evoFormat);
       let evoHausseYTD = data.evo_ytd.hausse.map(evoFormat);
       optionFacturationYTD.xAxis.data = data.evo_ytd.axis;
