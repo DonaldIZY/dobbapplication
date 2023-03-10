@@ -1,9 +1,9 @@
 from pprint import pprint
 
 from sqlalchemy import create_engine, text
-from datetime import datetime
 import pandas as pd
 import numpy as np
+from datetime import datetime, timedelta
 
 import locale
 from analytics import utils
@@ -19,20 +19,26 @@ connection = engine.connect()
 M = 1000000
 
 
-def extremitePeriode(univers, extremite_periode):
-    # request = f"""
-    #     SELECT SUM(activations + montee_en_valeur + retour_de_suspension + baisse_en_valeur + suspension) / {M}
-    #     as "CA {extremite_periode}"
-    #     FROM public.facture
-    #     WHERE univers='{univers}' and dates = '{extremite_periode}'
-    # """
-
+def extremitePeriode(univers, date):
     request = f"""
-        SELECT sum(montant) as "CA {extremite_periode}" from public.base_dobb
-        WHERE univers='{univers}' and date_facture = '{extremite_periode}' 
+        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        WHERE univers='{univers}' and date_facture = '{date}' 
         and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension');
     """
+    return request
 
+
+def extremiteYTD(univers, date):
+    date = datetime.strptime(date, "%Y-%m-%d")
+    date_ytd = date - timedelta(days=365)
+    date_ytd = datetime.strftime(date_ytd, "%Y-%m-%d")
+    date = datetime.strftime(date, "%Y-%m-%d")
+
+    request = f"""
+        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        WHERE univers='{univers}' and (date_facture BETWEEN '{date_ytd}' AND '{date}') 
+        and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension');
+    """
     return request
 
 
@@ -90,7 +96,7 @@ def getCumule(liste_hausse, liste_baisse):
     return stokes
 
 
-def getEvoPeriode(univers, debut_periode, fin_periode, periode_cloture):
+def getEvoPeriode(univers, debut_periode, fin_periode, evo_type):
     # Réalisé dans la période par parc (statut)
     request = f"""
         SELECT 
@@ -103,10 +109,15 @@ def getEvoPeriode(univers, debut_periode, fin_periode, periode_cloture):
         WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}');
     """
 
-    # Total réalisé en debut de période
-    cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode)), con=connection)
-    # Total réalisé en fin de période
-    cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode)), con=connection)
+    # Détermine le CA de début et fin de période selon qu'il s'agisse de
+    if evo_type == 'ytd':
+        cumule_debut_periode = pd.read_sql(sql=text(extremiteYTD(univers, debut_periode)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremiteYTD(univers, fin_periode)), con=connection)
+
+    else:
+        cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode)), con=connection)
+
     # Réalisé dans au cours de la période
     ca_periode_en_cours = pd.read_sql(sql=text(request), con=connection)
 
