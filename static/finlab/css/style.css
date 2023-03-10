@@ -99,7 +99,9 @@
   --font-family-title: Poppins, sans-serif;
   --font-family-base: Poppins, sans-serif;
   --font-family-title: Poppins, sans-serif;
-  --title: #424562; }
+  --title: #424562; 
+  --table-header: #2e2e2d; /*Ligne d'entête des tableaux*/
+}
 
 .gradient_one {
   background-image: linear-gradient(to right, rgba(186, 1, 181, 0.85) 0%, rgba(103, 25, 255, 0.85) 100%); }
@@ -299,6 +301,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --bs-body-color: #717579;
   --bs-body-bg: #E6EBEE; }
 
+/* Page de connexion */
 .name-user{
   color:#fff;
 }
@@ -9296,7 +9299,7 @@ label {
     z-index: 1; }
 
 .hamburger .line {
-  background: #2A353A;
+  background: #bbbcbd;
   display: block;
   height: 0.188rem;
   border-radius: 0.1875rem;
@@ -10987,7 +10990,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control {
     right: -5.2rem; }
     [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .nav-header .nav-control .hamburger .line {
-      background-color: #2A353A;
+      background-color: #bbbcbd;
       opacity: 1; }
 
 [data-sidebar-style="full"][data-layout="vertical"] .menu-toggle .copyright,
@@ -11175,7 +11178,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
       [data-sidebar-style="mini"] .nav-header .nav-control .hamburger {
         left: 6.25rem !important; }
         [data-sidebar-style="mini"] .nav-header .nav-control .hamburger .line {
-          background-color: #5b5e81 !important; }
+          background-color: #bbbcbd !important; }
     [data-sidebar-style="mini"] .nav-header .brand-title {
       display: none; }
     [data-sidebar-style="mini"] .nav-header .hamburger {
@@ -22023,7 +22026,7 @@ button.ck.ck-button.ck-off:hover {
     color: #717579; }
 
 .badge-xs {
-  font-size: 0.625rem;
+  font-size: 0.825rem;
   padding: 0rem 0.3125rem;
   line-height: 1.125rem; }
 
@@ -25847,7 +25850,7 @@ table.dataTable.display tbody td {
   padding: 0.625rem 1rem; }
 
 .table-responsive thead {
-  background-color: var(--primary); }
+  background-color: var(--table-header); }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
   height: 40px;

@@ -29,11 +29,11 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-responsive-md ck-table">
+                    <table class="table table-responsive-md table-bordered ck-table">
                         <thead>
                             <tr>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Chef d'équipe</th>
+                                <th scope="col">Nom du segment</th>
+                                <th scope="col">Manager</th>
                                 <th scope="col">Nombre de commerciaux</th>
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
                                 <th scope="col">Actions</th>
@@ -44,14 +44,14 @@
 
                             {% for equipe_obj in equipes %}
                             <tr>
-                                <a href="{% url 'administration:details-equipe' id=equipe_obj.id %}">
+                                <!-- <a href="{% url 'administration:details-equipe' id=equipe_obj.id %}">
                                     <div class="d-flex align-items-center">
                                         <span class="w-space-no">{{ equipe_obj.name }}</span>
                                     </div>
-                                 </a>
-                                <td>{{ equipe_obj.name }}</td>
-                                <td>{{ equipe_obj.manager }}</td>
-                                <td>
+                                 </a> -->
+                                <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.name }}</span></td>
+                                <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.manager }}</span></td>
+                                <td class="d-flex justify-content-center">
                                     <span class="badge badge-{{ colors.dark }}">
                                         <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe_obj.nb_commerciaux }}
                                     </span>
@@ -59,7 +59,7 @@
 
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
                                 <td>
-                                    <span class="sweetalert d-flex">
+                                    <span class="sweetalert d-flex justify-content-center">
                                         {% if perms.auth.change_equipe %}
                                         <a href="{% url 'administration:edit-equipe' id=equipe_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
                                             data-placement="top" title="Edit">
@@ -67,7 +67,7 @@
                                         </a>
                                         {% endif %}
                                         {% if perms.administration.delete_equipe %}
-                                        <a href="{% url 'administration:delete-equipe' id=equipe_obj.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
+                                        <a href="{% url 'administration:delete-equipe' id=equipe_obj.id %}" class="btn btn-dark shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
                                             data-placement="top" title="Delete"><i class="fa fa-trash"></i>
                                         </a>
                                         {% endif %}

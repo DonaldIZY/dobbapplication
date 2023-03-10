@@ -4,32 +4,27 @@
     <div class="dlabnav-scroll">	
         <ul class="metismenu" id="menu">
 
-            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+            <li><a href="{% url 'analytics:facturation' %}" aria-expanded="false">
+                    <i class="material-icons-outlined">payments</i>
                     <span class="nav-text">Comité Crédit</span>
                 </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'analytics:facturation' %}">facturation</a></li>
-                </ul>
             </li>
 
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                    <!-- <i class="material-icons-outlined">dashboard</i> -->
+                    <i class="material-icons-outlined">dashboard</i>
                     <span class="nav-text">Monitoring</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'analytics:variation_top_200' %}">Variation Top 200</a></li>
-                </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'analytics:ca_top_200' %}">Contribution Top 200</a></li>
+                    <li><a href="{% url 'analytics:variation_top_200' %}">Clients Top 200</a></li>
+                    <li><a href="{% url 'analytics:ca_top_200' %}">Contribution au CA</a></li>
                 </ul>
             </li>
 
             {% if perms.administration.view_equipe or perms.administration.view_commercial %}
             <li>
                 <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                    <!-- <i class="material-icons-outlined">dashboard</i> -->
-                    <span class="nav-text">Administration</span>
+                    <i class="material-icons-outlined">people</i>
+                    <span class="nav-text">Ressources</span>
                 </a>
                 <ul aria-expanded="false">
 {#                    {% if perms.administration.view_zone or perms.administration.change_zone or perms.administration.add_zone or perms.administration.delete_zone %}#}
@@ -37,7 +32,7 @@
 {#                    {% endif %}#}
 
                     {% if perms.administration.view_equipe or perms.administration.change_equipe or perms.administration.add_equipe or perms.administration.delete_equipe %}
-                        <li><a href="{% url 'administration:equipe' %}">Équipe</a></li>
+                        <li><a href="{% url 'administration:equipe' %}">Segments</a></li>
                     {% endif %}
                     {% if perms.administration.view_commercial or perms.administration.change_commercial or perms.administration.add_commercial or perms.administration.delete_commercial %}
                         <li><a href="{% url 'administration:commercial' %}">Commerciaux</a></li>
@@ -51,8 +46,8 @@
             {% if perms.users.view_customuser or perms.auth.view_group or perms.auth.view_permission %}
             <li>
                 <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                    <!-- <i class="material-icons-outlined">dashboard</i> -->
-                    <span class="nav-text">Utilisateurs</span>
+                    <i class="material-icons-outlined">admin_panel_settings</i>
+                    <span class="nav-text">Administration</span>
                 </a>
                 <ul aria-expanded="false">
                     {% if perms.users.view_customuser or perms.users.change_customuser or perms.users.add_customuser or perms.users.delete_customuser %}

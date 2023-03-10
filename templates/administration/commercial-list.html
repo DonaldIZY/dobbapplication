@@ -35,7 +35,7 @@
                     {% endif %}
 
                     {% if perms.administration.add_gestionnaire %}
-                    <a href="{% url 'administration:add-commercial' %}" class="btn btn-primary btn-sm ">Affectation  <span class="btn-icon-end">
+                    <a href="{% url 'administration:add-commercial' %}" class="btn btn-primary btn-sm ">Affecter<span class="btn-icon-end">
                         <i class="fa fa-plus"></i></span>
                     </a>
                     {% endif %}
@@ -44,60 +44,64 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-responsive-md">
-                        <thead>
+                    <table class="table table-responsive-md table-bordered">
+                        <thead class="thead-black">
+                            <!-- Entête du tableau des commerciaux -->
                             <tr>
-                                <th style="width:50px;">
+                                <th style="width:15px;">
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input  type="checkbox" class="form-check-input" id="checkAll" value="">
                                         <label class="form-check-label" for="checkAll"></label>
                                     </div>
                                 </th>
 
-                                <th>Nom Complet</th>
+                                <th>Nom et prénoms</th>
                                 <th>Email</th>
-                                <th>Genre</th>
-                                <th>Equipe</th>
-                                <th>Chef d'équipe</th>
-                                <th>Status</th>
+                                <!-- <th>Genre</th> -->
+                                <th>Segment</th>
+                                <th>Manager</th>
+                                <th>Statut</th>
 
-                                {% if perms.administration.delete_commercial or perms.administration.change_commercial %}
+                                <!-- {% if perms.administration.delete_commercial or perms.administration.change_commercial %}
                                 <th scope="col">Action</th>
-                                {% endif %}
+                                {% endif %} -->
                             </tr>
                         </thead>
+                            <!-- Contenu du tableau des commerciaux -->
                         <tbody>
                             {% csrf_token %}
                             {% for commercial_obj in commerciaux %}
                             <tr id="{{ commercial_obj.id }}">
+                                <!-- Checkbox renseignant l'ID des commerciaux sélectionnés -->
                                 <td>
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input name="user_id[]" type="checkbox" class="form-check-input" value="{{ commercial_obj.id }}">
                                         <label class="form-check-label" for="checkbox-{{ commercial_obj.id }}"></label>
                                     </div>
                                 </td>
-
+                                <!-- Champ "Nom et Prénoms" du tableau -->
                                 <td>
-{#                                    <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">#}
-{#                                        <div class="d-flex align-items-center">#}
-{#                                            <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">#}
-{#                                            <span class="w-space-no">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</span>#}
-{#                                        </div>#}
-{#                                     </a>#}
+                                    <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">
+                                            <span class="w-space-no">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</span>
+                                        </div>
+                                     </a>
                                 </td>
+                                <!-- Champ "Email" du tableau -->
                                 <td><strong>{{ commercial_obj.commercial.email }}</strong></td>
-                                <td>{{ commercial_obj.commercial.gender }}</td>
-
+                                <!-- <td>{{ commercial_obj.commercial.gender }}</td> -->
+                                <!-- Champ "Segment" du tableau -->
                                 <td>
                                     <span class="badge  badge-xs light badge-primary">{{ commercial_obj.equipe.name }}</span>
                                 </td>
-
+                                <!-- Champ "Manager du segment" du tableau -->
                                 <td>
                                     <span class="badge  badge-xs light badge-primary">{{ commercial_obj.equipe.manager }}</span>
                                 </td>
-
+                                <!-- Champ "Statut" du tableau -->
                                 <td>
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center justify-content-center">
                                         {% if commercial_obj.commercial.is_active %}
                                         <i class="fa fa-circle text-success me-1"></i>
                                         {% else %}
@@ -105,7 +109,8 @@
                                         {% endif %}
                                     </div>
                                 </td>
-                                <td>
+                                <!-- Champ "Action" du tableau -->
+                                <!-- <td>
                                     <div class="sweetalert d-flex">
 {#                                        {% if perms.administration.change_commercial %}#}
 {#                                        <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>#}
@@ -117,7 +122,7 @@
 {#                                        <a href="{% url 'administration:delete-commercial' id=commercial_obj.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel"><i class="fa fa-trash"></i></a>#}
 {#                                        {% endif %}#}
                                      </div>
-                                </td>
+                                </td> -->
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -131,7 +136,7 @@
                         </span>
                     </p>
 
-                    <ul class="pagination pagination-gutter  justify-content-end">
+                    <ul class="pagination pagination-gutter justify-content-end">
                         <li class="page-item page-indicator ">
                             <a class="page-link" href="{% if commerciaux.has_previous %}
                                                         ?page={{ commerciaux.previous_page_number }}

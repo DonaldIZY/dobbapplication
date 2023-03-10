@@ -14,7 +14,7 @@ from django.contrib.auth.models import Group
 from users.models import CustomUser
 
 
-# =================================================== Agence View ======================================================
+# =================================================== Segment View ======================================================
 class EquipeView(LoginRequiredMixin, View):
     def get(self, request):
         agence_stats = models.Equipe.objects.annotate(
@@ -25,7 +25,7 @@ class EquipeView(LoginRequiredMixin, View):
         context = {
             "equipes": paginator.get_page(request.GET.get('page')),
             "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
-            "page_title": "Equipe"
+            "page_title": "Segments"
         }
         return render(request, "administration/equipe-list.html", context)
 
@@ -44,16 +44,16 @@ class DetailsEquipeView(LoginRequiredMixin, View):
                 "equipe_obj": equipe_obj,
                 "equipes": paginator.get_page(request.GET.get('page')),
                 "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
-                "page_title": "Information sur l'équipe"
+                "page_title": "Informations sur le segment"
             }
             return render(request, "administration/equipe-details.html", context)
         else:
-            messages.warning("Vous n'êtes autorisé à accéder à cette page")
+            messages.warning("Vous n'êtes autorisé à accéder à cette page.")
             raise PermissionDenied()
 
 
 class EditEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Modifier les informations de l'équipe"}
+    context = {"page_title": "Modifier les informations du segment"}
 
     def get(self, request, id):
         if request.user.has_perm('administration.change_equipe'):
@@ -64,7 +64,7 @@ class EditEquipeView(LoginRequiredMixin, View):
             print(form)
             return render(request, "administration/equipe-add.html", self.context)
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page !")
+            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return redirect("administration:equipe")
 
     def post(self, request, id):
@@ -75,16 +75,16 @@ class EditEquipeView(LoginRequiredMixin, View):
                 agence_obj = form.save()
                 return redirect('administration:equipe')
             else:
-                messages.warning(request, 'Quelque a mal fonctionné !')
+                messages.warning(request, 'Quelque a mal fonctionné!')
                 self.context['form'] = form
                 return render(request, 'administration/equipe-add.html', self.context)
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page !")
+            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return redirect("administration:equipe")
 
 
 class AddEquipeView(LoginRequiredMixin, View):
-    context = {"page_title": "Création d'équipe"}
+    context = {"page_title": "Création de segment"}
 
     def get(self, request):
         form = forms.EquipeForm()
@@ -96,10 +96,10 @@ class AddEquipeView(LoginRequiredMixin, View):
         print(form)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Agence Crée avec Succès')
+            messages.success(request, 'Segment créé avec succès')
             return redirect('administration:equipe')
         else:
-            messages.warning(request, 'Il existe une agence portant ce nom')
+            messages.warning(request, 'Il existe un segment portant ce nom.')
             self.context['form'] = form
             return render(request, 'administration/equipe-add.html', self.context)
 
@@ -112,11 +112,11 @@ class DeleteEquipeView(View):
             if equipe_obj:
                 nom_agence = equipe_obj.name
                 equipe_obj.delete()
-                messages.success(request, f"Vous venez de supprimer l'équipe {nom_agence}")
+                messages.success(request, f"Vous venez de supprimer le segment {nom_agence}")
             else:
-                messages.warning(request, "Cette agence n'existe pas")
+                messages.warning(request, "Ce segment n'existe pas.")
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer une équipe !")
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer un segment.")
         return redirect('administration:equipe')
 
 
@@ -124,7 +124,7 @@ class DeleteEquipeView(View):
 class CommercialView(LoginRequiredMixin, View):
     context = {
         "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
-        "page_title": "Liste des Commerciaux"
+        "page_title": "Commerciaux"
     }
 
     def get(self, request):
@@ -154,8 +154,8 @@ class CommercialView(LoginRequiredMixin, View):
             self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
             return render(request, "administration/commercial-list.html", self.context)
         else:
-            messages.warning(request, "Vous êts pas autorisez à accéder à cette page")
-            return HttpResponseForbidden("Vous êts pas autorisez à accéder à cette page")
+            messages.warning(request, "Vous êtes pas autorisé à accéder à cette page.")
+            return HttpResponseForbidden("Vous êtes pas autorisé à accéder à cette page.")
             # À utiliser en production
             # raise PermissionDenied()
 
@@ -176,7 +176,7 @@ class DetailsCommercialView(LoginRequiredMixin, View):
             }
             return render(request, "administration/commercial-details.html", context)
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page !")
+            messages.warning(request, "Vous n'êtes pas autorisé à accéder à cette page.")
 
     def post(self, request, id):
         commercial_obj = get_object_or_404(models.Commercial, id=id)
@@ -185,13 +185,13 @@ class DetailsCommercialView(LoginRequiredMixin, View):
             gestionnaire_obj = form.save()
             return redirect('administration:commercial')
         else:
-            messages.warning(request, 'Quelque a mal fonctionné !')
+            messages.warning(request, 'Quelque chose a mal fonctionné!')
             self.context['form'] = form
             return render(request, 'administration/commercial-details.html', self.context)
 
 
 class AddCommercialView(LoginRequiredMixin, View):
-    context = {"page_title": "Créer un Commercial"}
+    context = {"page_title": "Créer un commercial"}
 
     def get(self, request):
         Commercial_group = Group.objects.get(name="Commercial")
@@ -200,17 +200,17 @@ class AddCommercialView(LoginRequiredMixin, View):
             self.context['form'] = form
             return render(request, 'administration/commercial-add.html', self.context)
         else:
-            messages.debug(request, "Vous devez dans un premier temps créer le rôle 'Commercial'")
+            messages.debug(request, "Vous devez d'abord créer le rôle 'Commercial'.")
             return redirect('administration:commercial')
 
     def post(self, request):
         form = forms.CommercialForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Succès de l'opération")
+            messages.success(request, "Commercial créé avec succès!")
             return redirect('administration:commercial')
         else:
-            messages.warning(request, 'Oops, il semble avoir une erreur')
+            messages.warning(request, 'Oops, il semble avoir une erreur!')
             self.context['form'] = form
             return render(request, 'administration/commercial-add.html', self.context)
 
@@ -224,11 +224,11 @@ class DeleteCommercialView(View):
                 last_name = commercial_obj.commercial.last_name
                 first_name = commercial_obj.commercial.first_name
                 commercial_obj.delete()
-                messages.success(request, f"Vous venez de supprimer le chargé d'affaire {first_name} {last_name}")
+                messages.success(request, f"Vous venez de supprimer le commercial {first_name} {last_name}")
             else:
-                messages.warning(request, "Ce chargé d'affaire n'existe pas dans nos bases")
+                messages.warning(request, "Ce commercial n'existe pas!")
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer un commercial !")
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer un commercial!")
         return redirect('administration:commercial')
 
 
@@ -242,11 +242,11 @@ class DeleteMultipleCommercialView(View):
                 user_obj = models.Commercial.objects.get(pk=id)
                 if user_obj:
                     user_obj.delete()
-                    response = JsonResponse({"success": 'Commercial supprimer avec succès'})
+                    response = JsonResponse({"success": 'Commercial supprimé avec succès!'})
                 else:
-                    response = JsonResponse({"warning": "Ce Commercial n'existe pas"})
+                    response = JsonResponse({"warning": "Ce Commercial n'existe pas!"})
 
             response.status_code = 200
         else:
-            messages.warning(request, "Vous n'êtes pas autorisé à supprimer des commerciaux !")
+            messages.warning(request, "Vous n'êtes pas autorisé à supprimer des commerciaux!")
         return response
