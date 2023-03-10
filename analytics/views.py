@@ -42,7 +42,7 @@ class FacturationView(LoginRequiredMixin, View):
 
 class VariationTop200View(LoginRequiredMixin, View):
     def get(self, request):
-        heading = "Variation des clients du Top 200"
+        heading = "Clients Top 200"
         greeting = {'heading': heading, 'pageview': "Dashboards"}
         return render(request, 'analytics/monitoring/variation_top_200.html', greeting)
 
@@ -61,7 +61,7 @@ class VariationTop200View(LoginRequiredMixin, View):
 
 class CATop200View(LoginRequiredMixin, View):
     def get(self, request):
-        heading = "Evolution de la Contribution au CA du Top 200"
+        heading = "Contribution au CA"
         greeting = {'heading': heading, 'pageview': "Dashboards"}
         return render(request, 'analytics/monitoring/CA_top_200.html', greeting)
 
