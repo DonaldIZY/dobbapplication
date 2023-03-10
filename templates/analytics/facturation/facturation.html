@@ -219,39 +219,30 @@
     <script src="{% static 'analytics/js/facturation.js' %}"></script>
 
 <script>
+    $(function () {
+	let e = $(".datepicker-fac").datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        minDate: '01/01/2021',
+        maxDate: '31/12/2023',
+        format: "yyyy",
+        viewMode: "years",
+        minViewMode: "years"
+	}).datepicker('update', new Date());
 
-$(document).ready(function(){
-$(".booking-calender .fa.fa-clock-o").removeClass(this);
-$(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
+    console.log(e)
+
+    let elements = document.getElementsByClassName('datepicker-fac');
+    for (let ele of elements) {
+        console.log(ele.attributes)
+    }
+
 });
-$('.my-select').selectpicker();
+    $(document).ready(function(){
+    $(".booking-calender .fa.fa-clock-o").removeClass(this);
+    $(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
+    });
+    $('.my-select').selectpicker();
 </script>
-{% endblock %}
-<script>
-	$(function () {
-		let e = $(".datepicker-fac").datepicker({
-			autoclose: true,
-			todayHighlight: true,
-			minDate: '01/01/2021',
-			maxDate: '31/12/2023',
-			format: "yyyy",
-			viewMode: "years",
-			minViewMode: "years"
-		}).datepicker('update', new Date());
-	
-		console.log(e)
-	
-		let elements = document.getElementsByClassName('datepicker-fac');
-		for (let ele of elements) {
-			console.log(ele.attributes)
-		}
-	
-	});
-	
-	$(document).ready(function(){
-	$(".booking-calender .fa.fa-clock-o").removeClass(this);
-	$(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
-	});
-	$('.my-select').selectpicker();
-	</script>
+
 {% endblock %}
