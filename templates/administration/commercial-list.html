@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="{% static cssurl %}" >
     {% endfor %}
 
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.table_datatable_basic %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
 {% endblock %}
 
 
@@ -44,9 +48,8 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-responsive-md table-bordered">
-                        <thead class="thead-black">
-                            <!-- Entête du tableau des commerciaux -->
+                    <table id="example3" class="display" style="min-width: 845px">
+                        <thead>
                             <tr>
                                 <th style="width:15px;">
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
@@ -67,7 +70,6 @@
                                 {% endif %} -->
                             </tr>
                         </thead>
-                            <!-- Contenu du tableau des commerciaux -->
                         <tbody>
                             {% csrf_token %}
                             {% for commercial_obj in commerciaux %}
@@ -128,47 +130,8 @@
                         </tbody>
                     </table>
                 </div>
-
-                <nav mt-5>
-                    <p>
-                        <span class="current">
-                            Page {{ commerciaux.number }} / {{ commerciaux.paginator.num_pages }}
-                        </span>
-                    </p>
-
-                    <ul class="pagination pagination-gutter justify-content-end">
-                        <li class="page-item page-indicator ">
-                            <a class="page-link" href="{% if commerciaux.has_previous %}
-                                                        ?page={{ commerciaux.previous_page_number }}
-                                                        {% else %}
-                                                        javascript:void(0);
-                                                        {% endif %}">
-                                <i class="la la-angle-left"></i></a>
-                        </li>
-
-                        {% for i in commerciaux.paginator.page_range|slice:":3" %}
-                            <li class="page-item {% if commerciaux.number == i %}active{% endif %}">
-                                <a class="page-link" href="?page={{i}}">{{i}}</a>
-                            </li>
-                        {% endfor %}
-
-                        {% if commerciaux.number > 3 %}
-                        <li class="page-item active">
-                            <a class="page-link" href="?page={{ commerciaux.number }}">{{ commerciaux.number }}</a>
-                        </li>
-                        {% endif %}
-
-                        <li class="page-item page-indicator ">
-                            <a class="page-link"  href="{% if commerciaux.has_next %}
-                                                        ?page={{ commerciaux.next_page_number }}
-                                                        {% else %}
-                                                        javascript:void(0);
-                                                        {% endif %}">
-                                <i class="la la-angle-right"></i></a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
+
         </div>
     </div>
 
@@ -176,6 +139,10 @@
 
 
 {% block additional_js %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+        <script src="{% static jsurl %}"></script>
+    {% endfor %}
 
     {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.users %}
         <script src="{% static jsurl %}"></script>

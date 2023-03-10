@@ -134,12 +134,9 @@ class CommercialView(LoginRequiredMixin, View):
             equipe = user.equipe
             if equipe:
                 commerciaux = models.Commercial.objects.filter(equipe=equipe).order_by('id')
-                print(commerciaux)
-                for commercial in commerciaux:
-                    print(commercial.commercial.email)
-                print('V 1')
-                paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
-                self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+                # paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
+                # self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+                self.context["commerciaux"] = commerciaux
                 return render(request, "administration/commercial-list.html", self.context)
             else:
                 pass
@@ -148,10 +145,7 @@ class CommercialView(LoginRequiredMixin, View):
 
         if user.has_perm('administration.view_commercial'):
             commerciaux = models.Commercial.objects.all().order_by('id')
-            print(commerciaux)
-            print('V 2')
-            paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
-            self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+            self.context["commerciaux"] = commerciaux
             return render(request, "administration/commercial-list.html", self.context)
         else:
             messages.warning(request, "Vous êtes pas autorisé à accéder à cette page.")
