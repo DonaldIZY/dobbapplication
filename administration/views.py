@@ -14,7 +14,7 @@ from django.contrib.auth.models import Group
 from users.models import CustomUser
 
 
-# =================================================== Segment View ======================================================
+# =================================================== Segment View =====================================================
 class EquipeView(LoginRequiredMixin, View):
     def get(self, request):
         agence_stats = models.Equipe.objects.annotate(

@@ -1,31 +1,65 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
+from administration.models import Commercial, Equipe
 from analytics import data
 from django.http import JsonResponse
+
+
+def get_user_entities(user):
+    # Vérifier si l'utilisateur est chef d'agence
+    if Commercial.objects.filter(commercial=user).exists():
+        # commercial_obj = Commercial.objects.get(commercial=user)
+        return 'Commercial'
+    # Vérifier si l'utilisateur est chef de zone
+    if Equipe.objects.filter(manager=user).exists():
+        return 'Manager'
+    return None
 
 
 class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
+    def get(self, request):
+        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
+                    "menu_wallet": True}
+        return render(request, 'analytics/facturation/facturation.html', greeting)
+
     def post(self, request):
+        searche = ''
+        user = request.user
+        entities = get_user_entities(user)
+        if entities == 'Commercial':
+            commercial_obj = Commercial.objects.get(commercial=user)
+            full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
+            searche = f"""
+            and LOWER(TRIM(commercial))='{full_name.lower().strip()}'
+            """
+        elif entities == 'Manager':
+            groups = user.groups.all()
+            searche = f"""
+            and LOWER(TRIM(segment))='{groups[0].lower().strip()}'
+            """
+
         # Récupération des données de la requête
         set_univers = json.load(request)['univers']
         self.univers = set_univers
 
         # Obtention des données
         parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
-                                      fin_periode='2022-11-01')
+                                      fin_periode='2022-11-01', searche=searche)
         ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
-                                         fin_periode='2022-11-01')
+                                         fin_periode='2022-11-01', searche=searche)
         evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', evo_type="ytd")
+                                     fin_periode='2022-11-01', evo_type="ytd", searche=searche)
         evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
-                                     fin_periode='2022-11-01', evo_type="mom")
-        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01', fin_periode='2022-11-01')
+                                     fin_periode='2022-11-01', evo_type="mom", searche=searche)
+        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01',
+                                       fin_periode='2022-11-01', searche=searche)
 
         # Préparation de la réponse
         response_data = {
@@ -36,11 +70,6 @@ class FacturationView(LoginRequiredMixin, View):
             'evo_diff': evo_diff
         }
         return JsonResponse(response_data)
-
-    def get(self, request):
-        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
-                    "menu_wallet": True}
-        return render(request, 'analytics/facturation/facturation.html', greeting)
 
 
 class VariationTop200View(LoginRequiredMixin, View):
