@@ -48,15 +48,11 @@ let optionParcActif = {
     }
   },
 
-  //Option de téléchargement de l'image du graphe
-  //toolbox: {
-  //   feature: {
-  //     saveAsImage: {show: true}
-  //   }
-  // },
   legend: {
     data: ['Parc Actif', 'CA Parc Actif'],
     align: 'left',
+    itemGap: 30,
+    selectedMode: 'multipe',
     textStyle: {
       fontFamily: fontFamily, //Changer la police celle du HTML
       fontSize: '80%',
@@ -81,19 +77,21 @@ let optionParcActif = {
     {
       type: 'value',
       name: 'Parc Actif',
+      scale: true,
+      axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
         formatter: '{value}',
         fontSize: '80%'     
       },
-      interval: 100,
       show: false
     },
     {
       type: 'value',
-      interval: 100,
       name: 'CA Parc Actif',
+      scale: true,
+      axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
-        formatter: '{value} M',
+        formatter: '{value} FCFA',
         fontSize: '80%'
       },
       show: false
@@ -103,7 +101,7 @@ let optionParcActif = {
     {
       name: 'Parc Actif',
       type: 'bar',
-      barWidth: '50%',
+      barWidth: '90%',
       // barCategoryGap: '10%', // espacement entre les barres
       // barGap: '40%', // espacement entre les séries
       tooltip: {
@@ -112,6 +110,7 @@ let optionParcActif = {
           return value;
         }
       },
+      yAxisIndex:0,
       itemStyle: {
         // borderColor: 'transparent',
         borderWidth: 1,
@@ -135,19 +134,19 @@ let optionParcActif = {
         textStyle: {
           fontFamily: fontFamily // changer la police en celle HTML
       },
-        color: '#FFF',
+        color: '#FFF'
       },
     },
     {
       name: 'CA Parc Actif',
       type: 'line',
-      yAxisIndex: 1,
       tooltip: {
         valueFormatter: function (value) {
           "use strict";
-          return value + ' M FCFA';
+          return value + 'F';
         }
       },
+      yAxisIndex: 1,
       itemStyle: {
         borderColor: color_sombre,
         color: color_sombre,
@@ -176,10 +175,10 @@ window.addEventListener('resize', function() {
   var fontSize = document.getElementById('chartParcActif').offsetWidth / 50;
   chartParcActif.setOption({
     xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSize + '%'},
     },
     yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSize + '%'},
     },
     series: [{
       label: {
@@ -195,7 +194,9 @@ window.addEventListener('resize', function() {
       textStyle: {
         fontSize: fontSize + '%'
       }
-    }]
+    }],
+    height: '100%',
+    width: '100%'
   })
 });
 
@@ -242,7 +243,8 @@ let legende = {
       },
       itemStyle: { color: color_red}
     }
-  ]
+  ],
+  itemGap: 30,
 };
 let xaxis = {
   type: 'category', 
@@ -379,9 +381,7 @@ window.addEventListener('resize', function() {
 });
 
 
-
-
-
+//========================================================================================================
 // GRAPHIQUE : STATUT DE LA CLIENTELE YTD
 let domFacturationYTD = document.getElementById('evo-ytd');
 let chartYTD = echarts.init(domFacturationYTD, null, {renderer: 'canvas', force: true});
@@ -469,35 +469,6 @@ let optionFacturationYTD = {
         },
       ]
     };
-
-// Gérer la responsivité du graphe en fonction de son conteneur
-// window.addEventListener('resize', function() {
-//   chartYTD.resize();
-//   var fontSize = document.getElementById('chartYTD').offsetWidth / 50;
-//   chartYTD.setOption({
-//     xAxis: {
-//       axisLabel: {fontSize: fontSize + '%'}
-//     },
-//     yAxis: {
-//       axisLabel: {fontSize: fontSize + '%'}
-//     },
-//     series: [{
-//       label: {
-//         fontSize: fontSize + '%'
-//       }
-//     }],
-//     legend: [{
-//       textStyle: {
-//         fontSize: fontSize + '%'
-//       }
-//     }],
-//     tooltip: [{
-//       textStyle: {
-//         fontSize: fontSize + '%'
-//       }
-//     }]
-//   });
-// });
 
 // =====================================================================================================================
 // GRAPHIQUE : FLUCTUATIONS DU CA
@@ -666,10 +637,10 @@ function getData(univers) {
       optionParcActif.series[1].data = data.ca.values;
 
       // Echelle des axes
-      optionParcActif.yAxis[0].min = Math.min(...data.volume.values) - 1000;
-      optionParcActif.yAxis[0].max = Math.max(...data.volume.values) + 100;
-      optionParcActif.yAxis[1].min = Math.min(...data.ca.values) - 100;
-      optionParcActif.yAxis[1].max = Math.max(...data.ca.values) + 10;
+      //optionParcActif.yAxis[0].min = Math.min(...data.volume.values)-100;
+      //optionParcActif.yAxis[0].max = Math.max(...data.volume.values) + 10;
+      //optionParcActif.yAxis[1].min = Math.min(...data.ca.values);
+      //optionParcActif.yAxis[1].max = Math.max(...data.ca.values);
 
       optionParcActif && chartParcActif.setOption(optionParcActif);
 
