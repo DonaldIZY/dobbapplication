@@ -91,14 +91,10 @@ let optionMoMCAF = {
       }
     }
   },
-  // toolbox: {
-  //   feature: {
-  //     saveAsImage: {show: true}
-  //   }
-  // },
   legend: {
     data: ['CAF YTD (mxof)', 'Contribution totale au CAF'],
     align: 'left',
+    itemGap: 50,
     textStyle: {
       fontFamily: fontFamily, //Changer la police celle du HTML
       fontSize: '80%',
@@ -108,6 +104,7 @@ let optionMoMCAF = {
   xAxis: [
     {
       type: 'category',
+      scale: true,
       axisTick: {show: false},
       axisLine: {show: false},
       axisLabel: {
@@ -123,18 +120,23 @@ let optionMoMCAF = {
     {
       type: 'value',
       name: 'Parc Actif',
+      scale: true,
       axisLabel: {
         formatter: '{value}',
         fontSize: '80%'
       },
-      interval: 30,
       show: false
     },
     {
       type: 'value',
+      scale: true,
       name: 'CA Parc Actif',
-      axisLabel: {formatter: '{value} M'},
-      interval: 30,
+      axisLabel: {
+        formatter: '{value}',
+        fontSize: '80%'
+      },
+      min: 0,
+      max: 100,
       show: false
     }
   ],
@@ -453,10 +455,10 @@ fetch(url, {
     optionMoMCAF.xAxis[0].data = data.mom_caf.axis;
 
     // Echelle des axes
-    optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf) - 200;
-    optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf) + 100;
-    optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent) - 2;
-    optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent) + 2;
+    // optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf);
+    // optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf);
+    // optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent);
+    // optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent);
 
     optionMoMCAF.series[0].data = data.mom_caf.caf;
     optionMoMCAF.series[1].data = data.mom_caf.pourcent;

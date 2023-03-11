@@ -13,7 +13,7 @@ var color_blue_2 = "#73C0DE";
 var color_orange = "#f16e00";
 var color_green = "#006B5E";
 var color_sombre = '#3b3b3b';
-var color_blue = '#04668a';
+// var color_blue = '#04668a';
 var color_silver = '#919494';
 var color_black = '#383838';
 
@@ -36,4 +36,4 @@ function getCookie(name) {
 
 
 // ============================================= E-chart Options =======================================================
-var grid = {left: '0%', right: '0%', bottom: '3%', containLabel: true};
+var grid = {top:'2%', left: '2%', right: '2%', bottom: '2%', containLabel: false};
