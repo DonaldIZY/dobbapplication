@@ -52,7 +52,6 @@ let optionParcActif = {
     data: ['Parc Actif', 'CA Parc Actif'],
     align: 'left',
     itemGap: 30,
-    selectedMode: 'multipe',
     textStyle: {
       fontFamily: fontFamily, //Changer la police celle du HTML
       fontSize: '80%',
