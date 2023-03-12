@@ -3,7 +3,11 @@
 
 
 {% block additional_css %}
- 
+    
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.table_datatable_basic %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
 {% endblock %}
 
 
@@ -41,10 +45,10 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-responsive-md table-bordered">
-                            <thead class="thead-black">
+                        <table id="example3" class="display table-bordered">
+                            <thead>
                                 <tr>
-                                    <th style="width:15px;">
+                                    <th >
                                         <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                             <input  type="checkbox" class="form-check-input" id="checkAll" value="">
                                             <label class="form-check-label" for="checkAll"></label>
@@ -124,8 +128,7 @@
                             </tbody>
                         </table>
                     </div>
-
-
+                    
                     <nav mt-5>
 
                         <p>
@@ -183,6 +186,10 @@
 
 
 {% block additional_js %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+    <script src="{% static jsurl %}"></script>
+    {% endfor %}
 
 <script>
 

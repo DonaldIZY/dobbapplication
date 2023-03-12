@@ -146,7 +146,6 @@ let optionMoMCAF = {
       type: 'bar',
       barWidth: '90%',
       itemStyle: {
-        // borderColor: 'transparent',
         borderWidth: 1,
         borderType: 'solid',
         borderColor: color_blue_1,

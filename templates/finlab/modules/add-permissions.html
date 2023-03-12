@@ -19,7 +19,7 @@
 <div class="col-xl-12 col-lg-12">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Add New Permissions</h4>
+            <h4 class="card-title">Ajouter les nouvelles permissions</h4>
 
         </div>
 
@@ -29,20 +29,20 @@
                 <form  method="post" enctype="multipart/form-data" autocomplete="off">{% csrf_token %}
                     <div class="row">
                             <div class="mb-3 col-md-12">
-                                <label class="form-label">Name</label>
+                                <label class="form-label">Nom</label>
                                 {{ form.name|attr:"type:text"|attr:"class:form-control"}}
                                 <span class="text-muted fs-12">{{ form.name.help_text }}</span>
                             </div>
 
                             <div class="mb-3 col-md-12">
-                                <label class="form-label">Code Name</label>
+                                <label class="form-label">Code</label>
                                 {{ form.codename|attr:"type:text"|attr:"class:form-control"}}
                                 <span class="text-muted fs-12">{{ form.codename.help_text }}</span>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                     
-                                <label class="form-label">Content Type</label>
+                                <label class="form-label">Type de contenu</label>
                                 {{ form.content_type|attr:"type:text"|attr:"class:default-select form-control wide"}}
                                 
                             </div>
@@ -50,8 +50,8 @@
                         
                     </div>
 
-                    <button type="submit" class="btn btn-secondary">Save</button>
-                    <a href="{% url 'finlab:index' %}" class="btn btn-primary">Cancel</a>
+                    <button type="submit" class="btn btn-secondary">Sauvegarder</button>
+                    <a href="{% url 'finlab:index' %}" class="btn btn-primary">Annuler</a>
                 </form>
             </div>
         </div>

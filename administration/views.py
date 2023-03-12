@@ -120,7 +120,7 @@ class DeleteEquipeView(View):
         return redirect('administration:equipe')
 
 
-# ================================================= Gestionnaire View ==================================================
+# ================================================= Commercial View ==================================================
 class CommercialView(LoginRequiredMixin, View):
     context = {
         "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},

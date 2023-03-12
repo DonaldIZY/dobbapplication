@@ -6144,8 +6144,8 @@ textarea.form-control-lg {
 .text-uppercase {
   text-transform: uppercase !important; }
 
-.text-capitalize {
-  text-transform: capitalize !important; }
+/* .text-capitalize {
+  text-transform: capitalize !important; } */
 
 .text-wrap {
   white-space: normal !important; }
@@ -10580,7 +10580,8 @@ svg.pulse-svg {
     display: block;
     padding-bottom: 0;
     color: var(--primary);
-    text-transform: capitalize; }
+    /* text-transform: capitalize;  */
+  }
 
 .header-profile2 .nav-link {
   background-color: transparent !important; }
@@ -17989,7 +17990,8 @@ pre {
 
 .fc-button {
   border: 0.0625rem solid #D5DFE7;
-  text-transform: capitalize; }
+  /* text-transform: capitalize;  */
+}
   .fc-button.active {
     box-shadow: none !important; }
 
@@ -23122,7 +23124,8 @@ button {
     font-size: 1.375rem;
     font-weight: 600;
     color: #2A353A;
-    text-transform: capitalize; }
+    /* text-transform: capitalize;  */
+  }
     .card-title--large {
       font-size: 1.5rem; }
     .card-title--medium {
@@ -24229,7 +24232,7 @@ code {
   font-size: 14px;
   font-weight: 500;
   color: #5b5e81;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   box-shadow: none; }
   [data-theme-version="dark"] .nav-pills .nav-link {
     color: #7e8dbf; }
@@ -25412,7 +25415,7 @@ code {
 
 .table thead th {
   border-bottom: 0.0625rem solid #EEEEEE;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   color: #fff;
   font-size: 1rem;
   white-space: nowrap;
@@ -25613,7 +25616,7 @@ table.dataTable thead th {
   color: #fff;
   white-space: nowrap;
   font-size: 1rem;
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   font-weight: 500;
   padding: 20px 15px; }
   [data-theme-version="dark"] table.dataTable thead th {

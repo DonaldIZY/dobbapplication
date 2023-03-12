@@ -48,10 +48,10 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="example3" class="display" style="min-width: 845px">
+                    <table id="example3" class="display table-bordered">
                         <thead>
                             <tr>
-                                <th style="width:15px;">
+                                <th>
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input  type="checkbox" class="form-check-input" id="checkAll" value="">
                                         <label class="form-check-label" for="checkAll"></label>
@@ -153,7 +153,7 @@ $(document).ready(function(){
 
 $('#delete_multiple_btn').on('click', function () {
 
-    if(confirm("Êtes vous sur de vouloir supprimer l'ensemble de ces éléments ? ")){
+    if(confirm("Êtes vous sur de vouloir supprimer ces éléments ? ")){
         var id = [];
 
         $(':checkbox:checked').each(function(i){
@@ -161,7 +161,7 @@ $('#delete_multiple_btn').on('click', function () {
         });
 
         if(id.length===0){
-            alert("Please select items to delete")
+            alert("Veuiller choisir les éléments à supprimer")
         }else{
             console.log(id);
             $.ajax({
@@ -209,8 +209,8 @@ $('#delete_multiple_btn').on('click', function () {
                type: "warning",
                icon: 'question',
                showCancelButton: true,
-               confirmButtonText: "Yes, delete it !!",
-               confirmButtonText: 'Delete',
+               confirmButtonText: "Oui, Supprimer!!",
+               confirmButtonText: 'Supprimer',
                confirmButtonColor: "#DD6B55"
 
            }).then((result) => {
