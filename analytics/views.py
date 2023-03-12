@@ -22,6 +22,22 @@ def get_user_entities(user):
     return None
 
 
+def getSearch(entities, user):
+    search = ''
+    if entities == 'Commercial':
+        commercial_obj = Commercial.objects.get(commercial=user)
+        full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
+        search = f"""
+            and LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
+        """
+    elif entities == 'Manager':
+        equipe = Equipe.objects.get(manager=user)
+        search = f"""
+            and LOWER(TRIM(segment)) = '{equipe.name.lower().strip()}'
+        """
+    return search
+
+
 class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
@@ -31,23 +47,9 @@ class FacturationView(LoginRequiredMixin, View):
         return render(request, 'analytics/facturation/facturation.html', greeting)
 
     def post(self, request):
-        searche = ''
         user = request.user
         entities = get_user_entities(user)
-        if entities == 'Commercial':
-            commercial_obj = Commercial.objects.get(commercial=user)
-            full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
-            print(commercial_obj)
-            searche = f"""
-            and LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
-            """
-        elif entities == 'Manager':
-            groups = user.groups.all()
-            print(groups)
-            searche = f"""
-            and LOWER(TRIM(segment)) = '{groups[0].lower().strip()}'
-            """
-        print(searche)
+        search = getSearch(entities, user)
 
         # Récupération des données de la requête
         set_univers = json.load(request)['univers']
@@ -55,15 +57,15 @@ class FacturationView(LoginRequiredMixin, View):
 
         # Obtention des données
         parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
-                                      fin_periode='2022-11-01', search=searche)
+                                      fin_periode='2022-11-01', search=search)
         ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
-                                         fin_periode='2022-11-01', search=searche)
+                                         fin_periode='2022-11-01', search=search)
         evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', evo_type="ytd", search=searche)
+                                     fin_periode='2022-11-01', evo_type="ytd", search=search)
         evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
-                                     fin_periode='2022-11-01', evo_type="mom", search=searche)
+                                     fin_periode='2022-11-01', evo_type="mom", search=search)
         evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01',
-                                       fin_periode='2022-11-01', search=searche)
+                                       fin_periode='2022-11-01', search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -131,30 +133,28 @@ class DashboardView(LoginRequiredMixin, View):
         set_univers = json.load(request)['univers']
         self.univers = set_univers
 
-        # Obtention des données
-        parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
-                                      fin_periode='2022-11-01')
-        ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
-                                         fin_periode='2022-11-01')
-        evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', evo_type="ytd")
-        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
-                                     fin_periode='2022-11-01', evo_type="mom")
-        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01', fin_periode='2022-11-01')
+        searche = ''
+        user = request.user
+        entities = get_user_entities(user)
+        search = getSearch(entities, user)
+
+        ca_univer = data.caUniversCommerciaux(date_debut='2022-01-01',
+                                              date_fin='2022-06-01',
+                                              search=search)
+        print(ca_univer)
 
         # Préparation de la réponse
         response_data = {
-            'volume': parc_actif,
-            'ca': ca_parc_actif,
-            'evo_ytd': evo_ytd,
-            'evo_mom': evo_mom,
-            'evo_diff': evo_diff
+            'ca_univer': ca_univer,
         }
         return JsonResponse(response_data)
 
     def get(self, request):
-        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
-                    "menu_wallet": True}
+        greeting = {
+            'heading': self.univers,
+            'pageview': "Dashboards",
+            'product_type': self.univers,
+        }
         return render(request, 'analytics/portefeuille/dashboard.html', greeting)
 
 

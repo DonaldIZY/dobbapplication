@@ -30,6 +30,32 @@ def extremitePeriode(univers, date, search):
     return request
 
 
+def dataToDictAg(data):
+    df = data.copy()
+
+    def formatype(col_type, index_col, row):
+        if col_type == 'float64':
+            try:
+                value = float(round(df.iloc[row, index_col], 2))
+            except:
+                value = None
+        elif col_type == 'int64':
+            try:
+                value = int(df.iloc[row, index_col])
+            except:
+                value = None
+        else:
+            value = str(df.iloc[row, index_col])
+        return value
+
+    dict_lists = [
+        {df.columns[index_col]: formatype(col_type=df[col].dtype, index_col=index_col, row=row)
+         for index_col, col in enumerate(df.columns)}
+        for row in range(df.shape[0])
+    ]
+    return dict_lists
+
+
 def extremiteYTD(univers, date, search):
     date = datetime.strptime(date, "%Y-%m-%d")
     date_ytd = date - timedelta(days=365)
@@ -95,7 +121,7 @@ def getClientEntrant(date_debut, date_fin):
     client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
 
     client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
-    return client_entrant
+    return dataToDictAg(data=client_entrant)
 
 
 def getParcAtif(univers, get, debut_periode, fin_periode, search):
@@ -183,7 +209,6 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
     cumule_fin_periode = utils.formatDf(cumule_fin_periode, ['axis', 'values'])
 
     df = pd.concat([cumule_debut_periode, ca_periode_en_cours], axis=0)
-    print(df)
     df['cumsum'] = df['values'].cumsum(axis=0, skipna=False)
 
     data = pd.concat([df, cumule_fin_periode], axis=0).reset_index(drop=True)
@@ -252,32 +277,6 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
 
 class ClientTop200:
 
-    @staticmethod
-    def dataToDictAg(data):
-        df = data.copy()
-
-        def formatype(col_type, index_col, row):
-            if col_type == 'float64':
-                try:
-                    value = float(round(df.iloc[row, index_col], 2))
-                except:
-                    value = None
-            elif col_type == 'int64':
-                try:
-                    value = int(df.iloc[row, index_col])
-                except:
-                    value = None
-            else:
-                value = str(df.iloc[row, index_col])
-            return value
-
-        dict_lists = [
-            {df.columns[index_col]: formatype(col_type=df[col].dtype, index_col=index_col, row=row)
-             for index_col, col in enumerate(df.columns)}
-            for row in range(df.shape[0])
-        ]
-        return dict_lists
-
     def getClient(self, sheet_name):
         df = pd.read_excel("analytics/data/client.xlsx", sheet_name=sheet_name)
         pourcents = ['Total', 'Fixe', 'Mobile', 'Broadband']
@@ -287,7 +286,7 @@ class ClientTop200:
         df.rename(str.strip, axis='columns', inplace=True)
         df.columns = [str(col).replace(' ', '_') for col in df.columns]
         df = df.fillna(0)
-        data = self.dataToDictAg(data=df)
+        data = dataToDictAg(data=df)
 
         return data
 
@@ -345,3 +344,18 @@ def CAUnivers():
     }
     # data_final = {f"{col}": float(round(df_2022[col].sum(), 2)) for col in df_2022.columns}
     return data_final
+
+
+def caUniversCommerciaux(date_debut, date_fin, search):
+    request = f"""
+        SELECT
+            COALESCE(sum(case when (univers='Broadband') then montant end), 0) as "Broadband",
+            COALESCE(sum(case when (univers='Fixe') then montant end), 0) as "Fixe",
+            COALESCE(sum(case when (univers='ICT') then montant end), 0) as "ICT",
+            COALESCE(sum(case when (univers='Mobile') then montant end), 0) as "Mobile"
+        FROM public.base_dobb
+        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+    """
+
+    ca_univers = pd.read_sql(sql=text(request), con=connection)
+    return dataToDictAg(data=ca_univers)

@@ -52,35 +52,6 @@ var performGeneraleOption = {
   ]
 };
 
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  performGenerale.resize();
-  var fontSize = document.getElementById('performGenerale').offsetWidth / 50;
-  performGenerale.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  });
-});
-
 // application des options au graphique
 performGeneraleOption && performGenerale.setOption(performGeneraleOption);
 
@@ -112,36 +83,6 @@ let caUniversOption = {
     }
   ]
 };
-
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  caUnivers.resize();
-  var fontSize = document.getElementById('caUnivers').offsetWidth / 50;
-  caUnivers.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  });
-});
-
 // application des options au graphique
 caUnivers.setOption(caUniversOption);
 
@@ -217,38 +158,9 @@ var topClientsOption = {
     }
   ]
 };
-
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  topClients.resize();
-  var fontSize = document.getElementById('topClients').offsetWidth / 50;
-  topClients.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  });
-});
-
 // application des options au graphique
 topClientsOption && topClients.setOption(topClientsOption);
+
 
 
 // =====================================================================================================================
@@ -322,71 +234,159 @@ var topProduitsOption = {
     }
   ]
 };
+// application des options au graphique
+topProduitsOption && topProduits.setOption(topProduitsOption);
 
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
+  'use strict';
   topProduits.resize();
-  var fontSize = document.getElementById('topProduits').offsetWidth / 50;
+  var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
   topProduits.setOption({
     xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSizeTopProduit + '%'}
     },
     yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSizeTopProduit + '%'}
     },
     series: [{
       label: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTopProduit + '%'
       }
     }],
     legend: [{
       textStyle: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTopProduit + '%'
       }
     }],
     tooltip: [{
       textStyle: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTopProduit + '%'
+      }
+    }]
+  });
+
+  topClients.resize();
+  var fontSizeClient = document.getElementById('dashbordTopClients').offsetWidth / 50;
+  topClients.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeClient + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeClient + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeClient + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeClient + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeClient + '%'
+      }
+    }]
+  });
+
+  caUnivers.resize();
+  var fontSizeCaUnivers = document.getElementById('dashboardCaUnivers').offsetWidth / 50;
+  caUnivers.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeCaUnivers + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeCaUnivers + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeCaUnivers + '%'
+      }
+    }]
+  });
+
+  performGenerale.resize();
+  var fontSizePerform = document.getElementById('dashbordPerformGen').offsetWidth / 50;
+  performGenerale.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizePerform + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizePerform + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizePerform + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizePerform + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizePerform + '%'
       }
     }]
   });
 });
 
-// application des options au graphique
-topProduitsOption && topProduits.setOption(topProduitsOption);
 
 
 
+// =====================================================================================================================
+function getData(univers) {
+  "use strict";
+  // let formData = new FormData();
+  // formData.append('univers', univers);
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      /* jshint ignore:start */
+      'X-CSRFToken': getCookie('csrftoken')
+      /* jshint ignore:end */
+    },
+    body: JSON.stringify({univers: univers})
+  })
+    .then(function (response) {
+      if (response.ok) {
+        // Récupération des données reçues
+        return response.json();
+      } else {
+        // Gestion d'une erreur de requête
+        throw new Error('Error while fetching data');
+      }
+    })
+    .then(function (data) {
+      // Utilisation des données reçues
+      /* jshint ignore:start */
+      console.log(data);
+      /* jshint ignore:end */
 
+    })
+    .catch(function (error) {
+      // Gestion d'une erreur de requête
+      /* jshint ignore:start */
+      console.error(error);
+      /* jshint ignore:end */
+    });
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-// // =====================================================================================================================
-// document.addEventListener('DOMContentLoaded', getData("Mobile"));
-// // =====================================================================================================================
-
-// document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {
-//   // code à exécuter lorsque la valeur change
-//   // document.getElementById("header").innerHTML = this.value;
-
-//   let elements = document.getElementsByClassName('graph-title');
-//   for (let ele of elements) {
-//     ele.innerHTML = this.value;
-//   }
-
-//   getData(this.value);
-// });
-
-// document.getElementById('select-date').addEventListener('change', function (qualifiedName, value) {
-//   console.log(this);
-// });
+// =====================================================================================================================
+document.addEventListener('DOMContentLoaded', getData("Mobile"));

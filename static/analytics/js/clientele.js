@@ -1,11 +1,4 @@
 /* jshint esversion: 6 */
-function evoFormat(val) {
-  'use strict';
-  if(val === 0) {
-    val = '-';
-  }
-  return val;
-}
 
 function setColor(color) {
   'use strict';
