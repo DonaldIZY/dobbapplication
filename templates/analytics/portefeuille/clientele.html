@@ -72,42 +72,19 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>Nom</th>
-							<th>Univers</th>
-							<th>Produit</th>
+							<th>Client</th>
 							<th>Secteur d'activité</th>
-							<th>Mobile</th>
-							<th>Email</th>
-							<th>Date de création</th>
+							<th>Total Facture</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+                    {% for row in clients %}
+                        <tr>
 							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic6.jpg' %}" alt=""></td>
-							<td>Tiger Nixon</td>
-							<td>Mobile</td>
-							<td>Mobile</td>
-							<td>Informatique</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2011/04/25</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>												
-							</td>												
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic2.jpg' %}" alt=""></td>
-							<td>Garrett Winters</td>
-							<td>Fixe</td>
-							<td>Voix fixe</td>
-							<td>Industrie</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2011/07/25</td>
+							<td>{{ row.0 }}</td>
+                            <td>{{ row.1 }}</td>
+                            <td>{{ row.2 }}</td>
 							<td>
 								<div class="d-flex">
 									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
@@ -115,102 +92,8 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic3.jpg' %}" alt=""></td>
-							<td>Ashton Cox</td>
-							<td>Broadband</td>
-							<td>FTTx</td>
-							<td>Agriculture</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2009/01/12</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic9.jpg' %}" alt=""></td>
-							<td>Cedric Kelly</td>
-							<td>ICT</td>
-							<td>OSE</td>
-							<td>Agriculture</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2012/03/29</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic2.jpg' %}" alt=""></td>
-							<td>Airi Satou</td>
-							<td>Broaband</td>
-							<td>LTE</td>
-							<td>Communication</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2008/11/28</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic6.jpg' %}" alt=""></td>
-							<td>Brielle Williamson</td>
-							<td>Broadband</td>
-							<td>ADSL</td>
-							<td>Consulting et centre de recherche</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2012/12/02</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic7.jpg' %}" alt=""></td>
-							<td>Herrod Chandler</td>
-							<td>Mobile</td>
-							<td>Community</td>
-							<td>Service</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2012/08/06</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/pic8.jpg' %}" alt=""></td>
-							<td>Rhona Davidson</td>
-							<td>Fixe</td>
-							<td>Voix fixe</td>
-							<td>Ambassades et organisations internationales</td>
-							<td><a href="javascript:void(0);"><strong>123 456 7890</strong></a></td>
-							<td><a href="javascript:void(0);"><strong>info@example.com</strong></a></td>
-							<td>2010/10/14</td>
-							<td>
-								<div class="d-flex">
-									<a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-									<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-								</div>
-							</td>
-						</tr>
+                    {% endfor %}
+
 					</tbody>
 				</table>
 			</div>

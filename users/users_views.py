@@ -47,9 +47,8 @@ def change_password(request):
 @permission_required({'users.view_customuser'}, raise_exception=True)
 def users(request):
     user_list = CustomUser.objects.filter(is_superuser=False).order_by('groups__name')
-    paginator = Paginator(user_list, 7)  # Show 7 Users per page.
     context = {
-        "user_list": paginator.get_page(request.GET.get('page')),
+        "user_list": user_list,
         "page_title": "Users"
     }
     return render(request, "finlab/modules/users.html", context)

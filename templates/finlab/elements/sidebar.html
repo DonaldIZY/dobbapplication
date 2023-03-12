@@ -26,7 +26,11 @@
             </a>
             <ul aria-expanded="false">
                 <li><a href="{% url 'analytics:dashboard' %}">Tableau de bord</a></li>
-                <li><a href="{% url 'analytics:clientele' %}">Clientèle</a></li>
+                {% for group in request.user.groups.all %}
+                    {% if group.name == 'Commercial' %}
+                        <li><a href="{% url 'analytics:clientele' %}">Clientèle</a></li>
+                    {% endif %}
+                {% endfor %}
             </ul>
         </li>
 
