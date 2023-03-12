@@ -243,19 +243,8 @@ window.addEventListener('resize', function() {
   topProduits.resize();
   var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
   topProduits.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeTopProduit + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeTopProduit + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizeTopProduit + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizeTopProduit + '%'
       }
     }],
@@ -269,19 +258,8 @@ window.addEventListener('resize', function() {
   topClients.resize();
   var fontSizeClient = document.getElementById('dashbordTopClients').offsetWidth / 50;
   topClients.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeClient + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeClient + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizeClient + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizeClient + '%'
       }
     }],
@@ -295,22 +273,6 @@ window.addEventListener('resize', function() {
   caUnivers.resize();
   var fontSizeCaUnivers = document.getElementById('dashboardCaUnivers').offsetWidth / 50;
   caUnivers.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSizeCaUnivers + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSizeCaUnivers + '%'
-      }
-    }],
     tooltip: [{
       textStyle: {
         fontSize: fontSizeCaUnivers + '%'
@@ -321,19 +283,8 @@ window.addEventListener('resize', function() {
   performGenerale.resize();
   var fontSizePerform = document.getElementById('dashbordPerformGen').offsetWidth / 50;
   performGenerale.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizePerform + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizePerform + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizePerform + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizePerform + '%'
       }
     }],
