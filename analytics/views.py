@@ -88,7 +88,6 @@ class PerformanceCAView(LoginRequiredMixin, View):
         return render(request, 'analytics/dashboard/monitoring/performanceCAYTD.html', greeting)
     
 
-
 class DashboardView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
@@ -122,8 +121,7 @@ class DashboardView(LoginRequiredMixin, View):
         greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
                     "menu_wallet": True}
         return render(request, 'analytics/portefeuille/dashboard.html', greeting)
-    
-    
+     
 
 class ClienteleView(LoginRequiredMixin, View):
     univers = 'Mobile'
