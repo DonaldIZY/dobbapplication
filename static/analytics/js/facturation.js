@@ -169,35 +169,6 @@ let optionParcActif = {
 };
 
 // Gérer la responsivité du graphe et de ses étiquettes en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartParcActif.resize();
-  var fontSize = document.getElementById('chartParcActif').offsetWidth / 50;
-  chartParcActif.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'},
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'},
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    height: '100%',
-    width: '100%'
-  })
-});
 
 
 // =====================================================================================================================
@@ -349,35 +320,6 @@ let optionFacturationMoM = {
         },
       ]
     };
-
-    // Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartYTD.resize();
-  var fontSize = document.getElementById('chartYTD').offsetWidth / 50;
-  chartYTD.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  });
-});
 
 
 //========================================================================================================
@@ -569,35 +511,6 @@ let optionEvoMoM = {
     ]
   };
 
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartEvoMoM.resize();
-  var fontSize = document.getElementById('chartEvoMoM').offsetWidth / 50;
-  chartEvoMoM.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  })
-});
-
 // =====================================================================================================================
 function getData(univers) {
   "use strict";
@@ -696,4 +609,115 @@ document.getElementById('univers').addEventListener('change', function (qualifie
 
 document.getElementById('select-date').addEventListener('change', function (qualifiedName, value) {
   console.log(this);
+});
+
+
+window.addEventListener('resize', function() {
+  'use strict';
+
+  chartParcActif.resize();
+  var fontSizeParc = document.getElementById('facture').offsetWidth / 50;
+  chartParcActif.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeParc + '%'},
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeParc + '%'},
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeParc + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeParc + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeParc + '%'
+      }
+    }],
+    height: '100%',
+    width: '100%'
+  });
+
+  chartMoM.resize();
+  var fontSizeMoM = document.getElementById('evo').offsetWidth / 50;
+  chartMoM.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeMoM + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeMoM + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeMoM + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeMoM + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeMoM + '%'
+      }
+    }]
+  });
+
+  chartYTD.resize();
+  var fontSizeYTD = document.getElementById('evo-ytd').offsetWidth / 50;
+  chartYTD.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeYTD + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeYTD + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeYTD + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeYTD + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeYTD + '%'
+      }
+    }]
+  });
+
+  chartEvoMoM.resize();
+  var fontSizeEvo = document.getElementById('diff-facturation').offsetWidth / 50;
+  chartEvoMoM.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeEvo + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeEvo + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeEvo + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeEvo + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeEvo + '%'
+      }
+    }]
+  });
 });
