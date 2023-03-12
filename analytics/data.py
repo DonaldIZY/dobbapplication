@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, text
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 import locale
 from analytics import utils
@@ -19,32 +20,85 @@ connection = engine.connect()
 M = 1000000
 
 
-def extremitePeriode(univers, date, searche):
+def extremitePeriode(univers, date, search):
     request = f"""
-        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        SELECT COALESCE(sum(montant), 0) as "CA {date}" from public.base_dobb
         WHERE univers='{univers}' and date_facture = '{date}' 
         and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension')
-        {searche};
+        {search};
     """
     return request
 
 
-def extremiteYTD(univers, date, searche):
+def extremiteYTD(univers, date, search):
     date = datetime.strptime(date, "%Y-%m-%d")
     date_ytd = date - timedelta(days=365)
     date_ytd = datetime.strftime(date_ytd, "%Y-%m-%d")
     date = datetime.strftime(date, "%Y-%m-%d")
 
     request = f"""
-        SELECT sum(montant) as "CA {date}" from public.base_dobb
+        SELECT COALESCE(sum(montant), 0) as "CA {date}" from public.base_dobb
         WHERE univers='{univers}' and (date_facture BETWEEN '{date_ytd}' AND '{date}') 
         and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension')
-        {searche};
+        {search};
     """
     return request
 
 
-def getParcAtif(univers, get, debut_periode, fin_periode, searche):
+def getTop200(date_debut, date_fin, search, limit):
+    request = f"""
+        SELECT client, segment, commercial, total_montant_, max_montant_, broadband_, fixe_, ict_, mobile_, 
+               row_number() over (order by total_montant_ DESC, max_montant_ DESC) as rang
+        FROM (
+            SELECT client, segment, commercial, COALESCE(SUM(montant), 0) as total_montant_, 
+            COALESCE(MAX(montant), 0) as max_montant_,
+            COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband_,
+            COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe_,
+            COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict_,
+            COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile_
+            FROM public.base_dobb
+            WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+            GROUP BY client, segment, commercial
+        ) subq
+        ORDER BY total_montant_ DESC, max_montant_ DESC
+        LIMIT {limit};
+    """
+
+    return request
+
+
+def getClientEntrant(date_debut, date_fin):
+    diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
+    diff = diff + relativedelta(months=1)
+
+    periode_pred_1 = (datetime.strptime(date_debut, "%Y-%m-%d") - diff).replace(day=1)
+    periode_pred_1 = (periode_pred_1 - relativedelta(months=1)).strftime("%Y-%m-%d")
+    periode_pred_2 = (datetime.strptime(date_fin, "%Y-%m-%d") - diff).replace(day=1).strftime("%Y-%m-%d")
+
+    request = getTop200(date_debut=date_debut, date_fin=date_fin, search='', limit=200)
+    t1 = pd.read_sql(sql=text(request), con=connection)
+    request = getTop200(date_debut=periode_pred_1, date_fin=periode_pred_2, search='', limit=5000)
+    t2 = pd.read_sql(sql=text(request), con=connection)
+    client_entrant = pd.merge(t1, t2, how='left', on=['client', 'segment', 'commercial'])
+
+    for i in range(3, 9):
+        col_entrant = client_entrant.columns[i].split('__')[0]
+        client_entrant[f'{col_entrant}'] = (client_entrant[f'{col_entrant}__x'] / client_entrant[
+            f'{col_entrant}__y']) - 1
+
+    client_entrant = client_entrant.rename(columns={'rang_x': 'rang', 'rang_y': 'rang_prec'})
+
+    # Sélectionner les noms de colonnes qui ne se terminent pas par '__x' ou '__y'
+    cols_to_keep_entrant = [col for col in client_entrant.columns if not col.endswith(('__x', '__y'))]
+
+    # Supprimer les colonnes sélectionnées
+    client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
+
+    client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
+    return client_entrant
+
+
+def getParcAtif(univers, get, debut_periode, fin_periode, search):
     # Cette requête permet d'obtenir la somme du parc actif (ou le CA) par mois
 
     select_type = "count(id)"
@@ -55,7 +109,7 @@ def getParcAtif(univers, get, debut_periode, fin_periode, searche):
         SELECT date_facture as dates, {select_type} as parc_actif from public.base_dobb
         WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}')
         and statut in ('Activation', 'Montée en valeur', 'Retour de suspension', 'Baisse en valeur', 'Suspension')
-        {searche}
+        {search}
         GROUP BY dates
         ORDER BY dates;
     """
@@ -99,7 +153,7 @@ def getCumule(liste_hausse, liste_baisse):
     return stokes
 
 
-def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, searche):
+def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
     # Réalisé dans la période par parc (statut)
     request = f"""
         SELECT 
@@ -109,17 +163,17 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, searche):
             COALESCE(sum(case when (statut='Baisse en valeur') then dif_montant end), 0) as "Baisse en valeur",
             COALESCE(sum(case when (statut='Suspension') then dif_montant end), 0) as "Suspension"
             from public.base_dobb
-        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}') {searche};
+        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}') {search};
     """
 
     # Détermine le CA de début et fin de période selon qu'il s'agisse de
     if evo_type == 'ytd':
-        cumule_debut_periode = pd.read_sql(sql=text(extremiteYTD(univers, debut_periode, searche)), con=connection)
-        cumule_fin_periode = pd.read_sql(sql=text(extremiteYTD(univers, fin_periode, searche)), con=connection)
+        cumule_debut_periode = pd.read_sql(sql=text(extremiteYTD(univers, debut_periode, search)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremiteYTD(univers, fin_periode, search)), con=connection)
 
     else:
-        cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, searche)), con=connection)
-        cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, searche)), con=connection)
+        cumule_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, search)), con=connection)
+        cumule_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, search)), con=connection)
 
     # Réalisé dans au cours de la période
     ca_periode_en_cours = pd.read_sql(sql=text(request), con=connection)
@@ -129,6 +183,7 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, searche):
     cumule_fin_periode = utils.formatDf(cumule_fin_periode, ['axis', 'values'])
 
     df = pd.concat([cumule_debut_periode, ca_periode_en_cours], axis=0)
+    print(df)
     df['cumsum'] = df['values'].cumsum(axis=0, skipna=False)
 
     data = pd.concat([df, cumule_fin_periode], axis=0).reset_index(drop=True)
@@ -153,24 +208,24 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, searche):
     return data_final
 
 
-def getHausseBasse(univers, debut_periode, fin_periode, searche):
+def getHausseBasse(univers, debut_periode, fin_periode, search):
 
     request = f"""
         SELECT date_facture as dates,
             sum(case when (statut in ('Activation', 'Montée en valeur', 'Retour de suspension')) then dif_montant else NULL end) as hausse,
             sum(case when (statut in ('Baisse en valeur', 'Suspension')) then dif_montant else NULL end) as baisse
             from public.base_dobb
-        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}') {searche}
+        WHERE univers='{univers}' and (date_facture BETWEEN '{debut_periode}' AND '{fin_periode}') {search}
         group by dates
         order by dates;
     """
 
-    ca_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, searche)), con=connection)
+    ca_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, search)), con=connection)
     evo_periode = pd.read_sql(sql=text(request), con=connection)
     evo_periode["dates"] = pd.to_datetime(evo_periode["dates"], format='%Y-%m-%d', errors='ignore')
     evo_periode['dates'] = evo_periode['dates'].dt.strftime('%b-%y')
     evo_periode['dates'] = evo_periode['dates'].astype(str)
-    ca_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, searche)), con=connection)
+    ca_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, search)), con=connection)
 
     ca_debut_periode = utils.toInt(data=ca_debut_periode)
     evo_periode = utils.toInt(data=evo_periode)
@@ -234,6 +289,12 @@ class ClientTop200:
         df = df.fillna(0)
         data = self.dataToDictAg(data=df)
 
+        return data
+
+    def getClientEntrant(self, date_debut, date_fin):
+        client_entrant = getClientEntrant(date_debut=date_debut, date_fin=date_fin)
+        client_entrant = client_entrant.fillna(0)
+        data = self.dataToDictAg(data=client_entrant)
         return data
 
     def getGraphData(self, sheet_name):

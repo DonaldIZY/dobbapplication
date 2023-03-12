@@ -36,14 +36,17 @@ class FacturationView(LoginRequiredMixin, View):
         if entities == 'Commercial':
             commercial_obj = Commercial.objects.get(commercial=user)
             full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
+            print(commercial_obj)
             searche = f"""
-            and LOWER(TRIM(commercial))='{full_name.lower().strip()}'
+            and LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
             """
         elif entities == 'Manager':
             groups = user.groups.all()
+            print(groups)
             searche = f"""
-            and LOWER(TRIM(segment))='{groups[0].lower().strip()}'
+            and LOWER(TRIM(segment)) = '{groups[0].lower().strip()}'
             """
+        print(searche)
 
         # Récupération des données de la requête
         set_univers = json.load(request)['univers']
@@ -51,15 +54,15 @@ class FacturationView(LoginRequiredMixin, View):
 
         # Obtention des données
         parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
-                                      fin_periode='2022-11-01', searche=searche)
+                                      fin_periode='2022-11-01', search=searche)
         ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
-                                         fin_periode='2022-11-01', searche=searche)
+                                         fin_periode='2022-11-01', search=searche)
         evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', evo_type="ytd", searche=searche)
+                                     fin_periode='2022-11-01', evo_type="ytd", search=searche)
         evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
-                                     fin_periode='2022-11-01', evo_type="mom", searche=searche)
+                                     fin_periode='2022-11-01', evo_type="mom", search=searche)
         evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01',
-                                       fin_periode='2022-11-01', searche=searche)
+                                       fin_periode='2022-11-01', search=searche)
 
         # Préparation de la réponse
         response_data = {
@@ -86,6 +89,8 @@ class VariationTop200View(LoginRequiredMixin, View):
         client = data.ClientTop200()
         client_entrant = client.getClient(sheet_name='client entrant')
         client_sortant = client.getClient(sheet_name='client sortant')
+        client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
+        # print(client_entrant2)
         response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant}
 
         return JsonResponse(response_data)
