@@ -86,3 +86,75 @@ class PerformanceCAView(LoginRequiredMixin, View):
         heading = "Performance CA YTD"
         greeting = {'heading': heading, 'pageview': "Dashboards"}
         return render(request, 'analytics/dashboard/monitoring/performanceCAYTD.html', greeting)
+    
+
+
+class DashboardView(LoginRequiredMixin, View):
+    univers = 'Mobile'
+
+    def post(self, request):
+        # Récupération des données de la requête
+        set_univers = json.load(request)['univers']
+        self.univers = set_univers
+
+        # Obtention des données
+        parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
+                                      fin_periode='2022-11-01')
+        ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
+                                         fin_periode='2022-11-01')
+        evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
+                                     fin_periode='2022-11-01', evo_type="ytd")
+        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
+                                     fin_periode='2022-11-01', evo_type="mom")
+        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01', fin_periode='2022-11-01')
+
+        # Préparation de la réponse
+        response_data = {
+            'volume': parc_actif,
+            'ca': ca_parc_actif,
+            'evo_ytd': evo_ytd,
+            'evo_mom': evo_mom,
+            'evo_diff': evo_diff
+        }
+        return JsonResponse(response_data)
+
+    def get(self, request):
+        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
+                    "menu_wallet": True}
+        return render(request, 'analytics/portefeuille/dashboard.html', greeting)
+    
+    
+
+class ClienteleView(LoginRequiredMixin, View):
+    univers = 'Mobile'
+
+    def post(self, request):
+        # Récupération des données de la requête
+        set_univers = json.load(request)['univers']
+        self.univers = set_univers
+
+        # Obtention des données
+        parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
+                                      fin_periode='2022-11-01')
+        ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
+                                         fin_periode='2022-11-01')
+        evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
+                                     fin_periode='2022-11-01', evo_type="ytd")
+        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
+                                     fin_periode='2022-11-01', evo_type="mom")
+        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01', fin_periode='2022-11-01')
+
+        # Préparation de la réponse
+        response_data = {
+            'volume': parc_actif,
+            'ca': ca_parc_actif,
+            'evo_ytd': evo_ytd,
+            'evo_mom': evo_mom,
+            'evo_diff': evo_diff
+        }
+        return JsonResponse(response_data)
+
+    def get(self, request):
+        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
+                    "menu_wallet": True}
+        return render(request, 'analytics/portefeuille/clientele.html', greeting)

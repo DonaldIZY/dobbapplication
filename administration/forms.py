@@ -24,7 +24,7 @@ class EquipeForm(forms.ModelForm):
         return equipe
 
 
-# Création d'un chargé d'affaire
+# Création d'un commercial
 class CommercialForm(forms.ModelForm):
     Commercial_group = Group.objects.get(name="Commercial")
     try:

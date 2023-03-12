@@ -21,7 +21,7 @@
     <div class="col-xl-12 col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Edit Permissions</h4>
+                <h4 class="card-title">Editer les permissions</h4>
             </div>
 
 
@@ -30,17 +30,17 @@
                     <form  method="post" enctype="multipart/form-data">{% csrf_token %}
                         <div class="row">
                                 <div class="mb-3 col-md-12">
-                                    <label class="form-label">Name</label>
+                                    <label class="form-label">Nom</label>
                                     {{ form.name|attr:"type:text"|attr:"class:form-control"}}
                                 </div>
 
                                 <div class="mb-3 col-md-12">
-                                    <label class="form-label">Code Name</label>
+                                    <label class="form-label">Code</label>
                                     {{ form.codename|attr:"type:text"|attr:"class:form-control"}}
                                 </div>
 
                                 <div class="mb-3 col-md-12">
-                                    <label class="form-label">Content Type</label>
+                                    <label class="form-label">Type de contenu</label>
                                     {{ form.content_type|attr:"type:text"|attr:"class:default-select form-control wide"}}
                                 </div>
 
@@ -48,9 +48,9 @@
 
 
 
-                    
-                        <button type="submit" class="btn btn-secondary mt-4 mb-3">Save</button>
-                        <a href="{% url 'finlab:index' %}" class="btn btn-primary mt-4 mb-3">Cancel</a>
+                        <a href="{% url 'finlab:index' %}" class="btn btn-primary mt-4 mb-3">Annuler</a>
+                        <button type="submit" class="btn btn-secondary mt-4 mb-3">Sauvegarder</button>
+                        
                     </form>
                 </div>
             </div>

@@ -4,6 +4,14 @@
 
 {% block additional_css %}
 
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.users %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
+    {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.table_datatable_basic %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
 {% endblock %}
 
 
@@ -21,15 +29,15 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive ">
-                        <table class="table table-responsive-md ck-table">
+                        <table class="table table-responsive-md table-bordered ck-table">
                             <thead>
                                 <tr>
                                     
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Code Name</th>
-                                    <th scope="col">Content Type</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Type de contenu</th>
                                     {% if perms.auth.change_permission or perms.auth.delete_permission %}
-                                    <th scope="col"></th>
+                                    <th scope="col">Action</th>
                                     {% endif %}
                                 </tr>
                             </thead>
@@ -123,6 +131,16 @@
 
 
 {% block additional_js %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+    <script src="{% static jsurl %}"></script>
+    {% endfor %}
+
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.users %}
+    <script src="{% static jsurl %}"></script>
+    {% endfor %}
+
+
 <script>
     $('.sweet-success-cancel').on('click', function (event) {
            event.preventDefault();

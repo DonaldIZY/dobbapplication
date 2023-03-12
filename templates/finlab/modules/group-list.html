@@ -17,7 +17,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Gestion des rôles d'utilisateurs </h4>
+                <h4 class="card-title">Rôles d'utilisateurs </h4>
                 {% if perms.auth.add_group %}
                 <a href="{% url 'finlab:group-add' %}" class="btn btn-primary btn-sm content-justify-right">Ajouter  <span class="btn-icon-end">
                     <i class="fa fa-plus"></i></span>
@@ -28,15 +28,15 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-responsive-md ck-table">
+                    <table class="table table-bordered table-responsive-md ck-table">
                         <thead>
                             <tr>
                            
                                 <th scope="col">Rôle</th>
-                                <th scope="col">Nombre d'utilisateur</th>
+                                <th scope="col">Nombre d'utilisateurs</th>
                                 <th scope="col">Permissions</th>
                                 {% if perms.auth.change_group or perms.auth.delete_group %}
-                                <th scope="col"></th>
+                                <th scope="col">Action</th>
                                 {% endif %}
                             </tr>
                         </thead>
@@ -60,7 +60,7 @@
 
                                 
 
-                                 <td>
+                                 <td class="d-flex justify-content-center">
                                     
                                     
                                     <span class={% if group.perms_count == 0 %}
@@ -74,7 +74,7 @@
 
                                 {% if perms.auth.change_group or perms.auth.delete_group %}
                                 <td>
-                                    <span class="sweetalert d-flex">
+                                    <span class="sweetalert d-flex justify-content-center">
 
                                         {% if perms.auth.change_group %}
 
