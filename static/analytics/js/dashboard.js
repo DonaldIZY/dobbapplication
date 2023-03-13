@@ -178,7 +178,6 @@ var topProduitsOption = {
     },
   yAxis: {
     type: 'category',
-    data: ['Produit A', 'Produit B', 'Produit C', 'Produit D', 'Produit E'],
     scale: true,
     axisTick: {show: false},
     axisLine: {show: false},

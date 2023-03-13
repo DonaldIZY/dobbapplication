@@ -248,7 +248,7 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
     ca_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, search)), con=connection)
     evo_periode = pd.read_sql(sql=text(request), con=connection)
     evo_periode["dates"] = pd.to_datetime(evo_periode["dates"], format='%Y-%m-%d', errors='ignore')
-    evo_periode['dates'] = evo_periode['dates'].dt.strftime('%b-%y')
+    evo_periode['dates'] = evo_periode['dates'].dt.strftime('%b %y')
     evo_periode['dates'] = evo_periode['dates'].astype(str)
     ca_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, search)), con=connection)
 
@@ -296,44 +296,90 @@ class ClientTop200:
         data = dataToDictAg(data=client_entrant)
         return data
 
-    def getGraphData(self, sheet_name):
-        df = pd.read_excel("analytics/data/client.xlsx", sheet_name=sheet_name)
-        df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore')
-        df['dates'] = df['dates'].dt.strftime('%b %y')
-        df['dates'] = df['dates'].astype(str)
+    def getGraphData(self, sheet_name, date_debut, date_fin, search):
+        request = f"""
+            SELECT 
+                date_facture, 
+                SUM(montant) AS "CA top 200", 
+                SUM(montant) / SUM(subquery.total_montant) * 10000 AS "Contribution CA Global" 
+            FROM 
+                public.base_dobb
+            INNER JOIN 
+                (
+                    SELECT
+                        client,
+                        SUM(montant) AS montant_total 
+                    FROM 
+                        public.base_dobb 
+                    GROUP BY 
+                        client 
+                    ORDER BY 
+                        montant_total DESC 
+                    LIMIT 
+                        200
+                ) AS top_200 
+                ON public.base_dobb.client = top_200.client 
+            CROSS JOIN 
+                (
+                    SELECT 
+                        SUM(montant) AS total_montant 
+                    FROM 
+                        public.base_dobb
+                ) AS subquery
+            WHERE
+                date_facture BETWEEN '{date_debut}' AND '{date_fin}'
+            GROUP BY date_facture;
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+
+        df["date_facture"] = pd.to_datetime(df["date_facture"], format='%Y-%m-%d', errors='ignore')
+        df['date_facture'] = df['date_facture'].dt.strftime('%b %y')
+        df['date_facture'] = df['date_facture'].astype(str)
 
         m = df.select_dtypes(np.number)
         df[m.columns] = m.round(2)
 
-        pourcents = ['Contribution totale au CAF', ]
+        pourcents = ['Contribution CA Global', ]
         df = utils.pourcentCol(df, pourcents)
         df.rename(str.strip, axis='columns', inplace=True)
         df = df.fillna(0)
 
-        axis = df['dates'].tolist()
-        caf = df['CAF YTD (mxof)'].tolist()
-        pourcent = df['Contribution totale au CAF'].tolist()
+        axis = df['date_facture'].tolist()
+        caf = df['CA top 200'].tolist()
+        pourcent = df['Contribution CA Global'].tolist()
         data_final = {'axis': axis, 'caf': caf, 'pourcent': pourcent}
 
         return data_final
 
 
-def CAUnivers():
-    df = pd.read_excel("analytics/data/client.xlsx", sheet_name="Univers CA")
-    df.rename(str.strip, axis='columns', inplace=True)
-    df.rename(str.lower, axis='columns', inplace=True)
-    df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore')
+def CAUnivers(date_debut, date_fin, search):
+    request = f"""
+        SELECT date_facture, 
+            COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband,
+            COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe,
+            COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict,
+            COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
+            COALESCE(SUM(montant), 0) as total
+        FROM public.base_dobb
+        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+        GROUP BY date_facture
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+
+    df["date_facture"] = pd.to_datetime(df["date_facture"], format='%Y-%m-%d', errors='ignore')
 
     date = datetime.strptime('2022-01-01', '%Y-%m-%d')
-    df_2022 = df[df['dates'] >= date].copy()
-    df_2022['dates'] = df_2022['dates'].dt.strftime('%b %y')
-    df_2022['dates'] = df_2022['dates'].astype(str)
-    df_2022 = df_2022.drop(columns=['total', 'dates'])
+    df_2022 = df[df['date_facture'] >= date].copy()
+    df_2022['date_facture'] = df_2022['date_facture'].dt.strftime('%b %y')
+    df_2022['date_facture'] = df_2022['date_facture'].astype(str)
+    df_2022 = df_2022.drop(columns=['total', 'date_facture'])
 
-    df_2021 = df[df['dates'] < date].copy()
-    df_2021['dates'] = df_2021['dates'].dt.strftime('%b %y')
-    df_2021['dates'] = df_2021['dates'].astype(str)
-    df_2021 = df_2021.drop(columns=['total', 'dates'])
+    df_2021 = df[df['date_facture'] < date].copy()
+    df_2021['date_facture'] = df_2021['date_facture'].dt.strftime('%b %y')
+    df_2021['date_facture'] = df_2021['date_facture'].astype(str)
+    df_2021 = df_2021.drop(columns=['total', 'date_facture'])
 
     data_final = {
         f"{col}": {
@@ -368,18 +414,19 @@ def caUniversCommerciaux(date_debut, date_fin, search):
 
 
 def performGenerale(date_debut, date_fin, search):
-    request = f"""
-        SELECT client, COALESCE(SUM(montant), 0) as total_montant
-            FROM public.base_dobb
+    request = f"""      
+        SELECT date_facture, 
+            COALESCE(SUM(montant), 0) as total_montant
+        FROM public.base_dobb
         WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY client
-        ORDER BY total_montant DESC
-        limit 5;
+        GROUP BY date_facture;
     """
 
     df = pd.read_sql(sql=text(request), con=connection)
+    df['dates'] = pd.to_datetime(df['date_facture'], format='%Y-%m-%d').dt.strftime('%b %y')
+    df['dates'] = df['dates'].astype(str)
 
-    client = df['client'].tolist()
+    client = df['dates'].tolist()
     total_montant = df['total_montant'].tolist()
     data_final = {'total_montant': total_montant, 'client': client}
 

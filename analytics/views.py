@@ -107,13 +107,19 @@ class CATop200View(LoginRequiredMixin, View):
         return render(request, 'analytics/monitoring/CA_top_200.html', greeting)
 
     def post(self, request):
-        # Récupération des données de la requête
-        param1 = request.POST.get('param1')
-        param2 = request.POST.get('param2')
+        searche = ''
+        user = request.user
+        entities = get_user_entities(user)
+        search = getSearch(entities, user)
 
         get_data = data.ClientTop200()
-        mom_caf = get_data.getGraphData(sheet_name='MoM CAF')
-        ca_univers = data.CAUnivers()
+        mom_caf = get_data.getGraphData(sheet_name='MoM CAF',
+                                        date_debut='2022-01-01',
+                                        date_fin='2022-06-01',
+                                        search=search)
+        ca_univers = data.CAUnivers(date_debut='2021-01-01',
+                                    date_fin='2022-12-01',
+                                    search=search)
         response_data = {'mom_caf': mom_caf, 'ca_univers': ca_univers}
 
         return JsonResponse(response_data)
