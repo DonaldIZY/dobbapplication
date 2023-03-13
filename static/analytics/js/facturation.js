@@ -25,6 +25,21 @@ let url = window.location.href;
 console.log(url);
 /* jshint ignore:end */
 
+
+let etiquette_format = function (params) {
+  var value = params.value;
+  if (value >= 1000000000) {
+      return (Math.round(value/1000000000)) + ' Md'; // afficher en milliards
+  } else if (value < 1000000000 && value >= 1000000) {
+      return (Math.round(value/1000000)) + ' M'; // afficher en millions
+  } else if (value < 1000000 && value >= 100000){
+      return (Math.round(value/1000)) + ' k'; // afficher les valeurs directement
+  } else {
+      return value;
+  }
+};
+
+
 // =====================================================================================================================
 // GRAPHIQUE : EVOLUTION DU PARC ACTIF ET DU CA 
 
@@ -80,7 +95,7 @@ let optionParcActif = {
       axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
         formatter: '{value}',
-        fontSize: '80%'     
+        fontSize: '80%',  
       },
       show: false
     },
@@ -90,8 +105,8 @@ let optionParcActif = {
       scale: true,
       axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
-        formatter: '{value} FCFA',
-        fontSize: '80%'
+        formatter: '{value}',
+        fontSize: '80%',
       },
       show: false
     }
@@ -154,6 +169,7 @@ let optionParcActif = {
       //étiquettes de la courbe
       label: {
         show: true,
+        formatter: etiquette_format,
         color: '#dedede',
         position: 'inside',
         backgroundColor: color_sombre,
@@ -173,6 +189,7 @@ let optionParcActif = {
 // Options de statut de la clientèle
 let tooltip = {
   trigger: 'axis',
+  grid: grid,
   textStyle: {
     fontFamily: fontFamily,
     fontSize: '100%'
@@ -239,6 +256,8 @@ let optionFacturationMoM = {
       tooltip: tooltip,
       legend: legende,
       grid: grid,
+      // Centrer horizontalement le graphe
+      center: ['50%', '50%'],
       xAxis: xaxis,
       yAxis: yaxis,
       series: [
@@ -280,6 +299,7 @@ let optionFacturationMoM = {
           },
           label: {
             show: true,
+            formatter: etiquette_format,
             fontSize: '80%',
             fontWeight: 600,
             textStyle: {
@@ -308,6 +328,7 @@ let optionFacturationMoM = {
           },
           label: {
             show: true,
+            formatter: etiquette_format,
             position: 'top',
             fontSize: '80%',
             fontWeight: 600,
@@ -370,6 +391,7 @@ let optionFacturationYTD = {
           },
           label: {
             show: true,
+            formatter: etiquette_format,
             fontSize: '80%',
             fontWeight: 600,
             textStyle: {
@@ -398,6 +420,7 @@ let optionFacturationYTD = {
           },
           label: {
             show: true,
+            formatter: etiquette_format,
             position: 'top',
             fontSize: '80%',
             fontWeight: 600,
@@ -470,6 +493,7 @@ let optionEvoMoM = {
         },
         label: {
           show: true,
+          formatter: etiquette_format,
           position: 'bottom',
           fontSize: '80%',
           fontWeight: 600,
@@ -498,6 +522,7 @@ let optionEvoMoM = {
         },
         label: {
           show: true,
+          formatter: etiquette_format,
           position: 'top',
           fontSize: '80%',
           fontWeight: 600,
@@ -637,8 +662,6 @@ window.addEventListener('resize', function() {
         fontSize: fontSizeParc + '%'
       }
     }],
-    height: '100%',
-    width: '100%'
   });
 
   chartMoM.resize();

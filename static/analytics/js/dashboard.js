@@ -18,6 +18,19 @@ let url = window.location.href;
 console.log(url);
 /* jshint ignore:end */
 
+let etiquette_format = function (params) {
+  var value = params.value;
+  if (value >= 1000000000) {
+      return (Math.round(value/1000000000)) + ' Md'; // afficher en milliards
+  } else if (value < 1000000000 && value >= 1000000) {
+      return (Math.round(value/1000000)) + ' M'; // afficher en millions
+  } else if (value < 1000000 && value >= 100000){
+      return (Math.round(value/1000)) + ' k'; // afficher les valeurs directement
+  } else {
+      return value;
+  }
+};
+
 
 // =====================================================================================================================
 // GRAPHIQUE : PERFORMANCE GENERALE
@@ -38,7 +51,10 @@ var performGeneraleOption = {
   series: [
     {
       type: 'line',
-      smooth: true
+      smooth: true,
+      label:{
+        formatter: etiquette_format,
+      }
     }
   ]
 };
@@ -49,6 +65,7 @@ var performGeneraleOption = {
 let caUnivers = echarts.init(document.getElementById('dashboardCaUnivers'), null, {renderer: 'canvas', force: true});
 let caUniversOption = {
   responsive: true,
+  grid: grid,
   tooltip: {
     trigger: 'item',
     textStyle: {
@@ -71,6 +88,8 @@ let caUniversOption = {
 var topClients = echarts.init(document.getElementById('dashbordTopClients'), null, {renderer: 'canvas', force: true} );
 var topClientsOption = {
   grid: grid,
+  // Centrer horizontalement le graphe
+  center: ['50%', '50%'],
   tooltip: {
     trigger: 'axis',
     textStyle: {
@@ -123,6 +142,7 @@ var topClientsOption = {
       //étiquettes de barres
       label: {
         show: true,
+        formatter: etiquette_format,
         fontWeight: 500,
         fontSize: '80%',
         position: 'inside',
@@ -132,7 +152,7 @@ var topClientsOption = {
         color: '#FFF'
       },
     }
-  ]
+  ],
 };
 
 // =====================================================================================================================
@@ -141,6 +161,8 @@ var topClientsOption = {
 var topProduits = echarts.init(document.getElementById('dashboardTopProduits'), null, {renderer: 'canvas', force: true} );
 var topProduitsOption = {
   grid: grid,
+  // Centrer horizontalement le graphe
+  center: ['50%', '50%'],
   tooltip: {
     trigger: 'axis',
     textStyle: {
@@ -195,16 +217,17 @@ var topProduitsOption = {
       //étiquettes de barres
       label: {
         show: true,
-        fontWeight: 500,
+        formatter: etiquette_format,
+        fontWeight: 600,
         fontSize: '80%',
-        position: 'inside',
+        position: 'right',
         textStyle: {
           fontFamily: fontFamily // changer la police en celle HTML
       },
-        color: '#FFF'
+        color: '#000'
       },
     }
-  ]
+  ],
 };
 
 
