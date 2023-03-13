@@ -37,6 +37,17 @@ def getSearch(entities, user):
         """
     return search
 
+def getDates(request):
+    if request.method == 'POST':
+        data = request.POST.dict()
+        selected_date = data.get('start_date')
+        print(selected_date*5)
+        # Faites quelque chose avec la date sélectionnée ici
+        response_data = {'message': 'Date reçue : ' + selected_date}
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Méthode non autorisée'})
+
 
 class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
@@ -149,7 +160,7 @@ class DashboardView(LoginRequiredMixin, View):
                                             date_fin='2022-06-01',
                                             search=search)
         perfomance = data.performGenerale(date_debut='2022-01-01',
-                                          date_fin='2022-06-01',
+                                          date_fin='2022-11-01',
                                           search=search)
         produit = data.produit(date_debut='2022-01-01',
                                date_fin='2022-06-01',

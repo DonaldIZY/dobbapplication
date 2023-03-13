@@ -21,13 +21,13 @@ console.log(url);
 let etiquette_format = function (params) {
   var value = params.value;
   if (value >= 1000000000) {
-      return (Math.round(value/1000000000)) + ' Md'; // afficher en milliards
+      return (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
   } else if (value < 1000000000 && value >= 1000000) {
-      return (Math.round(value/1000000)) + ' M'; // afficher en millions
+      return (value/1000000).toFixed(2) + ' M'; // afficher en millions
   } else if (value < 1000000 && value >= 100000){
-      return (Math.round(value/1000)) + ' k'; // afficher les valeurs directement
+      return (value/1000).toFixed(2) + ' K'; // afficher en milliers
   } else {
-      return value;
+      return value; // afficher les valeurs directement
   }
 };
 
@@ -68,6 +68,19 @@ let caUniversOption = {
   grid: grid,
   tooltip: {
     trigger: 'item',
+    formatter: function(params) {
+          var value = params.value;
+          if (value >= 1000000000) {
+              value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
+          } else if (value < 1000000000 && value >= 1000000) {
+              value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
+          } else if (value < 1000000 && value >= 1000){
+              value = (value/1000).toFixed(2) + ' K'; // afficher les valeurs directement
+          } else {
+              value = value;
+          }
+          return params.name + ': ' + value + ' (' + params.percent + '%)';
+        },
     textStyle: {
       fontFamily: fontFamily,
       fontSize: '100%'
@@ -77,7 +90,10 @@ let caUniversOption = {
     {
       type: 'pie',
       radius: '65%',
-      selectedMode: 'single'
+      selectedMode: 'single',
+      label:{
+        formatter: '{b}:{d}%',
+      }
     }
   ]
 };
@@ -198,9 +214,7 @@ var topProduitsOption = {
     {
       name: 'Top 5 produits',
       type: 'bar',
-      data: [15, 17, 18, 20, 25],
       itemStyle: {
-        // borderColor: 'transparent',
         borderWidth: 1,
         borderType: 'solid',
         borderColor: color_blue_1,
