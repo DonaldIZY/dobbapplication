@@ -248,7 +248,7 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
     ca_debut_periode = pd.read_sql(sql=text(extremitePeriode(univers, debut_periode, search)), con=connection)
     evo_periode = pd.read_sql(sql=text(request), con=connection)
     evo_periode["dates"] = pd.to_datetime(evo_periode["dates"], format='%Y-%m-%d', errors='ignore')
-    evo_periode['dates'] = evo_periode['dates'].dt.strftime('%b-%y')
+    evo_periode['dates'] = evo_periode['dates'].dt.strftime('%b %y')
     evo_periode['dates'] = evo_periode['dates'].astype(str)
     ca_fin_periode = pd.read_sql(sql=text(extremitePeriode(univers, fin_periode, search)), con=connection)
 
@@ -414,18 +414,19 @@ def caUniversCommerciaux(date_debut, date_fin, search):
 
 
 def performGenerale(date_debut, date_fin, search):
-    request = f"""
-        SELECT client, COALESCE(SUM(montant), 0) as total_montant
-            FROM public.base_dobb
+    request = f"""      
+        SELECT date_facture, 
+            COALESCE(SUM(montant), 0) as total_montant
+        FROM public.base_dobb
         WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY client
-        ORDER BY total_montant DESC
-        limit 5;
+        GROUP BY date_facture;
     """
 
     df = pd.read_sql(sql=text(request), con=connection)
+    df['dates'] = pd.to_datetime(df['date_facture'], format='%Y-%m-%d').dt.strftime('%b %y')
+    df['dates'] = df['dates'].astype(str)
 
-    client = df['client'].tolist()
+    client = df['dates'].tolist()
     total_montant = df['total_montant'].tolist()
     data_final = {'total_montant': total_montant, 'client': client}
 
