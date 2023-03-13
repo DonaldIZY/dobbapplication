@@ -1,11 +1,4 @@
 /* jshint esversion: 6 */
-function evoFormat(val) {
-  'use strict';
-  if(val === 0) {
-    val = '-';
-  }
-  return val;
-}
 
 function setColor(color) {
   'use strict';
@@ -40,21 +33,15 @@ var performGeneraleOption = {
       }
     },
   xAxis: {
-    data: ['A', 'B', 'C', 'D', 'E']
     },
   yAxis: {},
   series: [
     {
-      data: [10, 22, 28, 23, 19],
       type: 'line',
       smooth: true
     }
   ]
 };
-
-// application des options au graphique
-performGeneraleOption && performGenerale.setOption(performGeneraleOption);
-
 
 // =====================================================================================================================
 // GRAPHIQUE : CA GENERE PAR UNIVERS
@@ -73,19 +60,10 @@ let caUniversOption = {
     {
       type: 'pie',
       radius: '65%',
-      selectedMode: 'single',
-      data: [
-        {value: 335, name: 'Mobile'},
-        {value: 234, name: 'Fixe'},
-        {value: 1548, name: 'Broadband'},
-        {value: 200, name: 'ICT'}
-      ]
+      selectedMode: 'single'
     }
   ]
 };
-// application des options au graphique
-caUnivers.setOption(caUniversOption);
-
 
 // =====================================================================================================================
 // GRAPHIQUE : TOP 5 CLIENTS
@@ -108,7 +86,6 @@ var topClientsOption = {
     },
   xAxis: {
     type: 'category',
-    data: ['Client A', 'Client B', 'Client C', 'Client D', 'Client E'],
     scale: true,
     axisTick: {show: false},
     axisLine: {show: false},
@@ -129,7 +106,6 @@ var topClientsOption = {
     {
       name: 'Top 5 clients',
       type: 'bar',
-      data: [50, 35, 28, 23, 15],
       itemStyle: {
         // borderColor: 'transparent',
         borderWidth: 1,
@@ -158,10 +134,6 @@ var topClientsOption = {
     }
   ]
 };
-// application des options au graphique
-topClientsOption && topClients.setOption(topClientsOption);
-
-
 
 // =====================================================================================================================
 // GRAPHIQUE : TOP 5 CLIENTS
@@ -234,8 +206,7 @@ var topProduitsOption = {
     }
   ]
 };
-// application des options au graphique
-topProduitsOption && topProduits.setOption(topProduitsOption);
+
 
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
@@ -243,19 +214,8 @@ window.addEventListener('resize', function() {
   topProduits.resize();
   var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
   topProduits.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeTopProduit + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeTopProduit + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizeTopProduit + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizeTopProduit + '%'
       }
     }],
@@ -269,19 +229,8 @@ window.addEventListener('resize', function() {
   topClients.resize();
   var fontSizeClient = document.getElementById('dashbordTopClients').offsetWidth / 50;
   topClients.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeClient + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeClient + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizeClient + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizeClient + '%'
       }
     }],
@@ -295,22 +244,6 @@ window.addEventListener('resize', function() {
   caUnivers.resize();
   var fontSizeCaUnivers = document.getElementById('dashboardCaUnivers').offsetWidth / 50;
   caUnivers.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeCaUnivers + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSizeCaUnivers + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSizeCaUnivers + '%'
-      }
-    }],
     tooltip: [{
       textStyle: {
         fontSize: fontSizeCaUnivers + '%'
@@ -321,19 +254,8 @@ window.addEventListener('resize', function() {
   performGenerale.resize();
   var fontSizePerform = document.getElementById('dashbordPerformGen').offsetWidth / 50;
   performGenerale.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizePerform + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizePerform + '%'}
-    },
     series: [{
       label: {
-        fontSize: fontSizePerform + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
         fontSize: fontSizePerform + '%'
       }
     }],
@@ -378,6 +300,25 @@ function getData(univers) {
       /* jshint ignore:start */
       console.log(data);
       /* jshint ignore:end */
+
+      caUniversOption.series[0].data = data.univers;
+      caUniversOption && caUnivers.setOption(caUniversOption);
+
+    //   ===========================================================
+      performGeneraleOption.xAxis.data = data.performance.client;
+      performGeneraleOption.series[0].data = data.performance.total_montant;
+      performGeneraleOption && performGenerale.setOption(performGeneraleOption);
+
+    //   =============================================================
+
+      topClientsOption.xAxis.data = data.performance.client;
+      topClientsOption.series[0].data = data.performance.total_montant;
+      topClientsOption && topClients.setOption(topClientsOption);
+
+    //   ===============================================================
+      topProduitsOption.xAxis.data = data.product.product;
+      topProduitsOption.series[0].data = data.product.ca;
+      topProduitsOption && topProduits.setOption(topProduitsOption);
 
     })
     .catch(function (error) {

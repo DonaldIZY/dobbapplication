@@ -121,7 +121,7 @@ def getClientEntrant(date_debut, date_fin):
     client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
 
     client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
-    return dataToDictAg(data=client_entrant)
+    return client_entrant
 
 
 def getParcAtif(univers, get, debut_periode, fin_periode, search):
@@ -293,7 +293,7 @@ class ClientTop200:
     def getClientEntrant(self, date_debut, date_fin):
         client_entrant = getClientEntrant(date_debut=date_debut, date_fin=date_fin)
         client_entrant = client_entrant.fillna(0)
-        data = self.dataToDictAg(data=client_entrant)
+        data = dataToDictAg(data=client_entrant)
         return data
 
     def getGraphData(self, sheet_name):
@@ -358,4 +358,48 @@ def caUniversCommerciaux(date_debut, date_fin, search):
     """
 
     ca_univers = pd.read_sql(sql=text(request), con=connection)
-    return dataToDictAg(data=ca_univers)
+    ca_univers = dataToDictAg(data=ca_univers)
+
+    data = []
+    for key, value in ca_univers[0].items():
+        data.append({"value": value, "name": key})
+
+    return data
+
+
+def performGenerale(date_debut, date_fin, search):
+    request = f"""
+        SELECT client, COALESCE(SUM(montant), 0) as total_montant
+            FROM public.base_dobb
+        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+        GROUP BY client
+        ORDER BY total_montant DESC
+        limit 5;
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+
+    client = df['client'].tolist()
+    total_montant = df['total_montant'].tolist()
+    data_final = {'total_montant': total_montant, 'client': client}
+
+    return data_final
+
+
+def produit(date_debut, date_fin, search):
+    request = f"""
+        SELECT groupe_produit, COALESCE(SUM(montant), 0) as total_montant
+            FROM public.base_dobb
+        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+        GROUP BY groupe_produit
+        ORDER BY total_montant DESC
+        limit 5;
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+
+    product = df['groupe_produit'].tolist()
+    ca = df['total_montant'].tolist()
+    data_final = {'product': product, 'ca': ca}
+
+    return data_final
