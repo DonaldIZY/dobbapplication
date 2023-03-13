@@ -36,4 +36,4 @@ function getCookie(name) {
 
 
 // ============================================= E-chart Options =======================================================
-var grid = {top:'2%', left: '2%', right: '2%', bottom: '2%', containLabel: false};
+var grid = {top:'0%', left: '0%', right: '0%', bottom: '3%', containLabel: true};

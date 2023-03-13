@@ -136,7 +136,7 @@ var topClientsOption = {
 };
 
 // =====================================================================================================================
-// GRAPHIQUE : TOP 5 CLIENTS
+// GRAPHIQUE : TOP 5 PRODUITS
 
 var topProduits = echarts.init(document.getElementById('dashboardTopProduits'), null, {renderer: 'canvas', force: true} );
 var topProduitsOption = {
@@ -268,8 +268,6 @@ window.addEventListener('resize', function() {
 });
 
 
-
-
 // =====================================================================================================================
 function getData(univers) {
   "use strict";
@@ -316,7 +314,7 @@ function getData(univers) {
       topClientsOption && topClients.setOption(topClientsOption);
 
     //   ===============================================================
-      topProduitsOption.xAxis.data = data.product.product;
+      topProduitsOption.yAxis.data = data.product.product;
       topProduitsOption.series[0].data = data.product.ca;
       topProduitsOption && topProduits.setOption(topProduitsOption);
 
