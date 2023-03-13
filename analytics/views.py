@@ -94,7 +94,8 @@ class VariationTop200View(LoginRequiredMixin, View):
         client_sortant = client.getClient(sheet_name='client sortant')
         client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
         # print(client_entrant2)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant}
+        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
+                         }
 
         return JsonResponse(response_data)
 
@@ -138,14 +139,21 @@ class DashboardView(LoginRequiredMixin, View):
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        ca_univer = data.caUniversCommerciaux(date_debut='2022-01-01',
-                                              date_fin='2022-06-01',
-                                              search=search)
-        print(ca_univer)
+        univers = data.caUniversCommerciaux(date_debut='2022-01-01',
+                                            date_fin='2022-06-01',
+                                            search=search)
+        perfomance = data.performGenerale(date_debut='2022-01-01',
+                                          date_fin='2022-06-01',
+                                          search=search)
+        produit = data.produit(date_debut='2022-01-01',
+                               date_fin='2022-06-01',
+                               search=search)
 
         # Préparation de la réponse
         response_data = {
-            'ca_univer': ca_univer,
+            'univers': univers,
+            'performance': perfomance,
+            'product': produit
         }
         return JsonResponse(response_data)
 
