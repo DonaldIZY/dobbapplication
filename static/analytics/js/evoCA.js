@@ -68,7 +68,6 @@ let rich = {
 
 const domMoMCAF = document.getElementById('ca-top-200');
 const chartMoMCAF = echarts.init(domMoMCAF, null, {renderer: 'canvas', force: true});
-
 let optionMoMCAF = {
   grid: grid,
   tooltip: {
@@ -92,7 +91,7 @@ let optionMoMCAF = {
     }
   },
   legend: {
-    data: ['CAF YTD (mxof)', 'Contribution totale au CAF'],
+    data: ['CA top 200', 'Contribution CA Global'],
     align: 'left',
     itemGap: 50,
     textStyle: {
@@ -225,41 +224,11 @@ let optionMoMCAF = {
   ]
 };
 
-// Gérer la responsivité du graphe en fonction de son conteneur
-window.addEventListener('resize', function() {
-  chartMoMCAF.resize();
-  var fontSize = document.getElementById('chartMoMCAF').offsetWidth / 50;
-  chartMoMCAF.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSize + '%'
-      }
-    }]
-  })
-});
-
 // =====================================================================================================================
 // GRAPHIQUE : CONTRIBUTION PAR UNIVERS 
 
 let chartDomCAUnivers = document.getElementById('ca-univers');
 let chartCAUnivers = echarts.init(chartDomCAUnivers, null, {renderer: 'canvas', force: true});
-
 let optionCAUnivers = {
   tooltip: {
     trigger: 'item',
@@ -316,7 +285,6 @@ let tooltip = {
     return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + '<strong>' + tar.value + '</strong>';
   }
 };
-
 let xaxis = {
   type: 'category', 
   axisTick: {show: false}, 
@@ -336,7 +304,6 @@ let barWidth = '80%';
 
 let domTest = document.getElementById('test');
 let charTest = echarts.init(domTest, null, {renderer: 'canvas', force: true});
-
 let optiontest = {
     tooltip: tooltip,
     grid: grid,
@@ -393,36 +360,83 @@ let optiontest = {
       },
     ]
   };
+optiontest && charTest.setOption(optiontest);
 
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
   charTest.resize();
-  var fontSize = document.getElementById('charTest').offsetWidth / 50;
+  var fontSizeTest = document.getElementById('test').offsetWidth / 50;
   charTest.setOption({
     xAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSizeTest + '%'}
     },
     yAxis: {
-      axisLabel: {fontSize: fontSize + '%'}
+      axisLabel: {fontSize: fontSizeTest + '%'}
     },
     series: [{
       label: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTest + '%'
       }
     }],
     legend: [{
       textStyle: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTest + '%'
       }
     }],
     tooltip: [{
       textStyle: {
-        fontSize: fontSize + '%'
+        fontSize: fontSizeTest + '%'
       }
     }]
-  })
+  });
+
+  chartMoMCAF.resize();
+  var fontSizeMoMCAF = document.getElementById('ca-top-200').offsetWidth / 50;
+  chartMoMCAF.setOption({
+    xAxis: {
+      axisLabel: {fontSize: fontSizeMoMCAF + '%'}
+    },
+    yAxis: {
+      axisLabel: {fontSize: fontSizeMoMCAF + '%'}
+    },
+    series: [{
+      label: {
+        fontSize: fontSizeMoMCAF + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeMoMCAF + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeMoMCAF + '%'
+      }
+    }]
+  });
+
+  chartCAUnivers.resize();
+  var fontSizeCAUnivers = document.getElementById('ca-univers').offsetWidth / 50;
+  chartCAUnivers.setOption({
+    series: [{
+      label: {
+        fontSize: fontSizeCAUnivers + '%'
+      }
+    }],
+    legend: [{
+      textStyle: {
+        fontSize: fontSizeCAUnivers + '%'
+      }
+    }],
+    tooltip: [{
+      textStyle: {
+        fontSize: fontSizeCAUnivers + '%'
+      }
+    }]
+  });
 });
-optiontest && charTest.setOption(optiontest);
+
 
 // =====================================================================================================================
 fetch(url, {
