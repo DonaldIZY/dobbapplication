@@ -29,7 +29,7 @@ console.log(url);
 // GRAPHIQUE : EVOLUTION DU PARC ACTIF ET DU CA 
 
 let domParcActif = document.getElementById('facture');
-let chartParcActif = echarts.init(domParcActif, null, {renderer: 'canvas', force: true});
+let chartParcActif = echarts.init(domParcActif);
 
 let optionParcActif = {
   responsive: true,
@@ -167,8 +167,6 @@ let optionParcActif = {
     }
   ]
 };
-
-// Gérer la responsivité du graphe et de ses étiquettes en fonction de son conteneur
 
 
 // =====================================================================================================================
