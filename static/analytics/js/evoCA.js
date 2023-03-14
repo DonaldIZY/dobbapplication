@@ -76,13 +76,13 @@ let optionMoMCAF = {
       fontFamily: fontFamily,
       fontSize: '100%'
     },
-    formatter: function (params) {
-      return `<style>background-color: '#FFF'; color: '#525254FF'</style>
-              ${params[0].name} <br/>
-              ${params[0].seriesName} : <strong>${params[0].value.toFixed(0)} M </strong> <br/>
-              ${params[1].seriesName} : <strong>${params[1].value.toFixed(2)} % </strong> <br/>
-              `;
-    },
+    // formatter: function (params) {
+    //   return `<style>background-color: '#FFF'; color: '#525254FF'</style>
+    //           ${params[0].name} <br/>
+    //           ${params[0].seriesName} : <strong>${params[0].value.toFixed(0)} </strong> <br/>
+    //           ${params[1].seriesName} : <strong>${params[1].value.toFixed(2)} % </strong> <br/>
+    //           `;
+    // },
     axisPointer: {
       type: 'shadow',
       crossStyle: {
@@ -144,6 +144,12 @@ let optionMoMCAF = {
       name: 'CAF YTD (mxof)',
       type: 'bar',
       barWidth: '90%',
+      tooltip: {
+        valueFormatter: function (value) {
+          'use strict';
+          return value;
+        }
+      },
       itemStyle: {
         borderWidth: 1,
         borderType: 'solid',
@@ -167,10 +173,7 @@ let optionMoMCAF = {
       },
         position: 'inside',
         color: '#FFF',
-        formatter: function (d) {
-          'use strict';
-          return (d.data.toFixed(0));
-        }
+        formatter: etiquette_format
       },
       emphasis: {
         itemStyle: {
@@ -232,16 +235,29 @@ let chartCAUnivers = echarts.init(chartDomCAUnivers, null, {renderer: 'canvas', 
 let optionCAUnivers = {
   tooltip: {
     trigger: 'item',
+    formatter: function(param) {
+      var value = param.value;
+      if (value >= 1000000000) {
+          value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
+      } else if (value < 1000000000 && value >= 1000000) {
+          value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
+      } else if (value < 1000000 && value >= 1000){
+          value = (value/1000).toFixed(2) + ' K';  // afficher en milliers
+      } else {
+          value = value; // afficher les valeurs directement
+      }
+      return param.name + ': ' + value + ' (' + param.percent + '%)';
+    },
     textStyle: {
       fontFamily: fontFamily,
       fontSize: '100%'
     },
-    formatter: (param) => {
-      'use strict';
-      return `CA Univers <br/>
-              ${param.name}: <strong>${(param.value / 1000000).toFixed(0)} M</strong> 
-              <strong>(${param.percent} %)</strong>`;
-    },
+    // formatter: (param) => {
+    //   'use strict';
+    //   return `CA Univers <br/>
+    //           ${param.name}: <strong>${(param.value / 1000000).toFixed(0)} M</strong> 
+    //           <strong>(${param.percent} %)</strong>`;
+    // },
   },
   series: [
     {
@@ -249,147 +265,23 @@ let optionCAUnivers = {
       radius: '65%',
       center: ['50%', '50%'],
       selectedMode: 'single',
-      data: [],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
+      data:[],
+      label:{
+        formatter: '{b}:{d}%',
+      },
+      // emphasis: {
+      //   itemStyle: {
+      //     shadowBlur: 10,
+      //     shadowOffsetX: 0,
+      //     shadowColor: 'rgba(0, 0, 0, 0.5)'
+      //   }
+      // }
     }
   ]
 };
 
-
-//==============================================================================================================
-// GRAPHIQUE : CONTRIBUTION PAR UNIVERS EN BATON
-
-let tooltip = {
-  trigger: 'axis',
-  axisPointer: {
-    type: 'shadow'
-  },
-  textStyle: {
-    fontFamily: fontFamily,
-    fontSize: '100%'
-  },
-  formatter: function (params) {
-    'use strict';
-    let tar;
-    if (params[1] && params[1].value !== '-') {
-      tar = params[1];
-    } else {
-      tar = params[2];
-    }
-    return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + '<strong>' + tar.value + '</strong>';
-  }
-};
-let xaxis = {
-  type: 'category', 
-  axisTick: {show: false}, 
-  axisLine: {show: false},
-  axisLabel: {
-    textStyle: {
-      fontFamily: fontFamily, // changer la police en celle HTML
-      fontSize: '80%',
-      fontWeight: 600
-      },
-    data: ['Janvier', 'Février', 'Mars', 'Avril']
-    }
-};
-let yaxis = { type: 'value', show: false };
-
-let barWidth = '80%';
-
-let domTest = document.getElementById('test');
-let charTest = echarts.init(domTest, null, {renderer: 'canvas', force: true});
-let optiontest = {
-    tooltip: tooltip,
-    grid: grid,
-    xAxis: xaxis,
-    yAxis: yaxis,
-    series: [
-      {
-        name: 'Placeholder',
-        data: ['-', 400, 400, '-'],
-        type: 'bar',
-        stack: 'Total',
-        silent: true,
-        barWidth: barWidth,
-        itemStyle: {
-          borderColor: 'transparent',
-          color: 'transparent',
-          borderRadius: 3,
-        },
-        emphasis: {
-          itemStyle: {
-            borderColor: 'transparent',
-            color: 'transparent'
-          }
-        },
-      },
-      {
-        name: 'Hausse',
-        data: [500, 32, 27, 478],
-        type: 'bar',
-        stack: 'Total',
-        barWidth: barWidth,
-        itemStyle: {
-          borderWidth: 1,
-          borderType: 'solid',
-          borderColor: color_blue_1,
-          shadowColor: color_blue_1,
-          shadowBlur: 0.15,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: color_blue_2},
-            {offset: 0.5, color: color_blue_1},
-            {offset: 1, color: color_blue}
-          ]),
-          barBorderRadius: 1,
-        },
-        label: {
-          show: true,
-          position: 'top',
-          fontSize: '80%',
-          fontWeight: 600,
-          textStyle: {
-              fontFamily: fontFamily // changer la police en celle HTML
-            }
-        },
-      },
-    ]
-  };
-optiontest && charTest.setOption(optiontest);
-
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
-  charTest.resize();
-  var fontSizeTest = document.getElementById('test').offsetWidth / 50;
-  charTest.setOption({
-    xAxis: {
-      axisLabel: {fontSize: fontSizeTest + '%'}
-    },
-    yAxis: {
-      axisLabel: {fontSize: fontSizeTest + '%'}
-    },
-    series: [{
-      label: {
-        fontSize: fontSizeTest + '%'
-      }
-    }],
-    legend: [{
-      textStyle: {
-        fontSize: fontSizeTest + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSizeTest + '%'
-      }
-    }]
-  });
-
   chartMoMCAF.resize();
   var fontSizeMoMCAF = document.getElementById('ca-top-200').offsetWidth / 50;
   chartMoMCAF.setOption({
@@ -517,7 +409,7 @@ window.addEventListener('resize', function() {
       total = total + data.ca_univers[key].value;
     }
 
-    let listOfColor = [color_orange, color_sombre, color_blue, color_silver];
+    let listOfColor = [color_silver, color_orange, color_red, color_blue];
     let i = 0;
     for(let data_key of Object.getOwnPropertyNames(data.ca_univers))
     {
@@ -527,16 +419,17 @@ window.addEventListener('resize', function() {
           name: data_key,
           itemStyle: {color: listOfColor[i]},
           label: {
-            formatter: [
-              '{title|{b}}{abg|}',
-              '{weatherHead| %}{valueHead|evo}',
-              '{hr|}',
-              '{Sunny|}{value|' + ((val.value / total) * 100).toFixed(0) + '%}{rate|' + val.evo + '%}',
-            ].join('\n'),
-            backgroundColor: '#eee',
-            borderColor: '#777',
-            borderWidth: 1,
-            borderRadius: 4,
+            // formatter: [
+            //   '{title|{b}}{abg|}',
+            //   '{weatherHead| %}{valueHead|evo}',
+            //   '{hr|}',
+            //   '{Sunny|}{value|' + ((val.value / total) * 100).toFixed(0) + '%}{rate|' + val.evo + '%}',
+            // ].join('\n'),
+            // formatter: '{b}:{d}%',
+            // backgroundColor: '#eee',
+            // borderColor: '#777',
+            // borderWidth: 1,
+            // borderRadius: 4,
             rich: rich
           }
         };

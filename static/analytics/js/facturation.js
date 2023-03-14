@@ -25,21 +25,6 @@ let url = window.location.href;
 console.log(url);
 /* jshint ignore:end */
 
-
-let etiquette_format = function (params) {
-  var value = params.value;
-  if (value >= 1000000000) {
-      return (Math.round(value/1000000000)) + ' Md'; // afficher en milliards
-  } else if (value < 1000000000 && value >= 1000000) {
-      return (Math.round(value/1000000)) + ' M'; // afficher en millions
-  } else if (value < 1000000 && value >= 100000){
-      return (Math.round(value/1000)) + ' k'; // afficher les valeurs directement
-  } else {
-      return value;
-  }
-};
-
-
 // =====================================================================================================================
 // GRAPHIQUE : EVOLUTION DU PARC ACTIF ET DU CA 
 
@@ -62,7 +47,6 @@ let optionParcActif = {
       }
     }
   },
-
   legend: {
     data: ['Parc Actif', 'CA Parc Actif'],
     align: 'left',
@@ -189,25 +173,29 @@ let optionParcActif = {
 // Options de statut de la clientèle
 let tooltip = {
   trigger: 'axis',
-  grid: grid,
   textStyle: {
     fontFamily: fontFamily,
     fontSize: '100%'
   },
   axisPointer: {
-    type: 'shadow'
-  },
-  formatter: function (params) {
-    'use strict';
-    let tar;
-    if (params[1] && params[1].value !== '-') {
-      tar = params[1];
-    } else {
-      tar = params[2];
+    type: 'shadow',
+    crossStyle: {
+      color: '#999'
     }
-    return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + '<strong>' + tar.value + '</strong>';
   }
 };
+  
+  // formatter: function (params) {
+  //   'use strict';
+  //   let tar;
+  //   if (params[1] && params[1].value !== '-') {
+  //     tar = params[1];
+  //   } else {
+  //     tar = params[2];
+  //   }
+  //   return tar && tar.name + '<br/>' + tar.seriesName + ' : ' + '<strong>' + tar.value + '</strong>';
+  // }
+
 let legende = {
   data: [
     {
@@ -253,9 +241,10 @@ let domFacturationMoM = document.getElementById('evo');
 let chartMoM = echarts.init(domFacturationMoM, null, {renderer: 'canvas', force: true});
 
 let optionFacturationMoM = {
-      tooltip: tooltip,
+      //tooltip: tooltip,
       legend: legende,
       grid: grid,
+      tooltip : tooltip,
       // Centrer horizontalement le graphe
       center: ['50%', '50%'],
       xAxis: xaxis,
@@ -267,6 +256,12 @@ let optionFacturationMoM = {
           stack: 'Total',
           silent: true,
           barWidth: barWidth,
+          tooltip: {
+            valueFormatter: function (value) {
+              'use strict';
+              return value;
+            },
+          },
           itemStyle: {
             borderColor: 'transparent',
             color: 'transparent',
@@ -631,8 +626,6 @@ document.getElementById('univers').addEventListener('change', function (qualifie
 
   getData(this.value);
 });
-
-
 
 window.addEventListener('resize', function() {
   'use strict';

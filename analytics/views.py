@@ -176,7 +176,7 @@ class DashboardView(LoginRequiredMixin, View):
 
 
 class ClienteleView(LoginRequiredMixin, View):
-    univers = 'Mobile'
+    univers = 'univers'
 
     conn = psycopg2.connect(
         dbname='BSCS',
@@ -189,6 +189,7 @@ class ClienteleView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         entities = get_user_entities(user)
+        
         if entities == 'Commercial':
             commercial_obj = Commercial.objects.get(commercial=user)
             full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"

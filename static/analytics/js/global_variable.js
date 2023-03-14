@@ -16,6 +16,9 @@ var color_sombre = '#3b3b3b';
 var color_silver = '#919494';
 var color_black = '#383838';
 
+//Liste de couleurs
+let listOfColor = [color_blue, color_orange, color_silver, color_red];
+
 function getCookie(name) {
   "use strict";
   var cookieValue = null;
@@ -32,6 +35,20 @@ function getCookie(name) {
   }
   return cookieValue;
 }
+
+let etiquette_format = function (params) {
+  var value = params.value;
+  if (value >= 1000000000) {
+      return (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
+  } else if (value < 1000000000 && value >= 1000000) {
+      return (value/1000000).toFixed(2) + ' M'; // afficher en millions
+  } else if (value < 1000000 && value >= 100000){
+      return (value/1000).toFixed(2) + ' K'; // afficher en milliers
+  } else {
+      return value; // afficher les valeurs directement
+  }
+};
+
 
 
 // ============================================= E-chart Options =======================================================
