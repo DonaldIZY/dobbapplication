@@ -439,27 +439,60 @@ window.addEventListener('resize', function() {
 
 
 // =====================================================================================================================
-fetch(url, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': getCookie('csrftoken')
-  },
-  body: JSON.stringify({
-    param1: 'volume',
-    param2: 'valeur',
+
+// const datePicker = $("#select-date");
+// let selectedDate = datePicker.val();
+
+// function onSelectDate(dateText) {
+//   const momentDate = moment(dateText, "MM/YYYY");
+//   selectedDate = momentDate.toDate();
+//   console.log(selectedDate);
+
+//   // Ajouter la date sélectionnée dans les paramètres de la requête POST
+//   fetch(url, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRFToken': getCookie('csrftoken')
+//     },
+//     body: JSON.stringify({
+//       param1: 'volume',
+//       param2: 'valeur',
+//       date: momentDate.format('YYYY-MM-DD')
+//     })
+//   })
+//   .then(function(response) {
+//     "use strict";
+//     if (response.ok) {
+//       // Récupération des données reçues
+//       return response.json();
+//     } else {
+//       // Gestion d'une erreur de requête
+//       throw new Error('Error while fetching data');
+//     }
+//   })
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify({
+      param1: 'volume',
+      param2: 'valeur',
+    })
   })
-})
-  .then(function(response) {
-    "use strict";
-    if (response.ok) {
-      // Récupération des données reçues
-      return response.json();
-    } else {
-      // Gestion d'une erreur de requête
-      throw new Error('Error while fetching data');
-    }
-  })
+    .then(function(response) {
+      "use strict";
+      if (response.ok) {
+        // Récupération des données reçues
+        return response.json();
+      } else {
+        // Gestion d'une erreur de requête
+        throw new Error('Error while fetching data');
+      }
+    })
   .then(function(data) {
     // Utilisation des données reçues
     console.log(data);

@@ -37,20 +37,10 @@ def getSearch(entities, user):
         """
     return search
 
-def getDates(request):
-    if request.method == 'POST':
-        data = request.POST.dict()
-        selected_date = data.get('start_date')
-        print(selected_date*5)
-        # Faites quelque chose avec la date sélectionnée ici
-        response_data = {'message': 'Date reçue : ' + selected_date}
-        return JsonResponse(response_data)
-    else:
-        return JsonResponse({'error': 'Méthode non autorisée'})
-
 
 class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
+    endDate = '14/03/2023'
 
     def get(self, request):
         greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
@@ -65,6 +55,8 @@ class FacturationView(LoginRequiredMixin, View):
         # Récupération des données de la requête
         set_univers = json.load(request)['univers']
         self.univers = set_univers
+        print(self.univers)
+
 
         # Obtention des données
         parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
@@ -116,13 +108,13 @@ class CATop200View(LoginRequiredMixin, View):
         heading = "Contribution au CA"
         greeting = {'heading': heading, 'pageview': "Dashboards"}
         return render(request, 'analytics/monitoring/CA_top_200.html', greeting)
+    
 
     def post(self, request):
         searche = ''
         user = request.user
         entities = get_user_entities(user)
         search = getSearch(entities, user)
-
         get_data = data.ClientTop200()
         mom_caf = get_data.getGraphData(sheet_name='MoM CAF',
                                         date_debut='2022-01-01',

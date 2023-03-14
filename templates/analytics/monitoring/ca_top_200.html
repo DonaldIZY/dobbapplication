@@ -155,19 +155,20 @@ $(function () {
         todayHighlight: true,
         minDate: '01/01/2021',
         maxDate: '31/12/2023',
-        format: "yyyy",
-        viewMode: "years",
-        minViewMode: "years"
+        format: "mm/yyyy",
+        viewMode: "months",
+        minViewMode: "months"
 	}).datepicker('update', new Date());
 
     console.log(e)
 
     let elements = document.getElementsByClassName('datepicker-fac');
     for (let ele of elements) {
-        console.log(ele.attributes)
+        console.table(ele.attributes)
     }
-
 });
+
+const datePicker = $('.datepicker-fac');
 
 $(document).ready(function(){
 $(".booking-calender .fa.fa-clock-o").removeClass(this);

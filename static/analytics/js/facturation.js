@@ -548,7 +548,9 @@ function getData(univers) {
       'X-CSRFToken': getCookie('csrftoken')
       /* jshint ignore:end */
     },
-    body: JSON.stringify({univers: univers})
+    body: JSON.stringify({
+      univers: univers,
+    })
   })
     .then(function (response) {
       if (response.ok) {
@@ -630,9 +632,6 @@ document.getElementById('univers').addEventListener('change', function (qualifie
   getData(this.value);
 });
 
-document.getElementById('select-date').addEventListener('change', function (qualifiedName, value) {
-  console.log(this);
-});
 
 
 window.addEventListener('resize', function() {

@@ -45,9 +45,9 @@
 				<div class="calender-picker">
 					<h6 class="fs-14 m-0 font-w600">Choisir la période</h6>
 					<div class="d-flex align-items-center">
-						<input name="datepicker" type="text" class="form-control p-2" id="start_date" placeholder="Début">
+						<input name="datepicker" type="text" class="form-control p-2" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
 						<span>-</span>
-						<input name="datepicker" type="text" class="form-control p-2" id="end_date" placeholder="Fin">
+						<input name="datepicker" type="text" class="form-control p-2" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
 					</div>
 				</div>
 			</div>
@@ -227,16 +227,6 @@
 
 
 $(document).ready(function(){
-	// // configure les options d'envoi de requêtes par défaut
-	// $.ajaxSetup({
-	// 	beforeSend: function(xhr, settings) {
-	// 	// si la méthode n'est pas "GET" et que le domaine de destination n'est pas le même que celui de la page courante
-	// 	if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-	// 	// ajoute le jeton CSRF à l'entête de la requête
-	// 		xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-	// 		}
-	// 	}
-	// });
 
   // Initialise le datepicker de début
   $('#start_date').datepicker({
@@ -247,6 +237,11 @@ $(document).ready(function(){
     language: 'fr',
     autoclose: true,
     todayHighlight: true,
+  }).on('changeDate', function(selected){
+    var minDate = new Date(selected.date.valueOf());
+    $('#end_date').datepicker('setStartDate', minDate);
+	console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+	//sendData(); //Fonction d'envoi des données à Django
   });
 
   // Initialise le datepicker de fin
@@ -257,29 +252,39 @@ $(document).ready(function(){
     language: 'fr',
     autoclose: true,
     todayHighlight: true,
-  });
-
-  // Empêche la sélection de dates antérieures à la date de début
-  $('#start_date').datepicker().on('changeDate', function(selected){
-    var minDate = new Date(selected.date.valueOf());
-    $('#end_date').datepicker('setStartDate', minDate);
-  });
-
-  // Empêche la sélection de dates ultérieures à la date de fin
-  $('#end_date').datepicker().on('changeDate', function(selected){
+  }).on('changeDate', function(selected){
     var maxDate = new Date(selected.date.valueOf());
     $('#start_date').datepicker('setEndDate', maxDate);
+	console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
+	//sendData(); //Fonction d'envoi des données à Django
   });
-});
+})
 
-//Mettre la date de début en variable
-var startDatePicker = document.getElementById("start_date");
-var selectedStartDate  = startDatePicker.value;
-console.log(selectedStartDate);
-//Mettre la date de fin en variable
-var endDatePicker = document.getElementById("end_date");
-var selectedEndDate  = endDatePicker.value;
-console.log(selectedStartDate);
+//Fonction d'envoi des données
+// function sendData() {
+//     var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+//     var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+    
+//     fetch('/url/de/votre/vue/', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'X-CSRFToken': '{{ csrf_token }}' // Token de sécurité CSRF de Django
+//       },
+//       body: JSON.stringify({
+//         'start_date': startDate,
+//         'end_date': endDate
+//       })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       // Traitement de la réponse de Django
+//       console.log(data);
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     });
+// }
 
 </script>
 
