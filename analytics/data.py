@@ -141,9 +141,8 @@ def getParcAtif(univers, get, debut_periode, fin_periode, search):
     """
 
     df = pd.read_sql(sql=text(request), con=connection)
-    df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore')
-    df['dates'] = df['dates'].dt.strftime('%b-%y')
-    df['dates'] = df['dates'].astype(str)
+    # Définir le format de la date Déc 22
+    df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore').dt.strftime('%b %y').astype(str)
 
     # Convertir toutes les colonnes numériques en entier
     m = df.select_dtypes(np.number)
@@ -206,6 +205,7 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
 
     ca_periode_en_cours = utils.formatDf(ca_periode_en_cours, ['axis', 'values'])
     cumule_debut_periode = utils.formatDf(cumule_debut_periode, ['axis', 'values'])
+    # print(ca_periode_en_cours)
     cumule_fin_periode = utils.formatDf(cumule_fin_periode, ['axis', 'values'])
 
     df = pd.concat([cumule_debut_periode, ca_periode_en_cours], axis=0)
