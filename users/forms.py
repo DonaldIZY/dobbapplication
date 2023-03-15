@@ -81,11 +81,11 @@ class CustomUserForm(forms.ModelForm):
             raise forms.ValidationError("Les mots de passes ne concorde pas !")
         return password2
 
-    # def clean_email(self):
-    #     email = self.cleaned_data['email']
-    #     if not email.endswith('@banqueatlantique.net'):
-    #         raise forms.ValidationError("L'e-mail doit se terminer par '@banqueatlantique.net'")
-    #     return email
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not email.endswith('@orange.com'):
+            raise forms.ValidationError("L'e-mail doit se terminer par '@orange.com'")
+        return email
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -132,11 +132,11 @@ class EditUserForm(forms.ModelForm):
             'avatar': forms.FileInput(),
         }
 
-    # def clean_email(self):
-    #     email = self.cleaned_data['email']
-    #     if not email.endswith('@banqueatlantique.net'):
-    #         raise forms.ValidationError("L'e-mail doit se terminer par '@banqueatlantique.net'")
-    #     return email
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if not email.endswith('@orange.com'):
+            raise forms.ValidationError("L'e-mail doit se terminer par '@orange.com'")
+        return email
 
     def save(self, commit=True):
         # Save the provided password in hashed format
