@@ -426,9 +426,9 @@ def performGenerale(date_debut, date_fin, search):
     df['dates'] = pd.to_datetime(df['date_facture'], format='%Y-%m-%d').dt.strftime('%b %y')
     df['dates'] = df['dates'].astype(str)
 
-    client = df['dates'].tolist()
+    dates = df['dates'].tolist()
     total_montant = df['total_montant'].tolist()
-    data_final = {'total_montant': total_montant, 'client': client}
+    data_final = {'total_montant': total_montant, 'dates': dates}
 
     return data_final
 
@@ -448,5 +448,25 @@ def produit(date_debut, date_fin, search):
     product = df['groupe_produit'].tolist()
     ca = df['total_montant'].tolist()
     data_final = {'product': product, 'ca': ca}
+
+    return data_final
+
+
+def topClient(date_debut, date_fin, search):
+    request = f"""
+        SELECT client, SUM(montant) AS total_montant
+        FROM public.base_dobb
+        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+        GROUP BY client
+        ORDER BY total_montant DESC
+        LIMIT 5;
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+    print(df)
+
+    client = df['client'].tolist()
+    total_montant = df['total_montant'].tolist()
+    data_final = {'client': client, 'total_montant': total_montant}
 
     return data_final

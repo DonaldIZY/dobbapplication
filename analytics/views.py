@@ -148,21 +148,17 @@ class DashboardView(LoginRequiredMixin, View):
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        univers = data.caUniversCommerciaux(date_debut='2022-01-01',
-                                            date_fin='2022-06-01',
-                                            search=search)
-        perfomance = data.performGenerale(date_debut='2022-01-01',
-                                          date_fin='2022-11-01',
-                                          search=search)
-        produit = data.produit(date_debut='2022-01-01',
-                               date_fin='2022-06-01',
-                               search=search)
+        univers = data.caUniversCommerciaux(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
+        perfomance = data.performGenerale(date_debut='2022-01-01', date_fin='2022-11-01', search=search)
+        produit = data.produit(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
+        top_client = data.topClient(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
 
         # Préparation de la réponse
         response_data = {
             'univers': univers,
             'performance': perfomance,
-            'product': produit
+            'product': produit,
+            'top_client': top_client
         }
         return JsonResponse(response_data)
 

@@ -403,14 +403,14 @@ function getData(univers) {
       caUniversOption && caUnivers.setOption(caUniversOption);
 
     //   ===========================================================
-      performGeneraleOption.xAxis.data = data.performance.client;
+      performGeneraleOption.xAxis.data = data.performance.dates;
       performGeneraleOption.series[0].data = data.performance.total_montant;
       performGeneraleOption && performGenerale.setOption(performGeneraleOption);
 
     //   =============================================================
 
-      topClientsOption.xAxis.data = data.performance.client;
-      topClientsOption.series[0].data = data.performance.total_montant;
+      topClientsOption.xAxis.data = data.top_client.client;
+      topClientsOption.series[0].data = data.top_client.total_montant;
       topClientsOption && topClients.setOption(topClientsOption);
 
     //   ===============================================================
