@@ -41,11 +41,11 @@ let dataSet = [
 
 
 (function($) {
-    "use strict"
+    "use strict";
     //example 1
     var table = $('#example').DataTable({
         createdRow: function ( row, data, index ) {
-           $(row).addClass('selected')
+           $(row).addClass('selected');
         } ,
 		language: {
 			paginate: {
@@ -74,7 +74,7 @@ let dataSet = [
     //example 2
     var table2 = $('#example2').DataTable( {
         createdRow: function ( row, data, index ) {
-            $(row).addClass('selected')
+            $(row).addClass('selected');
         },
 
         "scrollY":        "42vh",
@@ -86,14 +86,14 @@ let dataSet = [
         var $row = table2.row(this).nodes().to$();
         var hasClass = $row.hasClass('selected');
         if (hasClass) {
-            $row.removeClass('selected')
+            $row.removeClass('selected');
         } else {
-            $row.addClass('selected')
+            $row.addClass('selected');
         }
-    })
+    });
         
     table2.rows().every(function() {
-        this.nodes().to$().removeClass('selected')
+        this.nodes().to$().removeClass('selected');
     });
 	
 	// dataTable1
@@ -211,7 +211,14 @@ let dataSet = [
 	
 	// table row
 	var table = $('#dataTable1, #dataTable2, #dataTable3, #dataTable4,  #example3, #example4 ').DataTable({
+		scrollY: '200px',
+		scrollCollapse: true,
 		language: {
+			"lengthMenu": "Afficher _MENU_ entrées",
+			"zeroRecords": "Aucune donnée",
+			"info": "_PAGE_ sur _PAGES_",
+			"infoEmpty": "Aucun enregistrement",
+			"infoFiltered": "(Rechercher par: _MAX_ total records)",
 			paginate: {
 			  next: '<i class="fa-solid fa-angle-right"></i>',
 			  previous: '<i class="fa-solid fa-angle-left"></i>' 
