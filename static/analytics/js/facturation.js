@@ -432,8 +432,6 @@ let optionFacturationYTD = {
 
 let domEvoMoM = document.getElementById('diff-facturation');
 let chartEvoMoM = echarts.init(domEvoMoM, null, {renderer: 'canvas', force: true});
-
-
 let optionEvoMoM = {
     grid: grid,
     tooltip: {

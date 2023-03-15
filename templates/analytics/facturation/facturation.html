@@ -201,7 +201,7 @@ $(document).ready(function(){
   // Initialise le datepicker de début
   $('#start_date').datepicker({
     format: "mm/yyyy",
-	startView: "months", 
+	startView: "months",
  	minViewMode: "months",
 	minDate: "01/01/2021",
     language: 'fr',
@@ -214,10 +214,26 @@ $(document).ready(function(){
 	//sendData(); //Fonction d'envoi des données à Django
   });
 
+  $('.input-daterange-timepicker').daterangepicker({
+        timePicker: true,
+        format: 'mm/yyyy',
+        startView: "months",
+        minViewMode: "months",
+        autoclose: true,
+        timePickerIncrement: 30,
+        timePicker12Hour: true,
+        timePickerSeconds: false,
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-danger',
+        cancelClass: 'btn-inverse'
+    });
+
+
+
   // Initialise le datepicker de fin
   $('#end_date').datepicker({
     format: "mm/yyyy",
-	startView: "months", 
+	startView: "months",
  	minViewMode: "months",
     language: 'fr',
     autoclose: true,
