@@ -45,7 +45,13 @@
 				<div class="calender-picker">
 					<h6 class="fs-14 mb-0 ms-2 font-w600">Choisir la date</h6>
 {#                        <input class="form-control" type="text" readonly="" id="select-date">#}
-					<input name="datepicker" class="form-control" id="select-date">
+{#					<input name="datepicker" class="form-control" id="select-date">#}
+                    <form class="d-flex justify-content-around align-items-center">
+						<input name="datepicker" type="text" class="form-control p-3" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<span>-</span>
+						<input name="datepicker" type="text" class="form-control p-3" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<button type="submit" id="full-date" class="btn btn-primary btn-sm">Envoyer</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -167,7 +173,7 @@
     <script src="{% static 'finlab/vendor/bootstrap-datetimepicker/js/moment.js' %}"></script>
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
-    <!-- -- Datepicker -- -->
+{#    <!-- -- Datepicker -- -->#}
 {#    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.form_pickers %}#}
 {#    <script src="{% static jsurl %}"></script>#}
 {#    {% endfor %}#}
@@ -178,30 +184,57 @@
     <script src="{% static 'analytics/js/dashboard.js' %}"></script>
 
 <script>
-    $(function () {
-	let e = $(".datepicker-fac").datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        minDate: '01/01/2021',
-        maxDate: '31/12/2023',
-        format: "yyyy",
-        viewMode: "years",
-        minViewMode: "years"
-	}).datepicker('update', new Date());
+$(document).ready(function(){
+    // Initialise le datepicker de début
+    $('#start_date').datepicker({
+      format: "mm/yyyy",
+      startView: "months",
+      minViewMode: "months",
+      language: 'fr',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('changeDate', function(selected){
+      var minDate = new Date(selected.date.valueOf());
+      $('#end_date').datepicker('setStartDate', minDate);
+      //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+    });
 
-    console.log(e)
+    // Initialise le datepicker de fin
+    $('#end_date').datepicker({
+      format: "mm/yyyy",
+      startView: "months",
+      minViewMode: "months",
+      language: 'fr',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('changeDate', function(selected){
+      var maxDate = new Date(selected.date.valueOf());
+      $('#start_date').datepicker('setEndDate', maxDate);
+      //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
+    });
 
-    let elements = document.getElementsByClassName('datepicker-fac');
-    for (let ele of elements) {
-        console.log(ele.attributes)
+    // Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
+    function checkDates() {
+      var startDate = $('#start_date').datepicker('getDate');
+      var endDate = $('#end_date').datepicker('getDate');
+      if (!startDate || !endDate) {
+        alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
+        return false;
+      }
+      return true;
     }
 
-});
-    $(document).ready(function(){
-    $(".booking-calender .fa.fa-clock-o").removeClass(this);
-    $(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
+    // Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
+    $('#full-date').on('click', function(event) {
+        event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
+        checkDates();
+        var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+        var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+        {#return console.log('Date de début: ', startDate, '/ Date de fin: ', endDate);#}
+
+        getData(startDate, endDate);
     });
-    $('.my-select').selectpicker();
+});
 </script>
 
 {% endblock %}

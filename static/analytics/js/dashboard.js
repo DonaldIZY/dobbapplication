@@ -369,10 +369,9 @@ window.addEventListener('resize', function() {
 
 
 // =====================================================================================================================
-function getData(univers) {
+function getData(startDate, endDate) {
   "use strict";
-  // let formData = new FormData();
-  // formData.append('univers', univers);
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -382,7 +381,10 @@ function getData(univers) {
       'X-CSRFToken': getCookie('csrftoken')
       /* jshint ignore:end */
     },
-    body: JSON.stringify({univers: univers})
+    body: JSON.stringify({
+      startDate: startDate,
+      endDate: endDate,
+    })
   })
     .then(function (response) {
       if (response.ok) {
@@ -428,4 +430,4 @@ function getData(univers) {
 }
 
 // =====================================================================================================================
-document.addEventListener('DOMContentLoaded', getData("Mobile"));
+document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-06-01'));

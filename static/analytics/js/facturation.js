@@ -528,10 +528,13 @@ let optionEvoMoM = {
   };
 
 // =====================================================================================================================
-function getData(univers) {
+
+function getData(univers, startDate, endDate) {
   "use strict";
-  // let formData = new FormData();
-  // formData.append('univers', univers);
+
+  console.log(startDate);
+  console.log(endDate);
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -543,7 +546,9 @@ function getData(univers) {
     },
     body: JSON.stringify({
       univers: univers,
-    })
+      startDate: startDate,
+      endDate: endDate,
+    }),
   })
     .then(function (response) {
       if (response.ok) {
@@ -610,7 +615,7 @@ function getData(univers) {
 }
 
 // =====================================================================================================================
-document.addEventListener('DOMContentLoaded', getData("Mobile"));
+document.addEventListener('DOMContentLoaded', getData('Mobile', '2022-01-01', '2022-06-01'));
 // =====================================================================================================================
 
 document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {
@@ -621,8 +626,10 @@ document.getElementById('univers').addEventListener('change', function (qualifie
   for (let ele of elements) {
     ele.innerHTML = this.value;
   }
+  var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+  var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
 
-  getData(this.value);
+  getData(this.value, startDate, endDate);
 });
 
 window.addEventListener('resize', function() {

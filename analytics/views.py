@@ -40,7 +40,6 @@ def getSearch(entities, user):
 
 class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
-    endDate = '14/03/2023'
 
     def get(self, request):
         greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
@@ -53,22 +52,23 @@ class FacturationView(LoginRequiredMixin, View):
         search = getSearch(entities, user)
 
         # Récupération des données de la requête
-        set_univers = json.load(request)['univers']
-        self.univers = set_univers
-        print(self.univers)
-
+        request_data = json.load(request)
+        univers = request_data['univers']
+        self.univers = univers
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
 
         # Obtention des données
-        parc_actif = data.getParcAtif(univers=set_univers, get='parc', debut_periode='2022-01-01',
-                                      fin_periode='2022-11-01', search=search)
-        ca_parc_actif = data.getParcAtif(univers=set_univers, get='ca', debut_periode='2022-01-01',
-                                         fin_periode='2022-11-01', search=search)
-        evo_ytd = data.getEvoPeriode(univers=set_univers, debut_periode='2022-01-01',
-                                     fin_periode='2022-11-01', evo_type="ytd", search=search)
-        evo_mom = data.getEvoPeriode(univers=set_univers, debut_periode='2022-06-01',
-                                     fin_periode='2022-11-01', evo_type="mom", search=search)
-        evo_diff = data.getHausseBasse(univers=set_univers, debut_periode='2022-01-01',
-                                       fin_periode='2022-11-01', search=search)
+        parc_actif = data.getParcAtif(univers=univers, get='parc', debut_periode=start_date,
+                                      fin_periode=end_date, search=search)
+        ca_parc_actif = data.getParcAtif(univers=univers, get='ca', debut_periode=start_date,
+                                         fin_periode=end_date, search=search)
+        evo_ytd = data.getEvoPeriode(univers=univers, debut_periode=start_date,
+                                     fin_periode=start_date, evo_type="ytd", search=search)
+        evo_mom = data.getEvoPeriode(univers=univers, debut_periode=start_date,
+                                     fin_periode=end_date, evo_type="mom", search=search)
+        evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date,
+                                       fin_periode=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -108,7 +108,6 @@ class CATop200View(LoginRequiredMixin, View):
         heading = "Contribution au CA"
         greeting = {'heading': heading, 'pageview': "Dashboards"}
         return render(request, 'analytics/monitoring/CA_top_200.html', greeting)
-    
 
     def post(self, request):
         searche = ''
@@ -140,18 +139,19 @@ class DashboardView(LoginRequiredMixin, View):
 
     def post(self, request):
         # Récupération des données de la requête
-        set_univers = json.load(request)['univers']
-        self.univers = set_univers
+        request_data = json.load(request)
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
 
         searche = ''
         user = request.user
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        univers = data.caUniversCommerciaux(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
-        perfomance = data.performGenerale(date_debut='2022-01-01', date_fin='2022-11-01', search=search)
-        produit = data.produit(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
-        top_client = data.topClient(date_debut='2022-01-01', date_fin='2022-06-01', search=search)
+        univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
+        perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
+        produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
+        top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -185,7 +185,7 @@ class ClienteleView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         entities = get_user_entities(user)
-        
+
         if entities == 'Commercial':
             commercial_obj = Commercial.objects.get(commercial=user)
             full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
