@@ -528,10 +528,12 @@ let optionEvoMoM = {
   };
 
 // =====================================================================================================================
+
 function getData(univers) {
   "use strict";
   // let formData = new FormData();
   // formData.append('univers', univers);
+
   fetch(url, {
     method: 'POST',
     headers: {
@@ -543,7 +545,7 @@ function getData(univers) {
     },
     body: JSON.stringify({
       univers: univers,
-    })
+    }),
   })
     .then(function (response) {
       if (response.ok) {
