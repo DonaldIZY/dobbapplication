@@ -18,6 +18,23 @@ let url = window.location.href;
 console.log(url);
 /* jshint ignore:end */
 
+
+// Sélectionnez l'élément avec la classe "input-group-append d-lg-none"
+const calendarIcon = document.querySelector('.input-group-append.d-lg-none');
+// Ajouter un événement de clic à l'icône de calendrier
+calendarIcon.addEventListener('click', function() {
+  // Sélectionnez l'élément span contenant l'icône de calendrier
+  const calendarSpan = calendarIcon.querySelector('span');
+  // Sélectionnez l'élément contenant le formulaire de sélection de date
+  const datepickerForm = document.querySelector('.d-none.d-lg-flex');
+  
+  // Ajouter la classe "d-none" à l'élément span contenant l'icône de calendrier
+  calendarSpan.classList.add('d-none');
+  // Supprimer la classe "d-none" de l'élément contenant le formulaire de sélection de date
+  datepickerForm.classList.remove('d-none');
+});
+
+
 // =====================================================================================================================
 // GRAPHIQUE : PERFORMANCE GENERALE
 
@@ -241,7 +258,7 @@ var topProduitsOption = {
  var data1 = [120, 200, 150, 80, 70, 56, 54, 23, 15]; //Mobile
  var data2 = [80, 90, 100, 60, 50, 56, 54, 23, 15];   //Fixe
  var data3 = [50, 70, 60, 40, 30, 52, 34, 13, 75];    //Broadband
- var data4 = [30, 40, 50, 20, 10, 8, 14, 10, 25];    //ICT
+ var data4 = [30, 40, 50, 20, 10, 8, 14, 10, 25];     //ICT
 
  // Définir les étiquettes pour l'axe X (clients)
  var labels = ['Client1', 'Client30', 'Client19', 'Client68', 'Client109', 'Client3', 'Client295', 'Client968', 'Client7109'];

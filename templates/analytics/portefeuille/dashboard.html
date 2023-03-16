@@ -25,35 +25,26 @@
 <div class="row">
 	<div class="page-titles style1">
 		<!-- Titre du dashboard -->
-		<div class="d-flex align-items-center">
+		<div class="col-lg-6">
 			<h2 class="heading">Informations générales</h2>
 		</div>
 		<!-- Liste déroulante et date picker -->
-		<div class="d-flex justify-content-between">
-			<!-- <select class="image-select default-select dashboard-select" id="univers" aria-label="Default">
-				<option value="Mobile" selected>Mobile</option>
-				<option value="Fixe">Fixe</option>
-				<option value="Broadband">Broadband</option>
-			</select> -->
-
-			<div id="datepicker" class="input-group date dz-calender datepicker-fac" data-date-format="dd-mm-yyyy">
-				<span class="input-group-addon d-flex align-items-center">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M12 14.0001C12.1978 14.0001 12.3911 13.9415 12.5556 13.8316C12.72 13.7217 12.8482 13.5655 12.9239 13.3828C12.9996 13.2001 13.0194 12.999 12.9808 12.805C12.9422 12.611 12.847 12.4329 12.7071 12.293C12.5673 12.1531 12.3891 12.0579 12.1951 12.0193C12.0011 11.9807 11.8 12.0005 11.6173 12.0762C11.4346 12.1519 11.2784 12.2801 11.1685 12.4445C11.0586 12.609 11 12.8023 11 13.0001C11 13.2653 11.1054 13.5197 11.2929 13.7072C11.4804 13.8947 11.7348 14.0001 12 14.0001ZM17 14.0001C17.1978 14.0001 17.3911 13.9415 17.5556 13.8316C17.72 13.7217 17.8482 13.5655 17.9239 13.3828C17.9996 13.2001 18.0194 12.999 17.9808 12.805C17.9422 12.611 17.847 12.4329 17.7071 12.293C17.5673 12.1531 17.3891 12.0579 17.1951 12.0193C17.0011 11.9807 16.8 12.0005 16.6173 12.0762C16.4346 12.1519 16.2784 12.2801 16.1685 12.4445C16.0586 12.609 16 12.8023 16 13.0001C16 13.2653 16.1054 13.5197 16.2929 13.7072C16.4804 13.8947 16.7348 14.0001 17 14.0001ZM12 18.0001C12.1978 18.0001 12.3911 17.9415 12.5556 17.8316C12.72 17.7217 12.8482 17.5655 12.9239 17.3828C12.9996 17.2001 13.0194 16.999 12.9808 16.805C12.9422 16.611 12.847 16.4328 12.7071 16.293C12.5673 16.1531 12.3891 16.0579 12.1951 16.0193C12.0011 15.9807 11.8 16.0005 11.6173 16.0762C11.4346 16.1519 11.2784 16.2801 11.1685 16.4445C11.0586 16.609 11 16.8023 11 17.0001C11 17.2653 11.1054 17.5197 11.2929 17.7072C11.4804 17.8947 11.7348 18.0001 12 18.0001ZM17 18.0001C17.1978 18.0001 17.3911 17.9415 17.5556 17.8316C17.72 17.7217 17.8482 17.5655 17.9239 17.3828C17.9996 17.2001 18.0194 16.999 17.9808 16.805C17.9422 16.611 17.847 16.4328 17.7071 16.293C17.5673 16.1531 17.3891 16.0579 17.1951 16.0193C17.0011 15.9807 16.8 16.0005 16.6173 16.0762C16.4346 16.1519 16.2784 16.2801 16.1685 16.4445C16.0586 16.609 16 16.8023 16 17.0001C16 17.2653 16.1054 17.5197 16.2929 17.7072C16.4804 17.8947 16.7348 18.0001 17 18.0001ZM7 14.0001C7.19778 14.0001 7.39112 13.9415 7.55557 13.8316C7.72002 13.7217 7.84819 13.5655 7.92388 13.3828C7.99957 13.2001 8.01937 12.999 7.98078 12.805C7.9422 12.611 7.84696 12.4329 7.70711 12.293C7.56725 12.1531 7.38907 12.0579 7.19509 12.0193C7.00111 11.9807 6.80004 12.0005 6.61732 12.0762C6.43459 12.1519 6.27841 12.2801 6.16853 12.4445C6.05865 12.609 6 12.8023 6 13.0001C6 13.2653 6.10536 13.5197 6.29289 13.7072C6.48043 13.8947 6.73478 14.0001 7 14.0001ZM19 4.00011H18V3.00011C18 2.73489 17.8946 2.48054 17.7071 2.293C17.5196 2.10546 17.2652 2.00011 17 2.00011C16.7348 2.00011 16.4804 2.10546 16.2929 2.293C16.1054 2.48054 16 2.73489 16 3.00011V4.00011H8V3.00011C8 2.73489 7.89464 2.48054 7.70711 2.293C7.51957 2.10546 7.26522 2.00011 7 2.00011C6.73478 2.00011 6.48043 2.10546 6.29289 2.293C6.10536 2.48054 6 2.73489 6 3.00011V4.00011H5C4.20435 4.00011 3.44129 4.31618 2.87868 4.87879C2.31607 5.4414 2 6.20446 2 7.00011V19.0001C2 19.7958 2.31607 20.5588 2.87868 21.1214C3.44129 21.684 4.20435 22.0001 5 22.0001H19C19.7956 22.0001 20.5587 21.684 21.1213 21.1214C21.6839 20.5588 22 19.7958 22 19.0001V7.00011C22 6.20446 21.6839 5.4414 21.1213 4.87879C20.5587 4.31618 19.7956 4.00011 19 4.00011ZM20 19.0001C20 19.2653 19.8946 19.5197 19.7071 19.7072C19.5196 19.8947 19.2652 20.0001 19 20.0001H5C4.73478 20.0001 4.48043 19.8947 4.29289 19.7072C4.10536 19.5197 4 19.2653 4 19.0001V10.0001H20V19.0001ZM20 8.00011H4V7.00011C4 6.73489 4.10536 6.48054 4.29289 6.293C4.48043 6.10546 4.73478 6.00011 5 6.00011H19C19.2652 6.00011 19.5196 6.10546 19.7071 6.293C19.8946 6.48054 20 6.73489 20 7.00011V8.00011ZM7 18.0001C7.19778 18.0001 7.39112 17.9415 7.55557 17.8316C7.72002 17.7217 7.84819 17.5655 7.92388 17.3828C7.99957 17.2001 8.01937 16.999 7.98078 16.805C7.9422 16.611 7.84696 16.4328 7.70711 16.293C7.56725 16.1531 7.38907 16.0579 7.19509 16.0193C7.00111 15.9807 6.80004 16.0005 6.61732 16.0762C6.43459 16.1519 6.27841 16.2801 6.16853 16.4445C6.05865 16.609 6 16.8023 6 17.0001C6 17.2653 6.10536 17.5197 6.29289 17.7072C6.48043 17.8947 6.73478 18.0001 7 18.0001Z" fill="var(--primary)"/>
-					</svg>
-				</span>
-				<div class="calender-picker">
-					<h6 class="fs-14 mb-0 ms-2 font-w600">Choisir la date</h6>
-{#                        <input class="form-control" type="text" readonly="" id="select-date">#}
-{#					<input name="datepicker" class="form-control" id="select-date">#}
-                    <form class="d-flex justify-content-around align-items-center">
-						<input name="datepicker" type="text" class="form-control p-3" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
+		<div class="col-lg-6 d-flex align-items-center">
+			<!-- <div id="datepicker" class="input-group date dz-calender"> -->
+				<div class="d-flex justify-content-around align-items-center">
+					<div class="input-group-append d-lg-none">
+					  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+					</div>
+					<div class="d-none d-lg-flex">
+					  <h6 class="mr-2">Choisir la date</h6>
+					  <form class="d-flex justify-content-around align-items-center">
+						<input name="datepicker" type="text" class="form-control" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
 						<span>-</span>
-						<input name="datepicker" type="text" class="form-control p-3" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
-						<button type="submit" id="full-date" class="btn btn-primary btn-sm">Envoyer</button>
-					</form>
+						<input name="datepicker" type="text" class="form-control" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<button type="submit" id="full-date" class="btn btn-primary btn-sm">Actualiser</button>
+					  </form>
+					</div>
 				</div>
-			</div>
 		</div>
 	</div>
 </div>
@@ -61,38 +52,53 @@
 <!-- Premième ligne du tableau de bord de Portefeuille -->
 <div class="row">
 	<!-- Performance générale -->
-	<div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="wow fadeInUp p-0" data-wow-delay="0.5s">
 		<div class="card crypto-chart ">
 			<!-- titre du graphique -->
-			<div class="card-header border-0 flex-wrap">
+			<div class="card-header border-0 px-4 py-1 flex-wrap">
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
-					<div class="chart-title mb-3">
-						<h2 class="heading">Performance générale</h2>
+					<div class="chart-title">
+						<h3 class="heading">Performance générale</h2>
 					</div>
 				</div>
 			</div>
-			<!-- Graphique -->
-			<div class="card-body p-2 custome-tooltip">
-				<div class="dashboard-graph" id="dashbordPerformGen" style="height: 250px"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- CA généré par univers -->
-	<div class="col-lg-6 wow fadeInUp" data-wow-delay="0.75s">
-		<div class="card crypto-chart ">
-			<div class="card-header border-0 flex-wrap">
-				<!-- titre du graphe -->
-				<div class="mb-2 mb-sm-0">
-					<div class="chart-title mb-3">
-						<h2 class="heading">CA généré par univers</h2>
+			<div class="card-body d-flex justify-content-around align-items-center p-1">
+				<div class="row inside-the-card">
+					<!-- Graphique -->
+					<div class="col-lg-9 col-sm-12 card-body p-2 custome-tooltip">
+					<div class="dashboard-graph" id="dashbordPerformGen" style="height: 250px"></div>
+					</div>
+					<!-- Liste des cartes d'indicateurs -->
+					<div class="col-lg-3 col-sm-12 p-3 d-flex justify-content-center">
+						<div class="row inside-the-card justify-content-around">
+							<!-- carte de CA-moyen de la période-->
+							<div class="col-lg-12 col-sm-3 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+								<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+								<div>
+								<h5>CA moyen</h5>
+								<h6 class="text-muted">12,345,567,890 F</h6>
+								</div>
+							</div>
+							<!-- carte de CA-maximum de la période -->
+							<div class="col-lg-12 col-sm-3 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+								<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+								<div>
+								<h5>CA maximum</h5>
+								<h6 class="text-muted">13,567,567,890 F</h6>
+								</div>
+							</div>
+							<!-- carte de CA-minimum de la période -->
+							<div class="col-lg-12 col-sm-3 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+								<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+								<div>
+								<h5>CA Minimum</h5>
+								<h6 class="text-muted">9,345,567,890 F</h6>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<!-- Graphique -->
-			<div class="card-body p-2 custome-tooltip">
-				<div class="dashboard-graph" id="dashboardCaUnivers" style="height: 250px"></div>
 			</div>
 		</div>
 	</div>
@@ -100,45 +106,111 @@
 
 <!-- Deuxième ligne du tableau de bord de Portefeuille -->
 <div class="row">
-	<!-- Top 5 des clients -->
-	<div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+	<!-- Performance générale -->
+	<div class="wow fadeInUp p-0" data-wow-delay="0.5s">
 		<div class="card crypto-chart ">
-			<!-- titre du graphique -->
-			<div class="card-header border-0 flex-wrap">
+			<!-- Carte du graphique -->
+			<div class="card-header border-0 px-4 py-1 flex-wrap">
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
-					<div class="chart-title mb-3">
-						<h2 class="heading">Top 5 des clients</h2>
+					<div class="chart-title">
+						<h3 class="heading">Partition du CA par univers</h2>
 					</div>
 				</div>
 			</div>
-			<!-- Graphique -->
-			<div class="card-body p-2 custome-tooltip">
-				<div class="dashboard-graph" id="dashbordTopClients" style="height: 250px"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Top 5 produits -->
-	<div class="col-lg-6 wow fadeInUp" data-wow-delay="0.75s">
-		<div class="card crypto-chart ">
-			<div class="card-header border-0 flex-wrap">
-				<!-- titre du graphe -->
-				<div class="mb-2 mb-sm-0">
-					<div class="chart-title mb-3">
-						<h2 class="heading">Top 5 produits</h2>
+			<div class="card-body d-flex justify-content-around align-items-center p-1">
+				<div class="row inside-the-card">
+					<!-- Graphique -->
+					<div class="col-lg-8 custome-tooltip">
+					<div class="dashboard-graph" id="dashboardCaUnivers" style="height: 350px"></div>
+					</div>
+					<!-- Liste des cartes d'indicateurs -->
+					<div class="col-lg-4 p-3">
+						<div class="row inside-the-card d-flex justify-content-center align-items-center">
+							<div class="col-lg-12 col-sm-6">
+								<!-- carte de CA-moyen de la période-->
+								<div class="col-lg-12 col-sm-12 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+									<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+									<div>
+									<h5>Mobile</h5>
+									<h6 class="text-muted">14,345,567,890 F</h6>
+									</div>
+								</div>
+								<!-- carte de CA-maximum de la période -->
+								<div class="col-lg-12 col-sm-12 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+									<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+									<div>
+									<h5>Fixe</h5>
+									<h6 class="text-muted">11,567,567,890 F</h6>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12 col-sm-6">
+								<!-- carte de CA-minimum de la période -->
+								<div class="col-lg-12 col-sm-12 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+									<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+									<div>
+									<h5>Broadband</h5>
+									<h6 class="text-muted">9,345,567,890 F</h6>
+									</div>
+								</div>
+								<!-- carte de CA-minimum de la période -->
+								<div class="col-lg-12 col-sm-12 bg-gradient-light m-3 p-0 shadow-sm d-flex justify-content-around align-items-center rounded kpi-card">
+									<i class="fas fa-gift primary-text border rounded-full secondary-bg p-3"></i>
+									<div>
+									<h5>ICT</h5>
+									<h6 class="text-muted">1,345,567,890 F</h6>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<!-- Graphique -->
-			<div class="card-body p-2 custome-tooltip">
-				<div class="dashboard-graph" id="dashboardTopProduits" style="height: 250px"></div>
 			</div>
 		</div>
 	</div>
 </div>
 
 <!-- Troisième ligne du tableau de bord de Portefeuille -->
+<div class="row d-flex justify-content-between">
+		<!-- Top 5 des clients -->
+		<div class="col-lg-6 pl-0 p-1 wow fadeInUp" data-wow-delay="0.5s">
+			<div class="card crypto-chart ">
+				<!-- titre du graphique -->
+				<div class="card-header border-0 px-4 py-1 flex-wrap">
+					<div class="mb-2 mb-sm-0">
+						<div class="chart-title mb-3">
+							<h2 class="heading">Top 5 des clients</h2>
+						</div>
+					</div>
+				</div>
+				<!-- Graphique -->
+				<div class="card-body p-1 custome-tooltip">
+					<div class="dashboard-graph" id="dashbordTopClients" style="height: 250px"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Top 5 produits -->
+		<div class="col-lg-6 pr-0 p-1 wow fadeInUp" data-wow-delay="0.75s">
+			<div class="card crypto-chart ">
+				<div class="card-header border-0 px-4 py-1 flex-wrap">
+					<!-- titre du graphe -->
+					<div class="mb-2 mb-sm-0">
+						<div class="chart-title mb-3">
+							<h2 class="heading">Top 5 produits</h2>
+						</div>
+					</div>
+				</div>
+				<!-- Graphique -->
+				<div class="card-body p-1 custome-tooltip">
+					<div class="dashboard-graph" id="dashboardTopProduits" style="height: 250px"></div>
+				</div>
+			</div>
+		</div>
+</div>
+
+<!-- Quatrième ligne du tableau de bord de Portefeuille -->
 <div class="row">
 	<!-- Performance générale -->
 	<div class="wow fadeInUp" data-wow-delay="0.5s">
@@ -173,17 +245,25 @@
     <script src="{% static 'finlab/vendor/bootstrap-datetimepicker/js/moment.js' %}"></script>
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
-{#    <!-- -- Datepicker -- -->#}
-{#    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.form_pickers %}#}
-{#    <script src="{% static jsurl %}"></script>#}
-{#    {% endfor %}#}
-
     <!-- -- Perso -- -->
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/dashboard.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
+
+//Fonction pour faire apparaître le formulaire de période pour les écrans les plus petits
+// $(document).ready(function() {
+//   $('.fa-calendar').click(function() {
+// 	$('.d-none').toggleClass('d-lg-flex');
+//   });
+// });
+
+
+
+
 $(document).ready(function(){
     // Initialise le datepicker de début
     $('#start_date').datepicker({
@@ -230,7 +310,6 @@ $(document).ready(function(){
         checkDates();
         var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
         var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
-        {#return console.log('Date de début: ', startDate, '/ Date de fin: ', endDate);#}
 
         getData(startDate, endDate);
     });
