@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 import psycopg2
 from django.shortcuts import render, redirect
@@ -9,6 +10,15 @@ from django.contrib import messages
 from administration.models import Commercial, Equipe
 from analytics import data
 from django.http import JsonResponse
+
+
+conn = psycopg2.connect(
+        dbname='BSCS',
+        user='postgres',
+        password='password',
+        host='localhost',
+        port='5432'
+    )
 
 
 def get_user_entities(user):
@@ -42,8 +52,22 @@ class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
     def get(self, request):
-        greeting = {'heading': self.univers, 'pageview': "Dashboards", 'product_type': self.univers,
-                    "menu_wallet": True}
+        query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
+
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            dates = cursor.fetchall()
+
+        min_date = dates[0][0]
+        max_date = dates[0][1]
+
+        greeting = {
+            'heading': self.univers,
+            'pageview': "Dashboards",
+            'product_type': self.univers,
+            'min_date': min_date,
+            'max_date': max_date
+        }
         return render(request, 'analytics/facturation/facturation.html', greeting)
 
     def post(self, request):
@@ -58,6 +82,8 @@ class FacturationView(LoginRequiredMixin, View):
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
+        print(f"Debut: {start_date}, fin:{end_date}")
+
         # Obtention des données
         parc_actif = data.getParcAtif(univers=univers, get='parc', debut_periode=start_date,
                                       fin_periode=end_date, search=search)
@@ -67,8 +93,12 @@ class FacturationView(LoginRequiredMixin, View):
                                      fin_periode=start_date, evo_type="ytd", search=search)
         evo_mom = data.getEvoPeriode(univers=univers, debut_periode=start_date,
                                      fin_periode=end_date, evo_type="mom", search=search)
-        evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date,
-                                       fin_periode=end_date, search=search)
+        evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date, fin_periode=end_date, search=search)
+
+        test_data, test_pourcent = data.top_80_20(debut_periode=start_date, fin_periode=end_date, search=search)
+
+        print(test_pourcent)
+        print(test_data)
 
         # Préparation de la réponse
         response_data = {
@@ -97,8 +127,7 @@ class VariationTop200View(LoginRequiredMixin, View):
         client_sortant = client.getClient(sheet_name='client sortant')
         client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
         # print(client_entrant2)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
-                         }
+        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant}
 
         return JsonResponse(response_data)
 
@@ -174,14 +203,6 @@ class DashboardView(LoginRequiredMixin, View):
 class ClienteleView(LoginRequiredMixin, View):
     univers = 'univers'
 
-    conn = psycopg2.connect(
-        dbname='BSCS',
-        user='postgres',
-        password='password',
-        host='localhost',
-        port='5432'
-    )
-
     def get(self, request):
         user = request.user
         entities = get_user_entities(user)
@@ -201,7 +222,7 @@ class ClienteleView(LoginRequiredMixin, View):
                 GROUP BY client, secteur_activite ORDER BY total_montant DESC;
             """
 
-            with self.conn.cursor() as cursor:
+            with conn.cursor() as cursor:
                 cursor.execute(query)
                 clients = cursor.fetchall()
 

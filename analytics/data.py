@@ -141,9 +141,8 @@ def getParcAtif(univers, get, debut_periode, fin_periode, search):
     """
 
     df = pd.read_sql(sql=text(request), con=connection)
-    df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore')
-    df['dates'] = df['dates'].dt.strftime('%b-%y')
-    df['dates'] = df['dates'].astype(str)
+    # Définir le format de la date Déc 22
+    df["dates"] = pd.to_datetime(df["dates"], format='%Y-%m-%d', errors='ignore').dt.strftime('%b %y').astype(str)
 
     # Convertir toutes les colonnes numériques en entier
     m = df.select_dtypes(np.number)
@@ -206,6 +205,7 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
 
     ca_periode_en_cours = utils.formatDf(ca_periode_en_cours, ['axis', 'values'])
     cumule_debut_periode = utils.formatDf(cumule_debut_periode, ['axis', 'values'])
+    # print(ca_periode_en_cours)
     cumule_fin_periode = utils.formatDf(cumule_fin_periode, ['axis', 'values'])
 
     df = pd.concat([cumule_debut_periode, ca_periode_en_cours], axis=0)
@@ -470,3 +470,37 @@ def topClient(date_debut, date_fin, search):
     data_final = {'client': client, 'total_montant': total_montant}
 
     return data_final
+
+
+def top_80_20(debut_periode, fin_periode, search):
+    request_ca_client = f"""
+        SELECT client, SUM(montant) AS total_montant,
+        COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
+        COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe,
+        COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict,
+        COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband
+        FROM public.base_dobb
+        WHERE date_facture BETWEEN '{debut_periode}' AND '{fin_periode}' {search}
+        GROUP BY client
+        HAVING SUM(montant) > 0
+        ORDER BY SUM(montant) DESC;
+    """
+
+    request_global = f"""
+        SELECT SUM(montant) as total, COUNT(DISTINCT client) as nb_client
+        FROM public.base_dobb
+        WHERE date_facture BETWEEN '{debut_periode}' AND '{fin_periode}' {search};
+    """
+
+    df = pd.read_sql(sql=text(request_ca_client), con=connection)
+    df_2 = pd.read_sql(sql=text(request_global), con=connection)
+    keep_percent = df_2['total'][0] * 0.8
+
+    # Calculer la somme cumulée
+    df['cumulative_sum'] = df['total_montant'].cumsum()
+    result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
+    result = result.drop(columns=['cumulative_sum'])
+    client_part = (result.shape[0] / df_2['nb_client']) * 100
+
+    data = dataToDictAg(data=result)
+    return data, client_part

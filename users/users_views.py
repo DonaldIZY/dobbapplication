@@ -312,9 +312,10 @@ def group_add(request):
 @permission_required({'auth.view_permission'}, raise_exception=True)
 def permissions(request):
     permission_list = Permission.objects.all()
-    paginator = Paginator(permission_list, 5)  # Show 5 permission per page.
+    # paginator = Paginator(permission_list, 5)  # Show 5 permission per page.
     context = {
-        "permissions_obj": paginator.get_page(request.GET.get('page')),
+        # "permissions_obj": paginator.get_page(request.GET.get('page')),
+        "permissions_obj": permission_list,
         "page_title": "Permissions"
     }
 
