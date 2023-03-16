@@ -93,8 +93,12 @@ class FacturationView(LoginRequiredMixin, View):
                                      fin_periode=start_date, evo_type="ytd", search=search)
         evo_mom = data.getEvoPeriode(univers=univers, debut_periode=start_date,
                                      fin_periode=end_date, evo_type="mom", search=search)
-        evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date,
-                                       fin_periode=end_date, search=search)
+        evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date, fin_periode=end_date, search=search)
+
+        test_data, test_pourcent = data.top_80_20(debut_periode=start_date, fin_periode=end_date, search=search)
+
+        print(test_pourcent)
+        print(test_data)
 
         # Préparation de la réponse
         response_data = {
@@ -123,8 +127,7 @@ class VariationTop200View(LoginRequiredMixin, View):
         client_sortant = client.getClient(sheet_name='client sortant')
         client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
         # print(client_entrant2)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
-                         }
+        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant}
 
         return JsonResponse(response_data)
 

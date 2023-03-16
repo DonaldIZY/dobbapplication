@@ -7,7 +7,7 @@ def index(request):
     context = {
         "menu_wallet": True
     }
-    return redirect('analytics:facturation')
+    return redirect('analytics:dashboard')
     # return render(request, 'finlab/dashboard/index.html', context)
 
 

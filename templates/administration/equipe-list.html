@@ -57,10 +57,13 @@
                                  </a> -->
                                 <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.name }}</span></td>
                                 <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.manager }}</span></td>
+
                                 <td class="d-flex justify-content-center">
-                                    <span class="badge badge-{{ colors.dark }}">
-                                        <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe_obj.nb_commerciaux }}
-                                    </span>
+                                    <a href="{% url 'administration:commercial' %}">
+                                        <span class="badge badge-{{ colors.dark }}">
+                                            <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe_obj.nb_commerciaux }}
+                                        </span>
+                                    </a>
                                 </td>
 
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
