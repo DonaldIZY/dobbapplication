@@ -25596,7 +25596,7 @@ table#example {
   padding: 0rem 0 2rem 0; }
 
 table.dataTable {
-  font-size: 14px;
+  font-size: 1rem;
   border-radius: 0.625rem;
   overflow: hidden; }
 
@@ -25631,7 +25631,7 @@ table.dataTable thead th {
     color: #fff; }
   @media only screen and (max-width: 87.5rem) {
     table.dataTable thead th {
-      font-size: 16px; } }
+      font-size: 1rem; } }
   @media only screen and (max-width: 35.9375rem) {
     table.dataTable thead th {
       padding: 14px 15px; } }
@@ -25641,7 +25641,7 @@ td.doller {
 
 table.dataTable tbody td {
   padding: 1.25rem 1.125rem;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 500;
   border-bottom: 0;
   white-space: nowrap; }
@@ -25650,7 +25650,7 @@ table.dataTable tbody td {
       padding: 8px 5px; } }
   @media only screen and (max-width: 87.5rem) {
     table.dataTable tbody td {
-      font-size: 14px;
+      font-size: 0.9rem;
       padding: 8px 5px; } }
 
 table.dataTable tr.selected {
@@ -25779,7 +25779,7 @@ table.dataTable tfoot th {
     color: #fff; }
 
 .dataTables_wrapper .dataTables_length {
-  margin-bottom: 15px; }
+  margin-bottom: 5px; }
   .dataTables_wrapper .dataTables_length .bootstrap-select {
     width: 80px !important;
     margin: 0 5px; }
@@ -25791,8 +25791,8 @@ table.dataTable.no-footer {
   min-width: 30px; }
 
 .dataTables_scroll {
-  padding: 1rem 0; }
-  .dataTables_scrollFoot {
+  padding: 0 0 1rem 0; }
+.dataTables_scrollFoot {
     padding-top: 1rem; }
 
 .dataTablesCard {
@@ -25821,13 +25821,13 @@ td.sorting_1 img {
 .dataTables_wrapper .dataTables_paginate {
   color: #717579;
   border-radius: 1rem;
-  margin-bottom: 20px; }
+  margin-bottom: 5px; }
   @media only screen and (max-width: 35.9375rem) {
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter,
     .dataTables_wrapper .dataTables_processing,
     .dataTables_wrapper .dataTables_paginate {
-      margin-bottom: 8px; } }
+      margin-bottom: 5px; } }
 
 .paging_simple_numbers.dataTables_paginate {
   border: 0.025rem solid var(--primary);
