@@ -44,15 +44,24 @@ let dataSet = [
     "use strict";
     //example 1
     var table = $('#example').DataTable({
-        createdRow: function ( row, data, index ) {
-           $(row).addClass('selected');
-        } ,
+		scroolX: true,
 		language: {
+			"search": "Chercher",
+			"decimal": ',',
+            "thousands": ' ',
+			"emptyTable": "Aucune donnée disponible dans le tableau",
+			"loadingRecords": "Chargement en cours...",
+			"processing": "Traitement en cours...",
+			"lengthMenu": "Afficher _MENU_ entrées",
+			"zeroRecords": "Aucun enregistrement correspondant trouvé",
+			"info": "Page _PAGE_ sur _PAGES_",
+			"infoEmpty": "Aucun enregistrement",
+			"infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
 			paginate: {
 			  next: '<i class="fa-solid fa-angle-right"></i>',
 			  previous: '<i class="fa-solid fa-angle-left"></i>' 
 			}
-		  }
+		  },
     });
       
     table.on('click', 'tbody tr', function() {
@@ -229,6 +238,8 @@ let dataSet = [
 			}
 		  },
 	});
+
+
 	$('#example tbody').on('click', 'tr', function () {
 		var data = table.row( this ).data();
 	});

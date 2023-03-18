@@ -1,6 +1,6 @@
 //demo styles
 table#example{
-    padding: 0rem 0 2rem 0;
+    padding: 0;
 }
 table.dataTable{
     font-size: 1rem;
@@ -84,6 +84,8 @@ table.dataTable tfoot th{
         color: $white;
     }
 }
+
+
 /* .dataTables_wrapper .dataTables_paginate .paginate_button{
 	border-radius: 12px;
     padding: 12px 20px;
@@ -213,6 +215,7 @@ table.dataTable tfoot th{
 	}
 }
 
+
 .dataTables_wrapper {
     input[type="search"], input[type="text"], select {
         border: 1px solid $b-color !important;
@@ -302,7 +305,7 @@ td.sorting_1{
 }
 
 .dataTables_info{
-	font-size:1rem;
+	font-size:0.85rem;
 	font-weight:500;
 	text-align:start!important;
 	display: inline-block;
@@ -373,6 +376,7 @@ table.dataTable.display tbody td {
 .dataTables_scrollBody thead{
 	display:none;
 }
+
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_desc:after,
 table.dataTable thead .sorting_asc:after{
@@ -435,5 +439,5 @@ body > *{
 	}
 }
 .dataTables_info{
-	padding: 1.25rem 0.75rem;
+	padding: 1rem 0.75rem;
 }

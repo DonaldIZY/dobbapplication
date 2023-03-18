@@ -25593,7 +25593,7 @@ code {
       margin: 0 0 0.625rem 0; } }
 
 table#example {
-  padding: 0rem 0 2rem 0; }
+  padding: 0; }
 
 table.dataTable {
   font-size: 1rem;
@@ -25693,7 +25693,7 @@ table.dataTable tfoot th {
   flex-flow: wrap; }
   .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
     margin-left: 0px;
-    font-size: 18px;
+    font-size: 1rem;
     border: 0 !important;
     height: 45px;
     width: 155px;
@@ -25713,7 +25713,7 @@ table.dataTable tfoot th {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0; }
     .dataTables_wrapper .dataTables_paginate .paginate_button.previous i, .dataTables_wrapper .dataTables_paginate .paginate_button.next i {
-      font-size: 20px;
+      font-size: 1rem;
       padding: 0 10px; }
     .dataTables_wrapper .dataTables_paginate .paginate_button.previous span, .dataTables_wrapper .dataTables_paginate .paginate_button.next span {
       border: none; }
@@ -25736,11 +25736,11 @@ table.dataTable tfoot th {
     @media only screen and (max-width: 35.9375rem) {
       .dataTables_wrapper .dataTables_paginate .paginate_button.previous, .dataTables_wrapper .dataTables_paginate .paginate_button.next {
         width: 45px;
-        font-size: 14px;
+        font-size: 0.8rem;
         height: 40px;
         line-height: 40px; }
         .dataTables_wrapper .dataTables_paginate .paginate_button.previous i, .dataTables_wrapper .dataTables_paginate .paginate_button.next i {
-          font-size: 14px; }
+          font-size:0.8rem; }
         .dataTables_wrapper .dataTables_paginate .paginate_button.previous span, .dataTables_wrapper .dataTables_paginate .paginate_button.next span {
           display: none; } }
   .dataTables_wrapper .dataTables_paginate span .paginate_button {
@@ -25750,7 +25750,7 @@ table.dataTable tfoot th {
     margin-left: 0px;
     line-height: 45px;
     text-align: center;
-    font-size: 18px;
+    font-size: 1rem;
     border-radius: 0rem;
     color: #666666 !important;
     border: 0 !important; }
@@ -25789,6 +25789,7 @@ table.dataTable.no-footer {
 
 .rounded-lg {
   min-width: 30px; }
+
 
 .dataTables_scroll {
   padding: 0 0 1rem 0; }
@@ -25840,7 +25841,7 @@ td.sorting_1 img {
   color: #717579 !important; }
 
 .dataTables_info {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
   text-align: start !important;
   display: inline-block; }
