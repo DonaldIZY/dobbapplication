@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 
 from administration.models import Commercial, Equipe
+from users.models import CustomUser
 from analytics import data
 from django.http import JsonResponse
 
@@ -196,6 +197,42 @@ class DashboardView(LoginRequiredMixin, View):
             'heading': self.univers,
             'pageview': "Dashboards",
             'product_type': self.univers,
+        }
+        return render(request, 'analytics/portefeuille/dashboard.html', greeting)
+
+
+class DashboardViewManager(LoginRequiredMixin, View):
+
+    def post(self, request, id):
+        customuser = CustomUser.objects.get(id=id)
+        print(customuser)
+        # Récupération des données de la requête
+        request_data = json.load(request)
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
+
+        searche = ''
+        user = request.user
+        entities = get_user_entities(user)
+        search = getSearch(entities, user)
+
+        univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
+        perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
+        produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
+        top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
+
+        # Préparation de la réponse
+        response_data = {
+            'univers': univers,
+            'performance': perfomance,
+            'product': produit,
+            'top_client': top_client
+        }
+        return JsonResponse(response_data)
+
+    def get(self, request, id):
+        greeting = {
+            'pageview': "Dashboards",
         }
         return render(request, 'analytics/portefeuille/dashboard.html', greeting)
 

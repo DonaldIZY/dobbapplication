@@ -21,7 +21,7 @@
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
                     <h4>Salut, {{ request.user.first_name }} {{ request.user.last_name }}!</h4>
-                    <p class="mb-0">Ci-dessous, vous trouverez les détails du compte de {{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }}</p>
+                    <p class="mb-0">Ci-dessous, vous trouverez les détails du compte de {{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</p>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -42,19 +42,19 @@
                         <div class="profile-info">
                             <div class="profile-photo">
 
-                                <a class="test-popup-link" href="/media/{{ gestionnaire_obj.gestionnaire.avatar }}">
-                                    <img src="/media/{{ gestionnaire_obj.gestionnaire.avatar }}" class="img-fluid rounded-circle test-popup-link" alt="">
+                                <a class="test-popup-link" href="/media/{{ commercial_obj.commercial.avatar }}">
+                                    <img src="/media/{{ commercial_obj.commercial.avatar }}" class="img-fluid rounded-circle test-popup-link" alt="">
                                 </a>
 
                             </div>
                             <div class="profile-details">
                                 <div class="profile-name px-3 pt-2">
-                                    <h4 class="text-primary mb-0">{{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }}</h4>
+                                    <h4 class="text-primary mb-0">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</h4>
 
                                 </div>
                                 <div class="profile-email px-2 pt-2">
 
-                                    <h4 class="text-muted mb-0">{{ gestionnaire_obj.gestionnaire.email }}</h4>
+                                    <h4 class="text-muted mb-0">{{ commercial_obj.commercial.email }}</h4>
                                 </div>
                                 <div class="dropdown ms-auto">
                                     <a href="#" class="btn btn-primary light sharp" data-bs-toggle="dropdown" aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg></a>
@@ -77,7 +77,7 @@
                         <div class="card-header">
                             <h4>Rôle <br><br>
 
-                                {% for g in gestionnaire_obj.gestionnaire.groups.all %}
+                                {% for g in commercial_obj.commercial.groups.all %}
                                 <span class="badge badge-xs badge-primary"> {{ g.name }} </span>
                                  {% endfor %}
                             </h4>
@@ -93,9 +93,9 @@
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ gestionnaire_obj.gestionnaire.first_name }} {{ gestionnaire_obj.gestionnaire.last_name }} Permissions</h4>
+                        <h4 class="card-title">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }} Permissions</h4>
                         {% if perms.auth.change_permission %}
-                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=gestionnaire_obj.gestionnaire.id %}"><i class="fa fa-pencil"></i></a></span>
+                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=commercial_obj.commercial.id %}"><i class="fa fa-pencil"></i></a></span>
                         {% endif %}
                     </div>
                     <div class="card-body">
@@ -112,9 +112,9 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <h4 class="card-title">Agence</h4>
+                        <h4 class="card-title">Segment</h4>
                         {% if perms.auth.change_permission %}
-                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=gestionnaire_obj.gestionnaire.id %}"><i class="fa fa-pencil"></i></a></span>
+                        <span class="badge badge-primary"><a class="text-white" href="{% url 'finlab:assign-permissions-to-user' id=commercial_obj.commercial.id %}"><i class="fa fa-pencil"></i></a></span>
                         {% endif %}
                     </div>
 
@@ -123,16 +123,16 @@
                            {% csrf_token %}
                            <div class="row">
                               <div class="mb-3 col-md-6">
-                                  <label class="form-label">Agence</label>
-                                 {{ form.agence|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Agence" }}
+                                  <label class="form-label">Choisissez un segment</label>
+                                 {{ form.equipe|attr:"type:text"|attr:"class:form-control"|attr:"placeholder:Agence" }}
                                  <div class="text-danger w-100 d-block mt-1">
-                                 {{ form.agence.errors }}
+                                 {{ form.equipe.errors }}
                                  </div>
                               </div>
-                               <div class="mb-3 col-md-6">
-                                   <label class="form-label">Zone</label>
-                                   <input class="form-control" type="text" readonly="" placeholder="Zone" value="{{ gestionnaire_obj.agence.zone }}">
-                                </div>
+{#                               <div class="mb-3 col-md-6">#}
+{#                                   <label class="form-label">Segment</label>#}
+{#                                   <input class="form-control" type="text" readonly="" placeholder="Zone" value="{{ commercial_obj.equipe.manager }}">#}
+{#                                </div>#}
                            </div>
                             <a href="{% url 'administration:commercial' %}" class="btn btn-secondary mt-5">Annuler</a>
                             <button type="submit" class="btn btn-primary mt-5">Sauvegarder</button>

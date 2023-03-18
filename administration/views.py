@@ -160,9 +160,10 @@ class DetailsCommercialView(LoginRequiredMixin, View):
     def get(self, request, id):
         if request.user.has_perm('administration.view_commercial'):
             commercial_obj = get_object_or_404(models.Commercial, id=id)
+            print(commercial_obj.commercial)
             form = forms.EditCommercialForm(instance=commercial_obj)
             context = {
-                "gestionnaire_obj": commercial_obj,
+                "commercial_obj": commercial_obj,
                 "user_group_perms": commercial_obj.commercial.get_group_permissions(),
                 "user_perms": commercial_obj.commercial.get_user_permissions(),
                 "page_title": "Informations du commercial",

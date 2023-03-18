@@ -8,6 +8,7 @@ urlpatterns = [
 
     # Portefeuille
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('manager-commercial-dashboard/<int:id>/', views.DashboardViewManager.as_view(), name='manager_commercial'),
     path('clientele/', views.ClienteleView.as_view(), name='clientele'),
 
 
