@@ -24,30 +24,34 @@
 {% block content %}
 <!-- --Ligne de la bar de titre-- -->
 <div class="row">
-	<div class="page-titles style1">
+	<div class="page-titles style1 justify-content-between">
 		<!-- Titre du dashboard -->
-		<div class="col-md-6 d-flex align-items-center">
+		<div class="col-sm-4">
 			<h2 class="heading">Dashboard <span class="graph-title">{{ heading }}</span> </h2>
 		</div>
+		<div class="col-sm-1">
+			<select class="image-select default-select dashboard-select" id="univers" aria-label="Default">
+				<option value="Mobile" selected>Mobile</option>
+				<option value="Fixe">Fixe</option>
+				<option value="Broadband">Broadband</option>
+			</select>
+		</div>
 		<!-- Liste déroulante et date picker -->
-		<div class="col-md-6 d-flex justify-content-between align-items-center">
-			<div class="mr-3">
-				<select class="image-select default-select dashboard-select" id="univers" aria-label="Default">
-					<option value="Mobile" selected>Mobile</option>
-					<option value="Fixe">Fixe</option>
-					<option value="Broadband">Broadband</option>
-				</select>
-			</div>
-			<div id="datepicker" class="input-group d-flex">
-				<div class="calender-picker">
-					<h6 class="fs-14 m-0 font-w600">Choisir la période</h6>
-					<form class="d-flex justify-content-around align-items-center">
-						<input name="datepicker" type="text" class="form-control p-3" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
-						<span>-</span>
-						<input name="datepicker" type="text" class="form-control p-3" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
-						<button type="submit" id="full-date" class="btn btn-primary btn-sm">Actualiser</button>
-					</form>
+		<div class="col-sm-7 d-flex justify-content-end">
+			<div class="d-flex justify-content-end align-items-center">
+				<h6 class="m-0" style="font-size: 0.8rem;">Choisir la période:</h6>
+				<div class="input-group-append d-lg-none mx-2">
+					<span class="input-group-text p-2"><img src="{% static 'finlab/images/calendrier.png' %}" class="img-fluid" alt=""></span>
 				</div>
+				<form class="d-none d-lg-flex">
+					<div class="input-group input-group-sm d-flex justify-content-around align-items-center">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-left" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-right" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<div class="input-group-append">
+							<button class="btn btn-primary btn-sm" type="submit" id="full-date">Actualiser</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
