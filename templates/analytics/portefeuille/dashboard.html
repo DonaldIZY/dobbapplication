@@ -27,28 +27,28 @@
 {% block content %}
 <!-- --Ligne de la bar de titre-- -->
 <div class="row">
-	<div class="page-titles style1">
+	<div class="page-titles style1 justify-content-between">
 		<!-- Titre du dashboard -->
-		<div class="col-lg-6">
+		<div class="col-sm-5">
 			<h2 class="heading">Informations générales</h2>
 		</div>
 		<!-- Liste déroulante et date picker -->
-		<div class="col-lg-6 d-flex align-items-center">
-			<!-- <div id="datepicker" class="input-group date dz-calender"> -->
-				<div class="d-flex justify-content-around align-items-center">
-					<div class="input-group-append d-lg-none">
-					  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-					</div>
-					<div class="d-none d-lg-flex">
-					  <h6 class="mr-2">Choisir la date</h6>
-					  <form class="d-flex justify-content-around align-items-center">
-						<input name="datepicker" type="text" class="form-control" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
-						<span>-</span>
-						<input name="datepicker" type="text" class="form-control" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
-						<button type="submit" id="full-date" class="btn btn-primary btn-sm">Actualiser</button>
-					  </form>
-					</div>
+		<div class="col-sm-7 d-flex justify-content-end">
+			<div class="d-flex justify-content-end align-items-center">
+				<h6 class="m-0" style="font-size: 0.8rem;">Choisir la période:</h6>
+				<div class="input-group-append d-lg-none mx-2">
+					<span class="input-group-text p-2"><img src="{% static 'finlab/images/calendrier.png' %}" class="img-fluid" alt=""></span>
 				</div>
+				<form class="d-none d-lg-flex">
+					<div class="input-group input-group-sm d-flex justify-content-around align-items-center">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-left" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-right" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<div class="input-group-append">
+							<button class="btn btn-primary btn-sm" type="submit" id="full-date">Actualiser</button>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
@@ -372,6 +372,7 @@ $(document).ready(function(){
             var data = table.row( this ).data();
         });
 });
+
 </script>
 
 {% endblock %}
