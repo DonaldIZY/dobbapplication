@@ -439,6 +439,24 @@ function getData(startDate, endDate) {
       caUniversOption.series[0].data = data.univers;
       caUniversOption && caUnivers.setOption(caUniversOption);
 
+       // Boucle pour parcourir tous les éléments de votre tableau
+      for (var i = 0; i < data.univers.length; i++) {
+          // Récupération du name et du value de chaque élément
+          var name = data.univers[i].name.toLowerCase();
+          var value = data.univers[i].value / data.pourcent_client;
+          console.log(name);
+
+          // // Récupération de l'élément du DOM par son id
+          // var element = document.getElementById(`${name}`);
+          //
+          // // Vérification que l'élément existe avant de modifier son contenu
+          // if (element !== null) {
+          //   element.innerHTML = `${separateurMillier(value.toFixed(0))} FCFA`;
+          // }
+
+          document.getElementById(`${name}`).innerHTML = `${separateurMillier(value.toFixed(0))} FCFA`;
+      }
+
     //   ===========================================================
     //   Option de modification des graphs Performance Générale
       const maximum = Math.max(...data.performance.total_montant);
@@ -468,7 +486,10 @@ function getData(startDate, endDate) {
     //   ===============================================================
       // Récupération de la référence de la table DataTable
       // var table = document.getElementById('gros-client').DataTable();
-      $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
+      // $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
+
+      document.getElementById("header-top80").innerHTML = `Zoom ${data.pourcent_client.toFixed(2)} des clients / 80% du revenu`;
+
 
     })
     .catch(function (error) {

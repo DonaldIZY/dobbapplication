@@ -181,7 +181,8 @@ class DashboardView(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
 
-        data.getNbMois(date_debut=start_date, date_fin=end_date)
+        nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
+        print(nb_mois)
 
         gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
@@ -192,7 +193,8 @@ class DashboardView(LoginRequiredMixin, View):
             'product': produit,
             'top_client': top_client,
             'gros_clients': gros_clients,
-            # 'pourcent_client': pourcent_client
+            'nb_mois': int(nb_mois),
+            'pourcent_client': float(pourcent_client)
         }
         return JsonResponse(response_data)
 
