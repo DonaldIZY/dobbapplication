@@ -63,7 +63,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title">
-						<h3 class="heading">Performance générale</h2>
+						<h3 class="heading">Performance générale</h3>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				<div class="row inside-the-card">
 					<!-- Graphique -->
 					<div class="col-lg-9 col-xs-12 card-body p-2 custome-tooltip">
-					<div class="dashboard-graph" id="dashbordPerformGen" style="height: 250px"></div>
+					<div class="dashboard-graph" id="dashbordPerformGen" style="height: 300px"></div>
 					</div>
 					<!-- Liste des cartes d'indicateurs -->
 					<div class="col-lg-3 col-sm-12 p-3 d-flex justify-content-center">
@@ -81,7 +81,7 @@
 								<i class="fas fs-2 fa-chart-line primary-text rounded-full secondary-bg p-3 w-25"></i>
 								<div class="w-75">
 								<h5>CA moyen</h5>
-								<h6 class="text-muted">12,345,567,890 F</h6>
+								<h6 class="text-muted" id="ca-moyen"></h6>
 								</div>
 							</div>
 							<!-- carte de CA-maximum de la période -->
@@ -90,7 +90,7 @@
 								<i class="fas fs-2 fa-sort-amount-up primary-text rounded-full secondary-bg p-3 w-25"></i>
 								<div class="w-75">
 								<h5>CA maximum</h5>
-								<h6 class="text-muted">13,567,567,890 F</h6>
+								<h6 class="text-muted" id="ca-max"></h6>
 								</div>
 							</div>
 							<!-- carte de CA-minimum de la période -->
@@ -98,7 +98,7 @@
 								<i class="fas fs-2 fa-sort-amount-down primary-text rounded-full secondary-bg p-3 w-25"></i>
 								<div class="w-75">
 								<h5>CA Minimum</h5>
-								<h6 class="text-muted">9,345,567,890 F</h6>
+								<h6 class="text-muted" id="ca-min"></h6>
 								</div>
 							</div>
 						</div>
@@ -119,7 +119,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title">
-						<h3 class="heading">Partition du CA par univers</h2>
+						<h3 class="heading">Partition du CA par univers</h3>
 					</div>
 				</div>
 			</div>
@@ -225,7 +225,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title">
-						<h2 class="heading">Zoom {Pourcentage} des clients / 80% du revenu</h2>
+						<h2 class="heading" id="header-top80">Zoom {Pourcentage} des clients / 80% du revenu</h2>
 					</div>
 				</div>
 			</div>
@@ -233,7 +233,7 @@
 			<div class="card-body p-2 custome-tooltip">
 				<!-- <div class="dashboard-graph" id="dashboardZoom" style="height: 250px"></div> -->
 				<div class="table-responsive">
-					<table id="example" class="display">
+					<table id="gros-client" class="display">
 						<thead>
 							<tr>
 								<th></th>
@@ -248,17 +248,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+                        {% for gros_client in gros_clients %}
+                            <tr>
 								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>
-								<td>Tiger Nixon</td>
-								<td>Audit et consultance</td>
-								<td>2011-04-25</td>
-								<td>$25,000</td>
-								<td>$25,000</td>
-								<td>$25,000</td>
-								<td>$25,000</td>
-								<td>$100,800</td>
+								<td>{{ gros_client.client }}</td>
+								<td>{{ gros_client.secteur_activite }}</td>
+								<td></td>
+								<td>{{ gros_client.mobile }}</td>
+								<td>{{ gros_client.fixe }}</td>
+								<td>{{ gros_client.broadband }}</td>
+								<td>{{ gros_client.ict }}</td>
+								<td>{{ gros_client.total_montant }}</td>
 							</tr>
+                        {% endfor %}
 						</tbody>
 					</table>
 				</div>
@@ -291,6 +293,7 @@
 <script>
 
 $(document).ready(function(){
+
     // Initialise le datepicker de début
     $('#start_date').datepicker({
       format: "mm/yyyy",
@@ -343,6 +346,33 @@ $(document).ready(function(){
 
         getData(startDate, endDate);
     });
+
+    {#===========================================================#}
+
+    var table = $('#gros-client').DataTable({
+		scroolX: true,
+		language: {
+			"search": "Chercher",
+			"decimal": ',',
+            "thousands": ' ',
+			"emptyTable": "Aucune donnée disponible dans le tableau",
+			"loadingRecords": "Chargement en cours...",
+			"processing": "Traitement en cours...",
+			"lengthMenu": "Afficher _MENU_ entrées",
+			"zeroRecords": "Aucun enregistrement correspondant trouvé",
+			"info": "Page _PAGE_ sur _PAGES_",
+			"infoEmpty": "Aucun enregistrement",
+			"infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
+			paginate: {
+			  next: '<i class="fa-solid fa-angle-right"></i>',
+			  previous: '<i class="fa-solid fa-angle-left"></i>'
+			}
+		  },
+    });
+
+      $('#gros-client').on('click', 'tr', function () {
+            var data = table.row( this ).data();
+        });
 });
 </script>
 
