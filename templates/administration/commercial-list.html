@@ -48,15 +48,15 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="example3" class="display table-bordered">
+                    <table id="example" class="display">
                         <thead>
                             <tr>
-                                <th>
+                                <!-- <th>
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input  type="checkbox" class="form-check-input" id="checkAll" value="">
                                         <label class="form-check-label" for="checkAll"></label>
                                     </div>
-                                </th>
+                                </th> -->
 
                                 <th>Nom et prénoms</th>
                                 <th>Email</th>
@@ -75,12 +75,12 @@
                             {% for commercial_obj in commerciaux %}
                             <tr id="{{ commercial_obj.id }}">
                                 <!-- Checkbox renseignant l'ID des commerciaux sélectionnés -->
-                                <td>
+                                <!-- <td>
                                     <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
                                         <input name="user_id[]" type="checkbox" class="form-check-input" value="{{ commercial_obj.id }}">
                                         <label class="form-check-label" for="checkbox-{{ commercial_obj.id }}"></label>
                                     </div>
-                                </td>
+                                </td> -->
                                 <!-- Champ "Nom et Prénoms" du tableau -->
                                 <td>
                                     <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">
