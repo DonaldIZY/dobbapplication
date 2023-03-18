@@ -49,7 +49,9 @@ var performGeneraleOption = {
       }
     },
   xAxis: {
-    },
+    axisTick: {show: false},
+    axisLine: {show: false},
+  },
   yAxis: {},
   series: [
     {
@@ -57,7 +59,13 @@ var performGeneraleOption = {
       smooth: true,
       label:{
         formatter: etiquette_format,
-      }
+      },
+      markPoint: {
+        data: [
+          { type: 'max', name: 'Max' },
+          { type: 'min', name: 'Min' }
+        ]
+      },
     }
   ]
 };
@@ -385,6 +393,15 @@ window.addEventListener('resize', function() {
 });
 
 
+function separateurMillier(nombre) {
+    'use strict';
+    return nombre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+
+// =====================================================================================================================
+
+
 // =====================================================================================================================
 function getData(startDate, endDate) {
   "use strict";
@@ -417,25 +434,45 @@ function getData(startDate, endDate) {
       /* jshint ignore:start */
       console.log(data);
       /* jshint ignore:end */
-
+      // ===========================================================
+      // Option de modification des graphs CA
       caUniversOption.series[0].data = data.univers;
       caUniversOption && caUnivers.setOption(caUniversOption);
 
     //   ===========================================================
+    //   Option de modification des graphs Performance Générale
+      const maximum = Math.max(...data.performance.total_montant);
+      const minimum = Math.min(...data.performance.total_montant);
+      const moyenne = data.performance.total_montant.reduce((acc, val) => acc + val) / data.performance.total_montant.length;
+
+      document.getElementById("ca-moyen").innerHTML = `${separateurMillier(moyenne.toFixed(0))} FCFA`;
+      document.getElementById("ca-min").innerHTML = `${separateurMillier(minimum)} FCFA`;
+      document.getElementById("ca-max").innerHTML = `${separateurMillier(maximum)} FCFA`;
+
       performGeneraleOption.xAxis.data = data.performance.dates;
       performGeneraleOption.series[0].data = data.performance.total_montant;
       performGeneraleOption && performGenerale.setOption(performGeneraleOption);
 
     //   =============================================================
-
+    // Option de modification des graphs Top 5 des clients
       topClientsOption.xAxis.data = data.top_client.client;
       topClientsOption.series[0].data = data.top_client.total_montant;
       topClientsOption && topClients.setOption(topClientsOption);
 
     //   ===============================================================
+    //   Option de modification des graphs Top 5 des produits
       topProduitsOption.yAxis.data = data.product.product;
       topProduitsOption.series[0].data = data.product.ca;
       topProduitsOption && topProduits.setOption(topProduitsOption);
+
+    //   ===============================================================
+      // Récupération de la référence de la table DataTable
+      var table = document.getElementById('gros-client').DataTable();
+
+      // Ajout d'une ligne à la table
+      table.row.add([
+          data.gros_clients
+      ]).draw();
 
     })
     .catch(function (error) {
@@ -447,4 +484,4 @@ function getData(startDate, endDate) {
 }
 
 // =====================================================================================================================
-document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-06-01'));
+document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-12-01'));

@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 import psycopg2
+from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -83,8 +84,6 @@ class FacturationView(LoginRequiredMixin, View):
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
-        print(f"Debut: {start_date}, fin:{end_date}")
-
         # Obtention des données
         parc_actif = data.getParcAtif(univers=univers, get='parc', debut_periode=start_date,
                                       fin_periode=end_date, search=search)
@@ -99,7 +98,7 @@ class FacturationView(LoginRequiredMixin, View):
         test_data, test_pourcent = data.top_80_20(debut_periode=start_date, fin_periode=end_date, search=search)
 
         print(test_pourcent)
-        print(test_data)
+        # print(test_data)
 
         # Préparation de la réponse
         response_data = {
@@ -173,6 +172,10 @@ class DashboardView(LoginRequiredMixin, View):
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
+        delta = relativedelta(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(start_date, '%Y-%m-%d'))
+        nb_months = delta.months + 12 * delta.years
+        # print(f"{type(nb_months)}: {nb_months}")
+
         searche = ''
         user = request.user
         entities = get_user_entities(user)
@@ -183,12 +186,16 @@ class DashboardView(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
 
+        gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
+
         # Préparation de la réponse
         response_data = {
             'univers': univers,
             'performance': perfomance,
             'product': produit,
-            'top_client': top_client
+            'top_client': top_client,
+            'gros_clients': gros_clients,
+            # 'pourcent_client': pourcent_client
         }
         return JsonResponse(response_data)
 
@@ -217,7 +224,6 @@ class DashboardViewManager(LoginRequiredMixin, View):
 
     def post(self, request, id):
         customuser = CustomUser.objects.get(id=id)
-        print(customuser)
         # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
@@ -259,7 +265,6 @@ class ClienteleView(LoginRequiredMixin, View):
         if entities == 'Commercial':
             commercial_obj = Commercial.objects.get(commercial=user)
             full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
-            print(commercial_obj)
             searche = f"""
                 LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
             """
