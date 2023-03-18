@@ -7,8 +7,7 @@
             <li><a href="{% url 'analytics:facturation' %}" aria-expanded="false">
                     <i class="material-icons-outlined">payments</i>
                     <span class="nav-text">Facturation</span>
-                </a>
-            </li>
+                </a></li>
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <i class="material-icons-outlined">dashboard</i>
                     <span class="nav-text">Top 200</span>
@@ -23,15 +22,15 @@
                 <i class="material-icons-outlined">account_balance_wallet</i>
                 <span class="nav-text">Portefeuille</span>
             </a>
-            <ul aria-expanded="false">
-                <li><a href="{% url 'analytics:dashboard' %}">Tableau de bord</a></li>
-                {% for group in request.user.groups.all %}
-                    {% if group.name == 'Commercial' %}
-                        <li><a href="{% url 'analytics:clientele' %}">Clientèle</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </li>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'analytics:dashboard' %}">Tableau de bord</a></li>
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == 'Commercial' %}
+                            <li><a href="{% url 'analytics:clientele' %}">Clientèle</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
 
             {% if perms.administration.view_equipe or perms.administration.view_commercial %}
             <li>
@@ -40,9 +39,6 @@
                     <span class="nav-text">Ressources</span>
                 </a>
                 <ul aria-expanded="false">
-{#                    {% if perms.administration.view_zone or perms.administration.change_zone or perms.administration.add_zone or perms.administration.delete_zone %}#}
-{#                        <li><a href="{% url 'administration:zone' %}">Zones</a></li>#}
-{#                    {% endif %}#}
 
                     {% if perms.administration.view_equipe or perms.administration.change_equipe or perms.administration.add_equipe or perms.administration.delete_equipe %}
                         <li><a href="{% url 'administration:equipe' %}">Segments</a></li>
