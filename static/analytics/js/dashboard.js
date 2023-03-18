@@ -467,12 +467,8 @@ function getData(startDate, endDate) {
 
     //   ===============================================================
       // Récupération de la référence de la table DataTable
-      var table = document.getElementById('gros-client').DataTable();
-
-      // Ajout d'une ligne à la table
-      table.row.add([
-          data.gros_clients
-      ]).draw();
+      // var table = document.getElementById('gros-client').DataTable();
+      $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
 
     })
     .catch(function (error) {

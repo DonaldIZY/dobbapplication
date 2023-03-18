@@ -413,6 +413,17 @@ def caUniversCommerciaux(date_debut, date_fin, search):
     return data
 
 
+def getNbMois(date_debut, date_fin):
+    request = f"""
+        select count(distinct date_facture) from public.base_dobb
+        where date_facture between '{date_debut}' and '2{date_fin}'
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+    nb_mois = df['count'][0]
+    return nb_mois
+
+
 def performGenerale(date_debut, date_fin, search):
     request = f"""      
         SELECT date_facture, 
@@ -501,7 +512,7 @@ def top_80_20(date_debut, date_fin, search):
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
 
-    print(result.to_dict())
+    # print(result.to_dict())
 
     data = dataToDictAg(data=result)
     # data = result.to_dict()

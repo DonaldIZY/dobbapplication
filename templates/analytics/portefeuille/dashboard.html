@@ -236,31 +236,28 @@
 					<table id="gros-client" class="display">
 						<thead>
 							<tr>
-								<th></th>
-								<th>Nom</th>
-								<th>Secteur d'activité</th>
-								<th>Date de création</th>
-								<th>CA mobile</th>
-								<th>CA fixe</th>
-								<th>CA broadband</th>
-								<th>CA ICT</th>
-								<th>CA total</th>
+								<th>client</th>
+								<th>secteur_activite</th>
+								<th>fixe</th>
+								<th>ict</th>
+								<th>mobile</th>
+								<th>total_montant</th>
 							</tr>
 						</thead>
 						<tbody>
-                        {% for gros_client in gros_clients %}
-                            <tr>
-								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>
-								<td>{{ gros_client.client }}</td>
-								<td>{{ gros_client.secteur_activite }}</td>
-								<td></td>
-								<td>{{ gros_client.mobile }}</td>
-								<td>{{ gros_client.fixe }}</td>
-								<td>{{ gros_client.broadband }}</td>
-								<td>{{ gros_client.ict }}</td>
-								<td>{{ gros_client.total_montant }}</td>
-							</tr>
-                        {% endfor %}
+
+{#                            <tr>#}
+{#								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>#}
+{#								<td>{{ gros_client.client }}</td>#}
+{#								<td>{{ gros_client.secteur_activite }}</td>#}
+{#								<td></td>#}
+{#								<td>{{ gros_client.mobile }}</td>#}
+{#								<td>{{ gros_client.fixe }}</td>#}
+{#								<td>{{ gros_client.broadband }}</td>#}
+{#								<td>{{ gros_client.ict }}</td>#}
+{#								<td>{{ gros_client.total_montant }}</td>#}
+{#							</tr>#}
+
 						</tbody>
 					</table>
 				</div>
@@ -276,6 +273,10 @@
 
 
 {% block additional_js %}
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+	<script src="{% static jsurl %}"></script>
+    {% endfor %}
+
     <script src="{% static 'finlab/vendor/peity/jquery.peity.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/swiper/js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/wow-master/dist/wow.min.js' %}"></script>
@@ -286,9 +287,6 @@
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/dashboard.js' %}"></script>
-	{% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
-	<script src="{% static jsurl %}"></script>
-    {% endfor %}
 
 <script>
 
