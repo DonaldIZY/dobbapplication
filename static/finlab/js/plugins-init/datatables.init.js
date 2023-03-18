@@ -212,18 +212,22 @@ let dataSet = [
 	// table row
 	var table = $('#dataTable1, #dataTable2, #dataTable3, #dataTable4,  #example3, #example4 ').DataTable({
 		scrollY: '200px',
+		scroolX: true,
 		scrollCollapse: true,
 		language: {
+			"search": "Chercher",
+			"decimal": ',',
+            "thousands": ' ',
 			"lengthMenu": "Afficher _MENU_ entrées",
 			"zeroRecords": "Aucune donnée",
 			"info": "_PAGE_ sur _PAGES_",
 			"infoEmpty": "Aucun enregistrement",
-			"infoFiltered": "(Rechercher par: _MAX_ total records)",
+			"infoFiltered": "(Rechercher par: _MAX_ enregistrements)",
 			paginate: {
 			  next: '<i class="fa-solid fa-angle-right"></i>',
 			  previous: '<i class="fa-solid fa-angle-left"></i>' 
 			}
-		  }
+		  },
 	});
 	$('#example tbody').on('click', 'tr', function () {
 		var data = table.row( this ).data();

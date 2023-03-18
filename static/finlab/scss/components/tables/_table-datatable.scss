@@ -3,7 +3,7 @@ table#example{
     padding: 0rem 0 2rem 0;
 }
 table.dataTable{
-    font-size: 14px;
+    font-size: 1rem;
 	border-radius: $radius;
     overflow: hidden;
 }
@@ -48,7 +48,7 @@ table.dataTable thead th{
         color: $white;
     }
 	@include respond ('laptop'){
-		font-size:16px;
+		font-size:1rem;
 	}
 	@include respond ('phone'){
 		padding: 14px 15px;
@@ -60,7 +60,7 @@ td.doller {
 
 table.dataTable tbody td{
     padding: 1.25rem 1.125rem;
-	font-size:15px;
+	font-size: 0.9rem;
 	font-weight: 500;
 	border-bottom:0;
 	white-space: nowrap;
@@ -68,7 +68,7 @@ table.dataTable tbody td{
 		padding: 8px 5px;
 	}
 	@include respond ('laptop'){
-		font-size:14px;
+		font-size: 0.9rem;
 		padding:8px 5px;
 	}
 }
@@ -227,7 +227,7 @@ table.dataTable tfoot th{
         }
     }
 	.dataTables_length{
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 		.bootstrap-select{
 			width: 80px!important;
 			margin: 0 5px;
@@ -243,7 +243,7 @@ table.dataTable.no-footer{
 	min-width:30px;
 }
 .dataTables_scroll{
-    padding: 1rem 0;
+    padding: 0 0 1rem 0;
 
     &Foot{
         padding-top: 1rem;
@@ -283,7 +283,7 @@ td.sorting_1{
 .dataTables_wrapper .dataTables_paginate {
     color: $body-color;
 	border-radius:1rem;
-	margin-bottom:20px;
+	margin-bottom:10px;
 	@include respond ('phone'){
 		margin-bottom:8px;
 	}

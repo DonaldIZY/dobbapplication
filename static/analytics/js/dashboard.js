@@ -18,6 +18,23 @@ let url = window.location.href;
 console.log(url);
 /* jshint ignore:end */
 
+
+// Sélectionnez l'élément avec la classe "input-group-append d-lg-none"
+const calendarIcon = document.querySelector('.input-group-append.d-lg-none');
+// Ajouter un événement de clic à l'icône de calendrier
+calendarIcon.addEventListener('click', function() {
+  // Sélectionnez l'élément span contenant l'icône de calendrier
+  const calendarSpan = calendarIcon.querySelector('span');
+  // Sélectionnez l'élément contenant le formulaire de sélection de date
+  const datepickerForm = document.querySelector('.d-none.d-lg-flex');
+  
+  // Ajouter la classe "d-none" à l'élément span contenant l'icône de calendrier
+  calendarSpan.classList.add('d-none');
+  // Supprimer la classe "d-none" de l'élément contenant le formulaire de sélection de date
+  datepickerForm.classList.remove('d-none');
+});
+
+
 // =====================================================================================================================
 // GRAPHIQUE : PERFORMANCE GENERALE
 
@@ -234,77 +251,77 @@ var topProduitsOption = {
 // =====================================================================================================================
 // GRAPHIQUE : ZOOM 20/80
 
- // Initialiser le diagramme avec echarts
- var zoomGraph = echarts.init(document.getElementById('dashboardZoom'), null, {renderer: 'canvas', force: true});
+//  //Initialiser le diagramme avec echarts
+//  var zoomGraph = echarts.init(document.getElementById('dashboardZoom'), null, {renderer: 'canvas', force: true});
 
- // Définir les données pour chaque entrée Y
- var data1 = [120, 200, 150, 80, 70, 56, 54, 23, 15]; //Mobile
- var data2 = [80, 90, 100, 60, 50, 56, 54, 23, 15];   //Fixe
- var data3 = [50, 70, 60, 40, 30, 52, 34, 13, 75];    //Broadband
- var data4 = [30, 40, 50, 20, 10, 8, 14, 10, 25];    //ICT
+//  // Définir les données pour chaque entrée Y
+//  var data1 = [120, 200, 150, 80, 70, 56, 54, 23, 15]; //Mobile
+//  var data2 = [80, 90, 100, 60, 50, 56, 54, 23, 15];   //Fixe
+//  var data3 = [50, 70, 60, 40, 30, 52, 34, 13, 75];    //Broadband
+//  var data4 = [30, 40, 50, 20, 10, 8, 14, 10, 25];     //ICT
 
- // Définir les étiquettes pour l'axe X (clients)
- var labels = ['Client1', 'Client30', 'Client19', 'Client68', 'Client109', 'Client3', 'Client295', 'Client968', 'Client7109'];
+//  // Définir les étiquettes pour l'axe X (clients)
+//  var labels = ['Client1', 'Client30', 'Client19', 'Client68', 'Client109', 'Client3', 'Client295', 'Client968', 'Client7109'];
 
- // Définir les options pour le diagramme
- var zoomOption = {
-    center: ['50%', '50%'],
-    tooltip: {
-      trigger: 'axis',
-      textStyle: {
-        fontFamily: fontFamily,
-        fontSize: '100%'
-      },
-      axisPointer: {
-        type: 'shadow',
-        crossStyle: {
-          color: '#999'
-        }
-      }
-    },
-    legend: {
-        data: ['Mobile', 'Fixe', 'Broadband', 'ICT'] //univers
-    },
-    xAxis: {
-        type: 'category',
-        data: labels
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [
-        {
-            name: 'Mobile',
-            type: 'bar',
-            stack: 'total',
-            data: data1,
-            color: color_blue
-        },
-        {
-            name: 'Fixe',
-            type: 'bar',
-            stack: 'total',
-            data: data2,
-            color: color_orange
-        },
-        {
-            name: 'Broadband',
-            type: 'bar',
-            stack: 'total',
-            data: data3,
-            color: color_silver
-        },
-        {
-            name: 'ICT',
-            type: 'bar',
-            stack: 'total',
-            data: data4,
-            color: color_red
-        },
-    ]
- };
- // Appliquer les options au diagramme
- zoomGraph.setOption(zoomOption);
+//  // Définir les options pour le diagramme
+//  var zoomOption = {
+//     center: ['50%', '50%'],
+//     tooltip: {
+//       trigger: 'axis',
+//       textStyle: {
+//         fontFamily: fontFamily,
+//         fontSize: '100%'
+//       },
+//       axisPointer: {
+//         type: 'shadow',
+//         crossStyle: {
+//           color: '#999'
+//         }
+//       }
+//     },
+//     legend: {
+//         data: ['Mobile', 'Fixe', 'Broadband', 'ICT'] //univers
+//     },
+//     xAxis: {
+//         type: 'category',
+//         data: labels
+//     },
+//     yAxis: {
+//         type: 'value'
+//     },
+//     series: [
+//         {
+//             name: 'Mobile',
+//             type: 'bar',
+//             stack: 'total',
+//             data: data1,
+//             color: color_blue
+//         },
+//         {
+//             name: 'Fixe',
+//             type: 'bar',
+//             stack: 'total',
+//             data: data2,
+//             color: color_orange
+//         },
+//         {
+//             name: 'Broadband',
+//             type: 'bar',
+//             stack: 'total',
+//             data: data3,
+//             color: color_silver
+//         },
+//         {
+//             name: 'ICT',
+//             type: 'bar',
+//             stack: 'total',
+//             data: data4,
+//             color: color_red
+//         },
+//     ]
+//  };
+//  // Appliquer les options au diagramme
+//  zoomGraph.setOption(zoomOption);
 
 
 //=========================================================================================================================

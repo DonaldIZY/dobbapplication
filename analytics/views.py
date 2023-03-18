@@ -193,10 +193,22 @@ class DashboardView(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
     def get(self, request):
+
+        query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
+
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            dates = cursor.fetchall()
+
+        min_date = dates[0][0]
+        max_date = dates[0][1]
+
         greeting = {
             'heading': self.univers,
             'pageview': "Dashboards",
             'product_type': self.univers,
+            'min_date': min_date,
+            'max_date': max_date
         }
         return render(request, 'analytics/portefeuille/dashboard.html', greeting)
 
