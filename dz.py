@@ -7,7 +7,6 @@ dz_array = {
         "description": "Orange Côte d'Ivoire",
         "og_title": "Orange",
         "og_description": "Orange DOBB",
-        # "og_image": "https://www.banqueatlantique.net/wp-content/uploads/2020/03/BACI-Logo.png",
         "og_image": "static/finlab/images/orange_logo.png",
         "title": "Orange | DOBB",
     },

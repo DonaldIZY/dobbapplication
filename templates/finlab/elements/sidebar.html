@@ -44,6 +44,7 @@
                         <li><a href="{% url 'administration:equipe' %}">Segments</a></li>
                     {% endif %}
                     {% if perms.administration.view_commercial or perms.administration.change_commercial or perms.administration.add_commercial or perms.administration.delete_commercial %}
+                        <li><a href="{% url 'analytics:suivi_equipe' %}">Suivi de l'équipe</a></li>
                         <li><a href="{% url 'administration:commercial' %}">Commerciaux</a></li>
                     {% endif %}
                 </ul>

@@ -70,6 +70,11 @@ var performGeneraleOption = {
     {
       type: 'line',
       smooth: true,
+      color: color_orange,
+      areaStyle: {
+        color: color_orange,
+        opacity: 0.15
+      },
       markPoint: {
         data: [
           { type: 'max', name: 'Max', itemStyle: {color: color_orange}},
