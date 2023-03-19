@@ -51,24 +51,39 @@ var performGeneraleOption = {
   xAxis: {
     axisTick: {show: false},
     axisLine: {show: false},
+    axisLabel: {
+      textStyle: {
+        fontFamily: fontFamily // changer la police en celle HTML
+        },
+      fontSize: '90%'
+      },
+    },
+  yAxis: {
+    axisLabel: {
+      textStyle: {
+        fontFamily: fontFamily // changer la police en celle HTML
+        },
+      fontSize: '90%'
+    },
   },
-  yAxis: {},
   series: [
     {
       type: 'line',
       smooth: true,
-      label:{
-        formatter: etiquette_format,
-      },
       markPoint: {
         data: [
-          { type: 'max', name: 'Max' },
-          { type: 'min', name: 'Min' }
-        ]
+          { type: 'max', name: 'Max', itemStyle: {color: color_orange}},
+          { type: 'min', name: 'Min', itemStyle: {color: color_sombre} }
+        ],
+        label:{
+          formatter: etiquette_format,
+        },
+        
       },
     }
   ]
 };
+
 
 // =====================================================================================================================
 // GRAPHIQUE : CA GENERE PAR UNIVERS
@@ -104,6 +119,8 @@ let caUniversOption = {
       selectedMode: 'single',
       label:{
         formatter: '{b}: {d}%',
+        fontSize: '100%',
+        fontFamily: fontFamily
       }
     }
   ],
@@ -141,7 +158,7 @@ var topClientsOption = {
         fontFamily: fontFamily // changer la police en celle HTML
         },
       fontSize: '80%',
-      fontWeight: 600
+      fontWeight: 500
       },
     },
   yAxis: {
@@ -482,6 +499,7 @@ function getData(startDate, endDate) {
       /* jshint ignore:end */
     });
 }
+
 
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-12-01'));
