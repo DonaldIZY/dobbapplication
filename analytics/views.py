@@ -196,7 +196,7 @@ class DashboardView(LoginRequiredMixin, View):
             'performance': perfomance,
             'product': produit,
             'top_client': top_client,
-            'gros_clients': {'data': gros_clients},
+            'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client)
         }

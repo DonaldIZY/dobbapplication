@@ -516,6 +516,6 @@ def top_80_20(date_debut, date_fin, search):
 
     # data = dataToDictAg(data=result)
     # data = result.to_dict()
-    data = result.values.tolist()
+    data = result.astype(str).values.tolist()
     print(type(data))
     return data, client_part
