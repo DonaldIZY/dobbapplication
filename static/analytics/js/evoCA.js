@@ -235,28 +235,23 @@ let chartCAUnivers = echarts.init(chartDomCAUnivers, null, {renderer: 'canvas', 
 let optionCAUnivers = {
   tooltip: {
     trigger: 'item',
-    // formatter: function(param) {
-    //   var value = param.value;
-    //   if (value >= 1000000000) {
-    //       value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
-    //   } else if (value < 1000000000 && value >= 1000000) {
-    //       value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
-    //   } else if (value < 1000000 && value >= 1000){
-    //       value = (value/1000).toFixed(2) + ' K';  // afficher en milliers
-    //   } else {
-    //       value = value; // afficher les valeurs directement
-    //   }
-    //   return param.name + ': ' + value + ' (' + param.percent + '%)';
-    // },
+    formatter: function(param) {
+      'use strict';
+      var value = param.value;
+      if (value >= 1000000000) {
+          value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
+      } else if (value < 1000000000 && value >= 1000000) {
+          value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
+      } else if (value < 1000000 && value >= 1000){
+          value = (value/1000).toFixed(2) + ' K';  // afficher en milliers
+      } else {
+          value = value; // afficher les valeurs directement
+      }
+      return 'CA Univers <br/> ' + param.name + ': ' + value + '  (' + param.percent + '%)';
+    },
     textStyle: {
       fontFamily: fontFamily,
       fontSize: '100%'
-    },
-    formatter: (param) => {
-      'use strict';
-      return `CA Univers <br/>
-              ${param.name}: <strong>${(param.value / 1000000).toFixed(0)} M</strong> 
-              <strong>(${param.percent} %)</strong>`;
     },
   },
   series: [
@@ -364,19 +359,24 @@ window.addEventListener('resize', function() {
 //     }
 //   })
 
+
+function getData(startDate, endDate) {
+  "use strict";
   fetch(url, {
     method: 'POST',
     headers: {
+      'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
+      /* jshint ignore:start */
       'X-CSRFToken': getCookie('csrftoken')
+      /* jshint ignore:end */
     },
     body: JSON.stringify({
-      param1: 'volume',
-      param2: 'valeur',
-    })
+      startDate: startDate,
+      endDate: endDate,
+    }),
   })
-    .then(function(response) {
-      "use strict";
+    .then(function (response) {
       if (response.ok) {
         // Récupération des données reçues
         return response.json();
@@ -385,34 +385,34 @@ window.addEventListener('resize', function() {
         throw new Error('Error while fetching data');
       }
     })
-  .then(function(data) {
-    // Utilisation des données reçues
-    console.log(data);
+    .then(function (data) {
+      // Utilisation des données reçues
+      console.log(data);
 
-    // Evolution de la Contribution au CA du Top 200
-    optionMoMCAF.xAxis[0].data = data.mom_caf.axis;
+      // Evolution de la Contribution au CA du Top 200
+      optionMoMCAF.xAxis[0].data = data.mom_caf.axis;
 
-    //Echelle des axes
-    optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf);
-    optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf);
-    optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent);
-    optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent);
+      //Echelle des axes
+      optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf);
+      optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf);
+      optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent);
+      optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent);
 
-    optionMoMCAF.series[0].data = data.mom_caf.caf;
-    optionMoMCAF.series[1].data = data.mom_caf.pourcent;
-    optionMoMCAF && chartMoMCAF.setOption(optionMoMCAF);
+      optionMoMCAF.series[0].data = data.mom_caf.caf;
+      optionMoMCAF.series[1].data = data.mom_caf.pourcent;
+      optionMoMCAF && chartMoMCAF.setOption(optionMoMCAF);
 
 
-    // ======================= CA Univers ============================
-    let total = 0;
-    for(let key of Object.getOwnPropertyNames(data.ca_univers)) {
-      total = total + data.ca_univers[key].value;
-    }
+      // ======================= CA Univers ============================
+      optionCAUnivers.series[0].data = []; // vide les anciennes données
+      let total = 0;
+      for (let key of Object.getOwnPropertyNames(data.ca_univers)) {
+        total = total + data.ca_univers[key].value;
+      }
 
-    let listOfColor = [color_silver, color_orange, color_red, color_blue];
-    let i = 0;
-    for(let data_key of Object.getOwnPropertyNames(data.ca_univers))
-    {
+      let listOfColor = [color_silver, color_orange, color_red, color_blue];
+      let i = 0;
+      for (let data_key of Object.getOwnPropertyNames(data.ca_univers)) {
         const val = data.ca_univers[data_key];
         let pushData = {
           value: val.value,
@@ -425,7 +425,7 @@ window.addEventListener('resize', function() {
               '{hr|}',
               '{Sunny|}{value|' + ((val.value / total) * 100).toFixed(0) + '%}{rate|' + val.evo + '%}',
             ].join('\n'),
-            formatter: '{b}:{d}%',
+            // formatter: '{b}:{d}%',
             backgroundColor: '#eee',
             borderColor: '#777',
             borderWidth: 1,
@@ -434,14 +434,17 @@ window.addEventListener('resize', function() {
           }
         };
         optionCAUnivers.series[0].data.push(pushData);
-        i = i+1;
-    }
+        i = i + 1;
+      }
 
-    optionCAUnivers && chartCAUnivers.setOption(optionCAUnivers);
+      optionCAUnivers && chartCAUnivers.setOption(optionCAUnivers);
 
-  })
-  .catch(function(error) {
-    // Gestion d'une erreur de requête
-     console.error(error);
-});
+    })
+    .catch(function (error) {
+      // Gestion d'une erreur de requête
+      console.error(error);
+    });
+}
 // =====================================================================================================================
+
+document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-12-01'));

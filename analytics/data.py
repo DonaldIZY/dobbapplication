@@ -384,7 +384,8 @@ def CAUnivers(date_debut, date_fin, search):
     data_final = {
         f"{col}": {
             "value": float(round(df_2022[col].sum(), 2)),
-            "evo": float(round((df_2022[col].sum() / df_2021[col].sum()) - 1, 2)) * 100
+            "evo": float(round((df_2022[col].sum() / df_2021[col].sum() - 1), 2)) * 100
+            if df_2021[col].sum() != 0 else 0
         }
         for col in df_2022.columns
     }

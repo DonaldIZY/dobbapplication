@@ -138,13 +138,19 @@ class CATop200View(LoginRequiredMixin, View):
         user = request.user
         entities = get_user_entities(user)
         search = getSearch(entities, user)
+
+        request_data = json.load(request)
+        print(request_data)
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
+
         get_data = data.ClientTop200()
         mom_caf = get_data.getGraphData(sheet_name='MoM CAF',
-                                        date_debut='2022-01-01',
-                                        date_fin='2022-06-01',
+                                        date_debut=start_date,
+                                        date_fin=end_date,
                                         search=search)
-        ca_univers = data.CAUnivers(date_debut='2021-01-01',
-                                    date_fin='2022-12-01',
+        ca_univers = data.CAUnivers(date_debut=start_date,
+                                    date_fin=end_date,
                                     search=search)
         response_data = {'mom_caf': mom_caf, 'ca_univers': ca_univers}
 
