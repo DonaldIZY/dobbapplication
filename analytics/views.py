@@ -227,6 +227,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
 
     def post(self, request, id):
         customuser = CustomUser.objects.get(id=id)
+        print(customuser)
         # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
