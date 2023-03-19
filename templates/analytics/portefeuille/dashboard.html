@@ -138,7 +138,7 @@
 									<i class="fas fs-2 fa-mobile-screen-button primary-text rounded-full secondary-bg p-3 w-25"></i>
 									<div class="w-75">
 									<h5>Mobile</h5>
-									<h6 class="text-muted">14,345,567,890 F</h6>
+									<h6 class="text-muted" id="mobile"></h6>
 									</div>
 								</div>
 								<!-- carte de CA-maximum de la période -->
@@ -146,7 +146,7 @@
 									<i class="fas fa-phone fs-2 primary-text rounded-full secondary-bg p-3 w-25"></i>
 									<div class="w-75">
 									<h5>Fixe</h5>
-									<h6 class="text-muted">11,567,567,890 F</h6>
+									<h6 class="text-muted" id="fixe"></h6>
 									</div>
 								</div>
 							</div>
@@ -156,7 +156,7 @@
 									<i class="fas fs-2 fa-wifi primary-text rounded-full secondary-bg p-3 w-25"></i>
 									<div class="w-75">
 									<h5>Broadband</h5>
-									<h6 class="text-muted">9,345,567,890 F</h6>
+									<h6 class="text-muted" id="broadband"></h6>
 									</div>
 								</div>
 								<!-- carte de CA-minimum de la période -->
@@ -164,7 +164,7 @@
 									<i class="fas fs-2 fa-globe primary-text rounded-full secondary-bg p-3 w-25"></i>
 									<div class="w-75">
 									<h5>ICT</h5>
-									<h6 class="text-muted">1,345,567,890 F</h6>
+									<h6 class="text-muted" id="ict"></h6>
 									</div>
 								</div>
 							</div>
@@ -225,7 +225,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title">
-						<h2 class="heading" id="header-top80">Zoom {Pourcentage} des clients / 80% du revenu</h2>
+						<h2 class="heading" id="header-top80">Zoom </h2>
 					</div>
 				</div>
 			</div>
@@ -236,31 +236,28 @@
 					<table id="gros-client" class="display">
 						<thead>
 							<tr>
-								<th></th>
-								<th>Nom</th>
-								<th>Secteur d'activité</th>
-								<th>Date de création</th>
-								<th>CA mobile</th>
-								<th>CA fixe</th>
-								<th>CA broadband</th>
-								<th>CA ICT</th>
-								<th>CA total</th>
+								<th>client</th>
+								<th>secteur_activite</th>
+								<th>fixe</th>
+								<th>ict</th>
+								<th>mobile</th>
+								<th>total_montant</th>
 							</tr>
 						</thead>
 						<tbody>
-                        {% for gros_client in gros_clients %}
-                            <tr>
-								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>
-								<td>{{ gros_client.client }}</td>
-								<td>{{ gros_client.secteur_activite }}</td>
-								<td></td>
-								<td>{{ gros_client.mobile }}</td>
-								<td>{{ gros_client.fixe }}</td>
-								<td>{{ gros_client.broadband }}</td>
-								<td>{{ gros_client.ict }}</td>
-								<td>{{ gros_client.total_montant }}</td>
-							</tr>
-                        {% endfor %}
+
+{#                            <tr>#}
+{#								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>#}
+{#								<td>{{ gros_client.client }}</td>#}
+{#								<td>{{ gros_client.secteur_activite }}</td>#}
+{#								<td></td>#}
+{#								<td>{{ gros_client.mobile }}</td>#}
+{#								<td>{{ gros_client.fixe }}</td>#}
+{#								<td>{{ gros_client.broadband }}</td>#}
+{#								<td>{{ gros_client.ict }}</td>#}
+{#								<td>{{ gros_client.total_montant }}</td>#}
+{#							</tr>#}
+
 						</tbody>
 					</table>
 				</div>
@@ -276,6 +273,10 @@
 
 
 {% block additional_js %}
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+	<script src="{% static jsurl %}"></script>
+    {% endfor %}
+
     <script src="{% static 'finlab/vendor/peity/jquery.peity.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/swiper/js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/wow-master/dist/wow.min.js' %}"></script>
@@ -286,9 +287,6 @@
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/dashboard.js' %}"></script>
-	{% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
-	<script src="{% static jsurl %}"></script>
-    {% endfor %}
 
 <script>
 
@@ -368,9 +366,9 @@ $(document).ready(function(){
 		  },
     });
 
-      $('#gros-client').on('click', 'tr', function () {
-            var data = table.row( this ).data();
-        });
+      {#$('#gros-client').on('click', 'tr', function () {#}
+      {#      var data = table.row( this ).data();#}
+      {#  });#}
 });
 
 </script>

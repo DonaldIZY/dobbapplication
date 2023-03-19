@@ -95,11 +95,6 @@ class FacturationView(LoginRequiredMixin, View):
                                      fin_periode=end_date, evo_type="mom", search=search)
         evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date, fin_periode=end_date, search=search)
 
-        test_data, test_pourcent = data.top_80_20(debut_periode=start_date, fin_periode=end_date, search=search)
-
-        print(test_pourcent)
-        # print(test_data)
-
         # Préparation de la réponse
         response_data = {
             'volume': parc_actif,
@@ -186,6 +181,9 @@ class DashboardView(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
 
+        nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
+        print(nb_mois)
+
         gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
         # Préparation de la réponse
@@ -195,7 +193,8 @@ class DashboardView(LoginRequiredMixin, View):
             'product': produit,
             'top_client': top_client,
             'gros_clients': gros_clients,
-            # 'pourcent_client': pourcent_client
+            'nb_mois': int(nb_mois),
+            'pourcent_client': float(pourcent_client)
         }
         return JsonResponse(response_data)
 
