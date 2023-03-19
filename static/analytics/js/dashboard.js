@@ -422,7 +422,25 @@ function separateurMillier(nombre) {
 
 
 // =====================================================================================================================
-
+var table = $('#gros-client').DataTable({
+  language: {
+    "search": "Chercher",
+    "decimal": ',',
+          "thousands": ' ',
+    "emptyTable": "Aucune donnée disponible dans le tableau",
+    "loadingRecords": "Chargement en cours...",
+    "processing": "Traitement en cours...",
+    "lengthMenu": "Afficher _MENU_ entrées",
+    "zeroRecords": "Aucun enregistrement correspondant trouvé",
+    "info": "Page _PAGE_ sur _PAGES_",
+    "infoEmpty": "Aucun enregistrement",
+    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
+    paginate: {
+      next: '<i class="fa-solid fa-angle-right"></i>',
+      previous: '<i class="fa-solid fa-angle-left"></i>'
+    }
+    },
+});
 
 // =====================================================================================================================
 function getData(startDate, endDate) {
@@ -443,8 +461,15 @@ function getData(startDate, endDate) {
     })
   })
     .then(function (response) {
+      document.getElementById("dashbordPerformGen").style.display = "none";
+      document.getElementById("loader").style.display = "block";
+
       if (response.ok) {
         // Récupération des données reçues
+        // Rétablissement de l'affichage du contenu
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("dashbordPerformGen").style.display = "block";
+
         return response.json();
       } else {
         // Gestion d'une erreur de requête
@@ -457,6 +482,7 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
+
       // Option de modification des graphs CA
       caUniversOption.series[0].data = data.univers;
       caUniversOption && caUnivers.setOption(caUniversOption);
@@ -466,15 +492,6 @@ function getData(startDate, endDate) {
           // Récupération du name et du value de chaque élément
           var name = data.univers[i].name.toLowerCase();
           var value = data.univers[i].value / data.pourcent_client;
-          console.log(name);
-
-          // // Récupération de l'élément du DOM par son id
-          // var element = document.getElementById(`${name}`);
-          //
-          // // Vérification que l'élément existe avant de modifier son contenu
-          // if (element !== null) {
-          //   element.innerHTML = `${separateurMillier(value.toFixed(0))} FCFA`;
-          // }
 
           document.getElementById(`${name}`).innerHTML = `${separateurMillier(value.toFixed(0))} FCFA`;
       }
@@ -506,12 +523,9 @@ function getData(startDate, endDate) {
       topProduitsOption && topProduits.setOption(topProduitsOption);
 
     //   ===============================================================
-      // Récupération de la référence de la table DataTable
-      // var table = document.getElementById('gros-client').DataTable();
-      // $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
-
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
 
+      table.rows.add(data.gros_clients).draw(false);
 
     })
     .catch(function (error) {
@@ -524,4 +538,7 @@ function getData(startDate, endDate) {
 
 
 // =====================================================================================================================
-document.addEventListener('DOMContentLoaded', getData('2022-01-01', '2022-12-01'));
+document.addEventListener('DOMContentLoaded', function() {
+  'use strict';
+  getData('2022-01-01', '2022-12-01');
+});

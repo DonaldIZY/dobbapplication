@@ -531,9 +531,6 @@ let optionEvoMoM = {
 function getData(univers, startDate, endDate) {
   "use strict";
 
-  console.log(startDate);
-  console.log(endDate);
-
   fetch(url, {
     method: 'POST',
     headers: {
