@@ -185,9 +185,7 @@ class DashboardView(LoginRequiredMixin, View):
         perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
-
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-
         gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
         # Préparation de la réponse
@@ -226,29 +224,37 @@ class DashboardView(LoginRequiredMixin, View):
 class DashboardViewManager(LoginRequiredMixin, View):
 
     def post(self, request, id):
-        customuser = CustomUser.objects.get(id=id)
-        print(customuser)
+        commercial_obj = Commercial.objects.get(id=id)
+        print(commercial_obj)
         # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
         searche = ''
-        user = request.user
-        entities = get_user_entities(user)
-        search = getSearch(entities, user)
+        # user = request.user
+        full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
+        search = f"""
+            and LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
+        """
 
         univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
         perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
+        nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
+        gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
+            'full_name': full_name,
             'univers': univers,
             'performance': perfomance,
             'product': produit,
-            'top_client': top_client
+            'top_client': top_client,
+            'gros_clients': gros_clients,
+            'nb_mois': int(nb_mois),
+            'pourcent_client': float(pourcent_client)
         }
         return JsonResponse(response_data)
 

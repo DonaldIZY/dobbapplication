@@ -491,6 +491,9 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
+      if (typeof data.full_name !== 'undefined') {
+        document.getElementById("title-name").innerHTML = `Informations générales sur ${data.full_name}`;
+      }
 
       // Option de modification des graphs CA
       caUniversOption.series[0].data = data.univers;
