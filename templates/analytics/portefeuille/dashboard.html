@@ -229,7 +229,7 @@
 				<!-- Titre du graphique -->
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title">
-						<h2 class="heading" id="header-top80">Zoom </h2>
+						<h2 class="heading">Zoom sur <span id="header-top80" class="graph-title"></span> des clients générant 80% des revenus</h2>
 					</div>
 				</div>
 			</div>
@@ -241,11 +241,12 @@
 						<thead>
 							<tr>
 								<th>client</th>
-								<th>secteur_activite</th>
-								<th>fixe</th>
-								<th>ict</th>
-								<th>mobile</th>
-								<th>total_montant</th>
+								<th>secteur d'activité</th>
+								<th>Mobile</th>
+								<th>Fixe</th>
+								<th>Broadband</th>
+								<th>ICT</th>
+								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -349,8 +350,6 @@ $(document).ready(function(){
         getData(startDate, endDate);
     });
 
-    {#===========================================================#}
-
     var table = $('#gros-client').DataTable({
 		scroolX: true,
 		language: {
@@ -372,9 +371,9 @@ $(document).ready(function(){
 		  },
     });
 
-      {#$('#gros-client').on('click', 'tr', function () {#}
-      {#      var data = table.row( this ).data();#}
-      {#  });#}
+    //   {#$('#gros-client').on('click', 'tr', function () {#}
+    //   {#      var data = table.row( this ).data();#}
+    //   {#  });#}
 });
 
 </script>

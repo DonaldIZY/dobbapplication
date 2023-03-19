@@ -49,7 +49,5 @@ let etiquette_format = function (params) {
   }
 };
 
-
-
 // ============================================= E-chart Options =======================================================
 var grid = {top:'10%', left: '1%', right: '1%', bottom: '5%', containLabel: true};
