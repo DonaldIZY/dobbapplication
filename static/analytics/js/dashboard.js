@@ -505,7 +505,7 @@ function getData(startDate, endDate) {
       // var table = document.getElementById('gros-client').DataTable();
       // $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
 
-      document.getElementById("header-top80").innerHTML = `Zoom ${data.pourcent_client.toFixed(2)} des clients / 80% du revenu`;
+      document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
 
 
     })
