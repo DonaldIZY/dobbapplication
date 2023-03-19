@@ -140,7 +140,6 @@ class CATop200View(LoginRequiredMixin, View):
         search = getSearch(entities, user)
 
         request_data = json.load(request)
-        print(request_data)
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
@@ -188,7 +187,6 @@ class DashboardView(LoginRequiredMixin, View):
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
 
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        print(nb_mois)
 
         gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
@@ -198,7 +196,7 @@ class DashboardView(LoginRequiredMixin, View):
             'performance': perfomance,
             'product': produit,
             'top_client': top_client,
-            'gros_clients': gros_clients,
+            'gros_clients': {'data': gros_clients},
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client)
         }

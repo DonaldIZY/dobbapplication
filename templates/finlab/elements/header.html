@@ -14,6 +14,25 @@
                                     <div class="d-flex align-items-center sidebar-info">
 
                                         <div>
+{#                                            {% if request.user.is_authenticated %}#}
+{#                                                <h4 class="mb-0 name-user">{{ request.user.first_name }} {{ request.user.last_name }}</h4>#}
+{#                                                {% if request.user.groups.filter(name='commercial').exists and request.user.commercial %}#}
+{#                                                    {% with commercial=request.user.commercial %}#}
+{#                                                        <span class="d-block text-end" id="name-group">#}
+{#                                                            {{ commercial.equipe.name }}#}
+{#                                                        </span>#}
+{#                                                    {% endwith %}#}
+{#                                                {% elif request.user.groups.filter(name='manager').exists %}#}
+{#                                                    {% with manager=request.user.manager %}#}
+{#                                                        <span class="d-block text-end" id="name-group">#}
+{#                                                            {{ manager.name }}#}
+{#                                                        </span>#}
+{#                                                    {% endwith %}#}
+{#                                                {% endif %}#}
+{#                                            {% endif %}#}
+
+
+
                                             {% if request.user.is_authenticated %}
                                             <h4 class="mb-0 name-user">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
                                             <span class="d-block text-end" id="name-group">  {% for g in request.user.groups.all %}

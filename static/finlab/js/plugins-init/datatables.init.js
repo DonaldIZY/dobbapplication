@@ -220,8 +220,6 @@ let dataSet = [
 	
 	// table row
 	var table = $('#dataTable1, #dataTable2, #dataTable3, #dataTable4,  #example3, #example4 ').DataTable({
-		scrollY: '200px',
-		scroolX: true,
 		scrollCollapse: true,
 		language: {
 			"search": "Chercher",

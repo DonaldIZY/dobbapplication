@@ -240,30 +240,30 @@
 					<table id="gros-client" class="display">
 						<thead>
 							<tr>
+{#                                <th></th>#}
 								<th>client</th>
 								<th>secteur d'activité</th>
 								<th>Mobile</th>
 								<th>Fixe</th>
-								<th>Broadband</th>
 								<th>ICT</th>
+								<th>Broadband</th>
 								<th>Total</th>
 							</tr>
 						</thead>
-						<tbody>
-
+{#						<tbody>#}
+{##}
 {#                            <tr>#}
 {#								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>#}
-{#								<td>{{ gros_client.client }}</td>#}
-{#								<td>{{ gros_client.secteur_activite }}</td>#}
 {#								<td></td>#}
-{#								<td>{{ gros_client.mobile }}</td>#}
-{#								<td>{{ gros_client.fixe }}</td>#}
-{#								<td>{{ gros_client.broadband }}</td>#}
-{#								<td>{{ gros_client.ict }}</td>#}
-{#								<td>{{ gros_client.total_montant }}</td>#}
+{#								<td></td>#}
+{#								<td></td>#}
+{#								<td></td>#}
+{#								<td></td>#}
+{#								<td></td>#}
+{#								<td></td>#}
 {#							</tr>#}
-
-						</tbody>
+{##}
+{#						</tbody>#}
 					</table>
 				</div>
 			</div>
@@ -350,30 +350,6 @@ $(document).ready(function(){
         getData(startDate, endDate);
     });
 
-    var table = $('#gros-client').DataTable({
-		scroolX: true,
-		language: {
-			"search": "Chercher",
-			"decimal": ',',
-            "thousands": ' ',
-			"emptyTable": "Aucune donnée disponible dans le tableau",
-			"loadingRecords": "Chargement en cours...",
-			"processing": "Traitement en cours...",
-			"lengthMenu": "Afficher _MENU_ entrées",
-			"zeroRecords": "Aucun enregistrement correspondant trouvé",
-			"info": "Page _PAGE_ sur _PAGES_",
-			"infoEmpty": "Aucun enregistrement",
-			"infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
-			paginate: {
-			  next: '<i class="fa-solid fa-angle-right"></i>',
-			  previous: '<i class="fa-solid fa-angle-left"></i>'
-			}
-		  },
-    });
-
-    //   {#$('#gros-client').on('click', 'tr', function () {#}
-    //   {#      var data = table.row( this ).data();#}
-    //   {#  });#}
 });
 
 </script>

@@ -485,11 +485,12 @@ def topClient(date_debut, date_fin, search):
 
 def top_80_20(date_debut, date_fin, search):
     request_ca_client = f"""
-        SELECT client, secteur_activite, SUM(montant) AS total_montant,
+        SELECT client, secteur_activite,
         COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
         COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe,
         COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict,
-        COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband
+        COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband,
+        SUM(montant) AS total_montant
         FROM public.base_dobb
         WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
         GROUP BY client, secteur_activite
@@ -513,8 +514,8 @@ def top_80_20(date_debut, date_fin, search):
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
 
-    # print(result.to_dict())
-
-    data = dataToDictAg(data=result)
+    # data = dataToDictAg(data=result)
     # data = result.to_dict()
+    data = result.values.tolist()
+    print(type(data))
     return data, client_part

@@ -417,7 +417,25 @@ function separateurMillier(nombre) {
 
 
 // =====================================================================================================================
-
+var table = $('#gros-client').DataTable({
+  language: {
+    "search": "Chercher",
+    "decimal": ',',
+          "thousands": ' ',
+    "emptyTable": "Aucune donnée disponible dans le tableau",
+    "loadingRecords": "Chargement en cours...",
+    "processing": "Traitement en cours...",
+    "lengthMenu": "Afficher _MENU_ entrées",
+    "zeroRecords": "Aucun enregistrement correspondant trouvé",
+    "info": "Page _PAGE_ sur _PAGES_",
+    "infoEmpty": "Aucun enregistrement",
+    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
+    paginate: {
+      next: '<i class="fa-solid fa-angle-right"></i>',
+      previous: '<i class="fa-solid fa-angle-left"></i>'
+    }
+    },
+});
 
 // =====================================================================================================================
 function getData(startDate, endDate) {
@@ -469,7 +487,6 @@ function getData(startDate, endDate) {
           // Récupération du name et du value de chaque élément
           var name = data.univers[i].name.toLowerCase();
           var value = data.univers[i].value / data.pourcent_client;
-          console.log(name);
 
           document.getElementById(`${name}`).innerHTML = `${separateurMillier(value.toFixed(0))} FCFA`;
       }
@@ -501,12 +518,9 @@ function getData(startDate, endDate) {
       topProduitsOption && topProduits.setOption(topProduitsOption);
 
     //   ===============================================================
-      // Récupération de la référence de la table DataTable
-      // var table = document.getElementById('gros-client').DataTable();
-      // $('#gros-client').DataTable().rows.add(data.gros_clients).draw();
-
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
 
+      table.rows.add(data.gros_clients).draw(false);
 
     })
     .catch(function (error) {
