@@ -52,8 +52,13 @@
 <!-- Tableaux des clients entrants dans le top 200 -->
 <div class="row">
     <div class="card">
-        <div class="card-header client-entrant">
-            <h4 class="card-title">Clients entrants</h4>
+        <div class="card-header border-0 px-4 py-1 flex-wrap">
+            <!-- Titre du graphique -->
+            <div class="mb-2 mb-sm-0">
+                <div class="chart-title">
+                    <h3 class="heading">Client entrant dans le top 200</h3>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -81,36 +86,41 @@
 </div>
 
 <!-- Tableau des clients sortants dans le top 200 -->
-<div class="row">
-    <div class="card">
-        <div class="card-header client-sortant">
-            <h4 class="card-title">Clients sortants</h4>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="gros-client" class="display">
-                    <thead>
-                        <tr>
+{#<div class="row">#}
+{#    <div class="card">#}
+{#        <div class="card-header border-0 px-4 py-1 flex-wrap">#}
+{#            <!-- Titre du graphique -->#}
+{#            <div class="mb-2 mb-sm-0">#}
+{#                <div class="chart-title">#}
+{#                    <h3 class="heading">Client sortant du top 200</h3>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="card-body">#}
+{#            <div class="table-responsive">#}
+{#                <table id="client-sortant" class="display">#}
+{#                    <thead>#}
+{#                        <tr>#}
 {#                                <th></th>#}
-                            <th>client</th>
-                            <th>Segment</th>
-                            <th>Commercial</th>
-                            <th>Mobile</th>
-                            <th>Fixe</th>
-                            <th>ICT</th>
-                            <th>Broadband</th>
-                            <th>Rang</th>
-                            <th>Rang Prec</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+{#                            <th>client</th>#}
+{#                            <th>Segment</th>#}
+{#                            <th>Commercial</th>#}
+{#                            <th>Mobile</th>#}
+{#                            <th>Fixe</th>#}
+{#                            <th>ICT</th>#}
+{#                            <th>Broadband</th>#}
+{#                            <th>Rang</th>#}
+{#                            <th>Rang Prec</th>#}
+{#                        </tr>#}
+{#                    </thead>#}
+{#                </table>#}
+{#            </div>#}
 {#            <div class="table-responsive">#}
 {#                <div id="clientSortant" style="height: 270px;" class="ag-theme-material ag-table table table-responsive-md"></div>#}
 {#            </div>#}
-        </div>
-    </div>
-</div>
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
     <!-- ----/Clients sortant dans le top 200--- -->
 {% endblock %}
 

@@ -108,7 +108,7 @@
 // // =========================  ==========================
 
 
-var table = $('#client-entrant').DataTable({
+var table_entant = $('#client-entrant').DataTable({
   language: {
     "search": "Chercher",
     "decimal": ',',
@@ -126,19 +126,26 @@ var table = $('#client-entrant').DataTable({
       previous: '<i class="fa-solid fa-angle-left"></i>'
     }
     },
-  dom: 'Bfrtip',
-  buttons: [
-      {
-          extend: 'excelHtml5',
-          text: 'Export to Excel',
-          customize: function( xlsx ) {
-              var sheet = xlsx.xl.worksheets['sheet1.xml'];
+});
 
-              // Custom styling for specific cells
-              $('row c[r^="C"]', sheet).attr( 's', '2' );
-          }
-      }
-  ]
+var table_sortant = $('#client-sortant').DataTable({
+  language: {
+    "search": "Chercher",
+    "decimal": ',',
+          "thousands": ' ',
+    "emptyTable": "Aucune donnée disponible dans le tableau",
+    "loadingRecords": "Chargement en cours...",
+    "processing": "Traitement en cours...",
+    "lengthMenu": "Afficher _MENU_ entrées",
+    "zeroRecords": "Aucun enregistrement correspondant trouvé",
+    "info": "Page _PAGE_ sur _PAGES_",
+    "infoEmpty": "Aucun enregistrement",
+    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
+    paginate: {
+      next: '<i class="fa-solid fa-angle-right"></i>',
+      previous: '<i class="fa-solid fa-angle-left"></i>'
+    }
+    },
 });
 
 // =====================================================================================================================
@@ -176,7 +183,7 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
-      table.rows.add(data.client_entrant2).draw(true);
+      table_entant.rows.add(data.client_entrant2).draw(true);
 
     })
     .catch(function (error) {

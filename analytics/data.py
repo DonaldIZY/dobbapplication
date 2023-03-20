@@ -93,37 +93,6 @@ def getTop200(date_debut, date_fin, search, limit):
     return request
 
 
-def getClientEntrant(date_debut, date_fin):
-    diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
-    diff = diff + relativedelta(months=1)
-
-    periode_pred_1 = (datetime.strptime(date_debut, "%Y-%m-%d") - diff).replace(day=1)
-    periode_pred_1 = (periode_pred_1 - relativedelta(months=1)).strftime("%Y-%m-%d")
-    periode_pred_2 = (datetime.strptime(date_fin, "%Y-%m-%d") - diff).replace(day=1).strftime("%Y-%m-%d")
-
-    request = getTop200(date_debut=date_debut, date_fin=date_fin, search='', limit=200)
-    t1 = pd.read_sql(sql=text(request), con=connection)
-    request = getTop200(date_debut=periode_pred_1, date_fin=periode_pred_2, search='', limit=5000)
-    t2 = pd.read_sql(sql=text(request), con=connection)
-    client_entrant = pd.merge(t1, t2, how='left', on=['client', 'segment', 'commercial'])
-
-    for i in range(3, 9):
-        col_entrant = client_entrant.columns[i].split('__')[0]
-        client_entrant[f'{col_entrant}'] = (client_entrant[f'{col_entrant}__x'] / client_entrant[
-            f'{col_entrant}__y']) - 1
-
-    client_entrant = client_entrant.rename(columns={'rang_x': 'rang', 'rang_y': 'rang_prec'})
-
-    # Sélectionner les noms de colonnes qui ne se terminent pas par '__x' ou '__y'
-    cols_to_keep_entrant = [col for col in client_entrant.columns if not col.endswith(('__x', '__y'))]
-
-    # Supprimer les colonnes sélectionnées
-    client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
-
-    client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
-    return client_entrant
-
-
 def getParcAtif(univers, get, debut_periode, fin_periode, search):
     # Cette requête permet d'obtenir la somme du parc actif (ou le CA) par mois
 
@@ -205,7 +174,6 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
 
     ca_periode_en_cours = utils.formatDf(ca_periode_en_cours, ['axis', 'values'])
     cumule_debut_periode = utils.formatDf(cumule_debut_periode, ['axis', 'values'])
-    # print(ca_periode_en_cours)
     cumule_fin_periode = utils.formatDf(cumule_fin_periode, ['axis', 'values'])
 
     df = pd.concat([cumule_debut_periode, ca_periode_en_cours], axis=0)
@@ -277,6 +245,36 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
 
 class ClientTop200:
 
+    def getEntrant(self, date_debut, date_fin):
+        diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
+        diff = diff + relativedelta(months=1)
+
+        periode_pred_1 = (datetime.strptime(date_debut, "%Y-%m-%d") - diff).replace(day=1)
+        periode_pred_1 = (periode_pred_1 - relativedelta(months=1)).strftime("%Y-%m-%d")
+        periode_pred_2 = (datetime.strptime(date_fin, "%Y-%m-%d") - diff).replace(day=1).strftime("%Y-%m-%d")
+
+        request = getTop200(date_debut=date_debut, date_fin=date_fin, search='', limit=200)
+        t1 = pd.read_sql(sql=text(request), con=connection)
+        request = getTop200(date_debut=periode_pred_1, date_fin=periode_pred_2, search='', limit=5000)
+        t2 = pd.read_sql(sql=text(request), con=connection)
+        client_entrant = pd.merge(t1, t2, how='left', on=['client', 'segment', 'commercial'])
+
+        for i in range(3, 9):
+            col_entrant = client_entrant.columns[i].split('__')[0]
+            client_entrant[f'{col_entrant}'] = (client_entrant[f'{col_entrant}__x'] / client_entrant[
+                f'{col_entrant}__y']) - 1
+
+        client_entrant = client_entrant.rename(columns={'rang_x': 'rang', 'rang_y': 'rang_prec'})
+
+        # Sélectionner les noms de colonnes qui ne se terminent pas par '__x' ou '__y'
+        cols_to_keep_entrant = [col for col in client_entrant.columns if not col.endswith(('__x', '__y'))]
+
+        # Supprimer les colonnes sélectionnées
+        client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
+
+        client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
+        return client_entrant
+
     def getClient(self, sheet_name):
         df = pd.read_excel("analytics/data/client.xlsx", sheet_name=sheet_name)
         pourcents = ['Total', 'Fixe', 'Mobile', 'Broadband']
@@ -291,13 +289,13 @@ class ClientTop200:
         return data
 
     def getClientEntrant(self, date_debut, date_fin):
-        client_entrant = getClientEntrant(date_debut=date_debut, date_fin=date_fin)
+        client_entrant = self.getEntrant(date_debut=date_debut, date_fin=date_fin)
         client_entrant['commercial'] = client_entrant['commercial'].fillna(value='')
         client_entrant = client_entrant.fillna(0)
         client_entrant = client_entrant[['client', 'segment', 'commercial', 'mobile', 'fixe',
                                          'ict', 'broadband', 'rang', 'rang_prec']]
+        client_entrant = client_entrant.round(2)
         data = client_entrant.astype(str).values.tolist()
-        # data = dataToDictAg(data=client_entrant)
         return data
 
     def getGraphData(self, sheet_name, date_debut, date_fin, search):
