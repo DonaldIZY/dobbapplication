@@ -340,6 +340,14 @@ span.graph-title{
   margin: 0;
 }
 
+table.my_table{
+  width: 100%;
+}
+
+table.my_table thead tr th, table.my_table tbody tr td{
+  font-size: 75%;
+}
+
 
 *,
 *::before,

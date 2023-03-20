@@ -462,6 +462,9 @@ function getData(startDate, endDate) {
   })
     .then(function (response) {
       document.getElementById("dashbordPerformGen").style.display = "none";
+      document.getElementById("dashboardCaUnivers").style.display = "none";
+      document.getElementById("dashbordTopClients").style.display = "none";
+      document.getElementById("dashboardTopProduits").style.display = "none";
       document.getElementById("loader").style.display = "block";
 
       if (response.ok) {
@@ -469,6 +472,10 @@ function getData(startDate, endDate) {
         // Rétablissement de l'affichage du contenu
         document.getElementById("loader").style.display = "none";
         document.getElementById("dashbordPerformGen").style.display = "block";
+        document.getElementById("dashboardCaUnivers").style.display = "block";
+        document.getElementById("dashbordTopClients").style.display = "block";
+        document.getElementById("dashboardTopProduits").style.display = "block";
+
 
         return response.json();
       } else {
@@ -524,8 +531,7 @@ function getData(startDate, endDate) {
 
     //   ===============================================================
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
-
-      table.rows.add(data.gros_clients).draw(false);
+      table.rows.add(data.gros_clients).draw(true);
 
     })
     .catch(function (error) {
