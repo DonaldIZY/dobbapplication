@@ -292,8 +292,12 @@ class ClientTop200:
 
     def getClientEntrant(self, date_debut, date_fin):
         client_entrant = getClientEntrant(date_debut=date_debut, date_fin=date_fin)
+        client_entrant['commercial'] = client_entrant['commercial'].fillna(value='')
         client_entrant = client_entrant.fillna(0)
-        data = dataToDictAg(data=client_entrant)
+        client_entrant = client_entrant[['client', 'segment', 'commercial', 'mobile', 'fixe',
+                                         'ict', 'broadband', 'rang', 'rang_prec']]
+        data = client_entrant.astype(str).values.tolist()
+        # data = dataToDictAg(data=client_entrant)
         return data
 
     def getGraphData(self, sheet_name, date_debut, date_fin, search):
@@ -516,5 +520,4 @@ def top_80_20(date_debut, date_fin, search):
     client_part = (result.shape[0] / df_2['nb_client']) * 100
 
     data = result.astype(str).values.tolist()
-    print(type(data))
     return data, client_part

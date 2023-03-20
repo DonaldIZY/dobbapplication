@@ -3,6 +3,11 @@
 {% load static %}
 
 {% block additional_css %}
+    <!-- -- DataTables -- -->
+	{% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.table_datatable_basic %}
+    <link rel="stylesheet" href="{% static cssurl %}" >
+    {% endfor %}
+
     <link rel="stylesheet" href="{% static 'finlab/vendor/wow-master/css/libs/animate.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/bootstrap-select-country/css/bootstrap-select-country.min.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
@@ -52,8 +57,25 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <div id="clientEntrant" style="height: 270px;" class="ag-theme-material ag-table table table-responsive-md"></div>
+                <table id="client-entrant" class="display">
+                    <thead>
+                        <tr>
+                            <th>client</th>
+                            <th>Segment</th>
+                            <th>Commercial</th>
+                            <th>Mobile</th>
+                            <th>Fixe</th>
+                            <th>ICT</th>
+                            <th>Broadband</th>
+                            <th>Rang</th>
+                            <th>Rang Prec</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
+{#            <div class="table-responsive">#}
+{#                <div id="clientEntrant" style="height: 270px;" class="ag-theme-material ag-table table table-responsive-md"></div>#}
+{#            </div>#}
         </div>
     </div>
 </div>
@@ -66,8 +88,26 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <div id="clientSortant" style="height: 270px;" class="ag-theme-material ag-table table table-responsive-md"></div>
+                <table id="gros-client" class="display">
+                    <thead>
+                        <tr>
+{#                                <th></th>#}
+                            <th>client</th>
+                            <th>Segment</th>
+                            <th>Commercial</th>
+                            <th>Mobile</th>
+                            <th>Fixe</th>
+                            <th>ICT</th>
+                            <th>Broadband</th>
+                            <th>Rang</th>
+                            <th>Rang Prec</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
+{#            <div class="table-responsive">#}
+{#                <div id="clientSortant" style="height: 270px;" class="ag-theme-material ag-table table table-responsive-md"></div>#}
+{#            </div>#}
         </div>
     </div>
 </div>
@@ -75,6 +115,10 @@
 {% endblock %}
 
 {% block additional_js %}
+    {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.table_datatable_basic %}
+	<script src="{% static jsurl %}"></script>
+    {% endfor %}
+
     <script src="{% static 'finlab/vendor/peity/jquery.peity.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/swiper/js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/wow-master/dist/wow.min.js' %}"></script>

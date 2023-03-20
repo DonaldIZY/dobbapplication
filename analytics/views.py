@@ -122,7 +122,8 @@ class VariationTop200View(LoginRequiredMixin, View):
         client_sortant = client.getClient(sheet_name='client sortant')
         client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
         # print(client_entrant2)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant}
+        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
+                         'client_entrant2': client_entrant2}
 
         return JsonResponse(response_data)
 
