@@ -299,3 +299,17 @@ class ClienteleView(LoginRequiredMixin, View):
             'clients': clients
         }
         return render(request, 'analytics/portefeuille/clientele.html', greeting)
+
+
+class SuiviEquipeView(LoginRequiredMixin, View):
+    univers = 'univers'
+
+    def get(self, request):
+
+        greeting = {
+            'heading': self.univers,
+            'pageview': "Dashboards",
+            'product_type': self.univers,
+            "menu_wallet": True,
+        }
+        return render(request, 'analytics/ressources/suivi_equipe.html', greeting)

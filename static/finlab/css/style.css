@@ -330,7 +330,7 @@ span.graph-title{
 }
 
 .kpi-card{
-  width: 90%;
+  width: 95%;
   border: 1px solid grey;
 }
 
@@ -338,6 +338,14 @@ span.graph-title{
   height: 100%;
   width: 100%;
   margin: 0;
+}
+
+table.my_table{
+  width: 100%;
+}
+
+table.my_table thead tr th, table.my_table tbody tr td{
+  font-size: 75%;
 }
 
 
