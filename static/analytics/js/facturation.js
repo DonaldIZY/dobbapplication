@@ -611,7 +611,10 @@ function getData(univers, startDate, endDate) {
 }
 
 // =====================================================================================================================
-document.addEventListener('DOMContentLoaded', getData('Mobile', '2022-01-01', '2022-06-01'));
+document.addEventListener('DOMContentLoaded', function() {
+  'use strict';
+  getData('Mobile', '2022-01-01', '2022-12-01');
+});
 // =====================================================================================================================
 
 document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {

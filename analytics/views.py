@@ -90,7 +90,7 @@ class FacturationView(LoginRequiredMixin, View):
         ca_parc_actif = data.getParcAtif(univers=univers, get='ca', debut_periode=start_date,
                                          fin_periode=end_date, search=search)
         evo_ytd = data.getEvoPeriode(univers=univers, debut_periode=start_date,
-                                     fin_periode=start_date, evo_type="ytd", search=search)
+                                     fin_periode=end_date, evo_type="ytd", search=search)
         evo_mom = data.getEvoPeriode(univers=univers, debut_periode=start_date,
                                      fin_periode=end_date, evo_type="mom", search=search)
         evo_diff = data.getHausseBasse(univers=univers, debut_periode=start_date, fin_periode=end_date, search=search)
