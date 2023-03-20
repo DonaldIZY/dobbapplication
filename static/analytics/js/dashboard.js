@@ -465,12 +465,19 @@ function getData(startDate, endDate) {
       document.getElementById("dashboardCaUnivers").style.display = "none";
       document.getElementById("dashbordTopClients").style.display = "none";
       document.getElementById("dashboardTopProduits").style.display = "none";
-      document.getElementById("loader").style.display = "block";
+      // document.getElementById("loader").style.display = "block";
+      var loaders = document.getElementsByClassName("loader");
+      for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "block";
+      }
 
       if (response.ok) {
         // Récupération des données reçues
         // Rétablissement de l'affichage du contenu
-        document.getElementById("loader").style.display = "none";
+        // document.getElementById("loader").style.display = "none";
+        for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "none";
+      }
         document.getElementById("dashbordPerformGen").style.display = "block";
         document.getElementById("dashboardCaUnivers").style.display = "block";
         document.getElementById("dashbordTopClients").style.display = "block";
@@ -489,6 +496,9 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
+      if (typeof data.full_name !== 'undefined') {
+        document.getElementById("title-name").innerHTML = `Informations générales sur ${data.full_name}`;
+      }
 
       // Option de modification des graphs CA
       caUniversOption.series[0].data = data.univers;

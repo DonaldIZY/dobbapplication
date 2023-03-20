@@ -83,7 +83,7 @@
                                 </td> -->
                                 <!-- Champ "Nom et Prénoms" du tableau -->
                                 <td>
-                                    <a href="{% url 'administration:details-commercial' id=commercial_obj.id %}">
+                                    <a href="{% url 'analytics:manager_commercial' id=commercial_obj.id %}">
                                         <div class="d-flex align-items-center">
                                             <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">
                                             <span class="w-space-no">{{ commercial_obj.commercial.first_name }} {{ commercial_obj.commercial.last_name }}</span>

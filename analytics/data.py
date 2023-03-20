@@ -505,6 +505,7 @@ def top_80_20(date_debut, date_fin, search):
     """
 
     df = pd.read_sql(sql=text(request_ca_client), con=connection)
+    df = df.fillna(value='')
     df_2 = pd.read_sql(sql=text(request_global), con=connection)
     keep_percent = df_2['total'][0] * 0.8
 
@@ -514,8 +515,6 @@ def top_80_20(date_debut, date_fin, search):
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
 
-    # data = dataToDictAg(data=result)
-    # data = result.to_dict()
     data = result.astype(str).values.tolist()
     print(type(data))
     return data, client_part
