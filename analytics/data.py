@@ -518,9 +518,10 @@ def top_80_20(date_debut, date_fin, search):
     result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
+    nb_clients_80_20 = result.shape[0]
 
     data = result.astype(str).values.tolist()
-    return data, client_part
+    return data, client_part, nb_clients_80_20
 
 
 def recapData(colonne, date_debut, date_fin, search):

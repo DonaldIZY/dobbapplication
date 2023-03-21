@@ -135,226 +135,149 @@ let caUniversOption = {
 // =====================================================================================================================
 // GRAPHIQUE : TOP 5 CLIENTS
 
-var topClients = echarts.init(document.getElementById('dashbordTopClients'), null, {renderer: 'canvas', force: true} );
-var topClientsOption = {
-  grid: grid,
-  // Centrer horizontalement le graphe
-  center: ['50%', '50%'],
-  tooltip: {
-    trigger: 'axis',
-    textStyle: {
-      fontFamily: fontFamily,
-      fontSize: '100%'
-    },
-    axisPointer: {
-      type: 'shadow',
-      crossStyle: {
-        color: '#999'
-      }
-    }
-    },
-  xAxis: {
-    type: 'category',
-    scale: true,
-    axisTick: {show: false},
-    axisLine: {show: false},
-    axisLabel: {
-      textStyle: {
-        fontFamily: fontFamily // changer la police en celle HTML
-        },
-      fontSize: '80%',
-      fontWeight: 600
-      },
-    },
-  yAxis: {
-    type: 'value',
-    min: 0,
-    scale: true,
-    show: true
-    },
-  series: [
-    {
-      name: 'Top 5 clients',
-      type: 'bar',
-      itemStyle: {
-        // borderColor: 'transparent',
-        borderWidth: 1,
-        borderType: 'solid',
-        borderColor: color_blue_1,
-        shadowColor: color_blue_1,
-        shadowBlur: 0.15,
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {offset: 0, color: color_blue_2},
-          {offset: 0.5, color: color_blue_1},
-          {offset: 1, color: color_blue}
-        ]),
-        barBorderRadius: 2,
-      },
-      //étiquettes de barres
-      label: {
-        show: true,
-        formatter: etiquette_format,
-        fontWeight: 500,
-        fontSize: '80%',
-        position: 'inside',
-        textStyle: {
-          fontFamily: fontFamily // changer la police en celle HTML
-      },
-        color: '#FFF'
-      },
-    }
-  ],
-};
+// var topClients = echarts.init(document.getElementById('dashbordTopClients'), null, {renderer: 'canvas', force: true} );
+// var topClientsOption = {
+//   grid: grid,
+//   // Centrer horizontalement le graphe
+//   center: ['50%', '50%'],
+//   tooltip: {
+//     trigger: 'axis',
+//     textStyle: {
+//       fontFamily: fontFamily,
+//       fontSize: '100%'
+//     },
+//     axisPointer: {
+//       type: 'shadow',
+//       crossStyle: {
+//         color: '#999'
+//       }
+//     }
+//     },
+//   xAxis: {
+//     type: 'category',
+//     scale: true,
+//     axisTick: {show: false},
+//     axisLine: {show: false},
+//     axisLabel: {
+//       textStyle: {
+//         fontFamily: fontFamily // changer la police en celle HTML
+//         },
+//       fontSize: '80%',
+//       fontWeight: 600
+//       },
+//     },
+//   yAxis: {
+//     type: 'value',
+//     min: 0,
+//     scale: true,
+//     show: true
+//     },
+//   series: [
+//     {
+//       name: 'Top 5 clients',
+//       type: 'bar',
+//       itemStyle: {
+//         // borderColor: 'transparent',
+//         borderWidth: 1,
+//         borderType: 'solid',
+//         borderColor: color_blue_1,
+//         shadowColor: color_blue_1,
+//         shadowBlur: 0.15,
+//         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+//           {offset: 0, color: color_blue_2},
+//           {offset: 0.5, color: color_blue_1},
+//           {offset: 1, color: color_blue}
+//         ]),
+//         barBorderRadius: 2,
+//       },
+//       //étiquettes de barres
+//       label: {
+//         show: true,
+//         formatter: etiquette_format,
+//         fontWeight: 500,
+//         fontSize: '80%',
+//         position: 'inside',
+//         textStyle: {
+//           fontFamily: fontFamily // changer la police en celle HTML
+//       },
+//         color: '#FFF'
+//       },
+//     }
+//   ],
+// };
 
 // =====================================================================================================================
 // GRAPHIQUE : TOP 5 PRODUITS
 
-var topProduits = echarts.init(document.getElementById('dashboardTopProduits'), null, {renderer: 'canvas', force: true} );
-var topProduitsOption = {
-  grid: grid,
-  // Centrer horizontalement le graphe
-  center: ['50%', '50%'],
-  tooltip: {
-    trigger: 'axis',
-    textStyle: {
-      fontFamily: fontFamily,
-      fontSize: '100%'
-    },
-    axisPointer: {
-      type: 'shadow',
-      crossStyle: {
-        color: '#999'
-      }
-    }
-  },
-  yAxis: {
-    type: 'category',
-    scale: true,
-    axisTick: {show: false},
-    axisLine: {show: false},
-    axisLabel: {
-      textStyle: {
-        fontFamily: fontFamily // changer la police en celle HTML
-        },
-      fontSize: '80%',
-      fontWeight: 600
-      },
-    },
-  xAxis: {
-    type: 'value',
-    scale: true,
-    show: true,
-    min: 0
-    },
-  series: [
-    {
-      name: 'Top 5 produits',
-      type: 'bar',
-      itemStyle: {
-        borderWidth: 1,
-        borderType: 'solid',
-        borderColor: color_blue_1,
-        shadowColor: color_blue_1,
-        shadowBlur: 0.15,
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {offset: 0, color: color_blue_2},
-          {offset: 0.5, color: color_blue_1},
-          {offset: 1, color: color_blue}
-        ]),
-        barBorderRadius: 2,
-      },
-      //étiquettes de barres
-      label: {
-        show: true,
-        formatter: etiquette_format,
-        fontWeight: 600,
-        fontSize: '80%',
-        position: 'right',
-        textStyle: {
-          fontFamily: fontFamily // changer la police en celle HTML
-      },
-        color: '#000'
-      },
-    }
-  ],
-};
-
-
-// =====================================================================================================================
-// GRAPHIQUE : ZOOM 20/80
-
-//  //Initialiser le diagramme avec echarts
-//  var zoomGraph = echarts.init(document.getElementById('dashboardZoom'), null, {renderer: 'canvas', force: true});
-
-//  // Définir les données pour chaque entrée Y
-//  var data1 = [120, 200, 150, 80, 70, 56, 54, 23, 15]; //Mobile
-//  var data2 = [80, 90, 100, 60, 50, 56, 54, 23, 15];   //Fixe
-//  var data3 = [50, 70, 60, 40, 30, 52, 34, 13, 75];    //Broadband
-//  var data4 = [30, 40, 50, 20, 10, 8, 14, 10, 25];     //ICT
-
-//  // Définir les étiquettes pour l'axe X (clients)
-//  var labels = ['Client1', 'Client30', 'Client19', 'Client68', 'Client109', 'Client3', 'Client295', 'Client968', 'Client7109'];
-
-//  // Définir les options pour le diagramme
-//  var zoomOption = {
-//     center: ['50%', '50%'],
-//     tooltip: {
-//       trigger: 'axis',
-//       textStyle: {
-//         fontFamily: fontFamily,
-//         fontSize: '100%'
-//       },
-//       axisPointer: {
-//         type: 'shadow',
-//         crossStyle: {
-//           color: '#999'
-//         }
+// var topProduits = echarts.init(document.getElementById('dashboardTopProduits'), null, {renderer: 'canvas', force: true} );
+// var topProduitsOption = {
+//   grid: grid,
+//   // Centrer horizontalement le graphe
+//   center: ['50%', '50%'],
+//   tooltip: {
+//     trigger: 'axis',
+//     textStyle: {
+//       fontFamily: fontFamily,
+//       fontSize: '100%'
+//     },
+//     axisPointer: {
+//       type: 'shadow',
+//       crossStyle: {
+//         color: '#999'
 //       }
-//     },
-//     legend: {
-//         data: ['Mobile', 'Fixe', 'Broadband', 'ICT'] //univers
-//     },
-//     xAxis: {
-//         type: 'category',
-//         data: labels
-//     },
-//     yAxis: {
-//         type: 'value'
-//     },
-//     series: [
-//         {
-//             name: 'Mobile',
-//             type: 'bar',
-//             stack: 'total',
-//             data: data1,
-//             color: color_blue
+//     }
+//   },
+//   yAxis: {
+//     type: 'category',
+//     scale: true,
+//     axisTick: {show: false},
+//     axisLine: {show: false},
+//     axisLabel: {
+//       textStyle: {
+//         fontFamily: fontFamily // changer la police en celle HTML
 //         },
-//         {
-//             name: 'Fixe',
-//             type: 'bar',
-//             stack: 'total',
-//             data: data2,
-//             color: color_orange
-//         },
-//         {
-//             name: 'Broadband',
-//             type: 'bar',
-//             stack: 'total',
-//             data: data3,
-//             color: color_silver
-//         },
-//         {
-//             name: 'ICT',
-//             type: 'bar',
-//             stack: 'total',
-//             data: data4,
-//             color: color_red
-//         },
-//     ]
-//  };
-//  // Appliquer les options au diagramme
-//  zoomGraph.setOption(zoomOption);
-
+//       fontSize: '80%',
+//       fontWeight: 600
+//       },
+//     },
+//   xAxis: {
+//     type: 'value',
+//     scale: true,
+//     show: true,
+//     min: 0
+//     },
+//   series: [
+//     {
+//       name: 'Top 5 produits',
+//       type: 'bar',
+//       itemStyle: {
+//         borderWidth: 1,
+//         borderType: 'solid',
+//         borderColor: color_blue_1,
+//         shadowColor: color_blue_1,
+//         shadowBlur: 0.15,
+//         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+//           {offset: 0, color: color_blue_2},
+//           {offset: 0.5, color: color_blue_1},
+//           {offset: 1, color: color_blue}
+//         ]),
+//         barBorderRadius: 2,
+//       },
+//       //étiquettes de barres
+//       label: {
+//         show: true,
+//         formatter: etiquette_format,
+//         fontWeight: 600,
+//         fontSize: '80%',
+//         position: 'right',
+//         textStyle: {
+//           fontFamily: fontFamily // changer la police en celle HTML
+//       },
+//         color: '#000'
+//       },
+//     }
+//   ],
+// };
 
 //=========================================================================================================================
 // Gérer la responsivité du graphe en fonction de son conteneur
@@ -425,6 +348,14 @@ function separateurMillier(nombre) {
 
 // =====================================================================================================================
 var table = $('#gros-client').DataTable({
+  dom: 'Bfrtip',
+  buttons: [
+      {
+          extend: 'csvHtml5',
+          text: 'Télécharger en CSV',
+          className: 'btn-download-table'
+      },
+  ],
   language: {
     "search": "Chercher",
     "decimal": ',',
@@ -465,8 +396,8 @@ function getData(startDate, endDate) {
     .then(function (response) {
       document.getElementById("dashbordPerformGen").style.display = "none";
       document.getElementById("dashboardCaUnivers").style.display = "none";
-      document.getElementById("dashbordTopClients").style.display = "none";
-      document.getElementById("dashboardTopProduits").style.display = "none";
+      // document.getElementById("dashbordTopClients").style.display = "none";
+      // document.getElementById("dashboardTopProduits").style.display = "none";
       var loaders = document.getElementsByClassName("loader");
       for (var i = 0; i < loaders.length; i++) {
           loaders[i].style.display = "block";
@@ -480,8 +411,8 @@ function getData(startDate, endDate) {
         }
         document.getElementById("dashbordPerformGen").style.display = "block";
         document.getElementById("dashboardCaUnivers").style.display = "block";
-        document.getElementById("dashbordTopClients").style.display = "block";
-        document.getElementById("dashboardTopProduits").style.display = "block";
+        // document.getElementById("dashbordTopClients").style.display = "block";
+        // document.getElementById("dashboardTopProduits").style.display = "block";
 
 
         return response.json();
@@ -529,18 +460,20 @@ function getData(startDate, endDate) {
 
     //   =============================================================
     // Option de modification des graphs Top 5 des clients
-      topClientsOption.xAxis.data = data.top_client.client;
-      topClientsOption.series[0].data = data.top_client.total_montant;
-      topClientsOption && topClients.setOption(topClientsOption);
+      // topClientsOption.xAxis.data = data.top_client.client;
+      // topClientsOption.series[0].data = data.top_client.total_montant;
+      // topClientsOption && topClients.setOption(topClientsOption);
 
     //   ===============================================================
     //   Option de modification des graphs Top 5 des produits
-      topProduitsOption.yAxis.data = data.product.product;
-      topProduitsOption.series[0].data = data.product.ca;
-      topProduitsOption && topProduits.setOption(topProduitsOption);
+      // topProduitsOption.yAxis.data = data.product.product;
+      // topProduitsOption.series[0].data = data.product.ca;
+      // topProduitsOption && topProduits.setOption(topProduitsOption);
 
     //   ===============================================================
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
+      document.getElementById("nb-top80").innerHTML = `${data.nb_client}`;
+
       table.rows.add(data.gros_clients).draw(true);
 
     })
