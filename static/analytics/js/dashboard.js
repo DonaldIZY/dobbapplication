@@ -474,7 +474,6 @@ function getData(startDate, endDate) {
       if (response.ok) {
         // Récupération des données reçues
         // Rétablissement de l'affichage du contenu
-        // document.getElementById("loader").style.display = "none";
         for (var i = 0; i < loaders.length; i++) {
           loaders[i].style.display = "none";
       }

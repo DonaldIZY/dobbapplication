@@ -15,7 +15,6 @@ urlpatterns = [
     # Monitoring
     path('variation-top-200/', views.VariationTop200View.as_view(), name='variation_top_200'),
     path('CA-top-200/', views.CATop200View.as_view(), name='ca_top_200'),
-    path('performance-CA-YTD/', views.PerformanceCAView.as_view(), name='performance_ca'),
 
     #ressource
     path('suivi_equipe/', views.SuiviEquipeView.as_view(), name='suivi_equipe')

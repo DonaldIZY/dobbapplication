@@ -31,9 +31,9 @@
 		</div>
 		<div class="col-sm-1">
 			<select class="image-select default-select dashboard-select" id="univers" aria-label="Default">
-				<option value="Mobile" selected>Mobile</option>
-				<option value="Fixe">Fixe</option>
-				<option value="Broadband">Broadband</option>
+				{% for univer in univers %}
+                    <option value="{{ univer }}" selected>{{ univer }}</option>
+                {% endfor %}
 			</select>
 		</div>
 		<!-- Liste déroulante et date picker -->

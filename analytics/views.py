@@ -13,14 +13,13 @@ from users.models import CustomUser
 from analytics import data
 from django.http import JsonResponse
 
-
 conn = psycopg2.connect(
-        dbname='BSCS',
-        user='postgres',
-        password='password',
-        host='localhost',
-        port='5432'
-    )
+    dbname='BSCS',
+    user='postgres',
+    password='password',
+    host='localhost',
+    port='5432'
+)
 
 
 def get_user_entities(user):
@@ -54,6 +53,8 @@ class FacturationView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
     def get(self, request):
+        univers = data.getDistinctProduct(colonne='univers')
+        products = data.getDistinctProduct(colonne='groupe_produit')
         query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
 
         with conn.cursor() as cursor:
@@ -68,7 +69,9 @@ class FacturationView(LoginRequiredMixin, View):
             'pageview': "Dashboards",
             'product_type': self.univers,
             'min_date': min_date,
-            'max_date': max_date
+            'max_date': max_date,
+            'univers': univers,
+            'products': products
         }
         return render(request, 'analytics/facturation/facturation.html', greeting)
 
@@ -157,13 +160,6 @@ class CATop200View(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
 
-class PerformanceCAView(LoginRequiredMixin, View):
-    def get(self, request):
-        heading = "Performance CA YTD"
-        greeting = {'heading': heading, 'pageview': "Dashboards"}
-        return render(request, 'analytics/dashboard/monitoring/performanceCAYTD.html', greeting)
-
-
 class DashboardView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
@@ -202,7 +198,6 @@ class DashboardView(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
     def get(self, request):
-
         query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
 
         with conn.cursor() as cursor:
@@ -226,7 +221,6 @@ class DashboardViewManager(LoginRequiredMixin, View):
 
     def post(self, request, id):
         commercial_obj = Commercial.objects.get(id=id)
-        print(commercial_obj)
         # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
@@ -302,14 +296,44 @@ class ClienteleView(LoginRequiredMixin, View):
 
 
 class SuiviEquipeView(LoginRequiredMixin, View):
-    univers = 'univers'
 
     def get(self, request):
+        univers = data.getDistinctProduct(colonne='univers')
+        products = data.getDistinctProduct(colonne='groupe_produit')
 
         greeting = {
-            'heading': self.univers,
             'pageview': "Dashboards",
-            'product_type': self.univers,
-            "menu_wallet": True,
+            'univers': univers,
+            'products': products
         }
         return render(request, 'analytics/ressources/suivi_equipe.html', greeting)
+
+    def post(self, request):
+        # Récupération des données de la requête
+        request_data = json.load(request)
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
+        product = request_data['product']
+        univers = request_data['univers']
+
+        searche = ''
+        user = request.user
+        entities = get_user_entities(user)
+        search = getSearch(entities, user)
+
+        recap_univers = data.recapData(colonne='univers', date_debut=start_date, date_fin=end_date, search=search)
+        recap_product = data.recapData(colonne='groupe_produit', date_debut=start_date,
+                                       date_fin=end_date, search=search)
+        top_performers_univers = data.getTopPerformers(colonne='univers', choix=univers, date_debut=start_date,
+                                                       date_fin=end_date, search=search)
+        top_performers_product = data.getTopPerformers(colonne='groupe_produit', choix=product, date_debut=start_date,
+                                                       date_fin=end_date, search=search)
+
+        # Préparation de la réponse
+        response_data = {
+            'recap_univers': recap_univers,
+            'recap_product': recap_product,
+            'top_performers_univers': top_performers_univers,
+            'top_performers_product': top_performers_product
+        }
+        return JsonResponse(response_data)
