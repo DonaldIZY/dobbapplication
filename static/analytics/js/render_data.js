@@ -108,7 +108,7 @@
 // // =========================  ==========================
 
 
-var table_entant = $('#client-entrant').DataTable({
+var table_200 = $('#client-200').DataTable({
   language: {
     "search": "Chercher",
     "decimal": ',',
@@ -127,6 +127,7 @@ var table_entant = $('#client-entrant').DataTable({
     }
     },
 });
+
 
 var table_sortant = $('#client-sortant').DataTable({
   language: {
@@ -183,15 +184,13 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
-
-      // Trouver les éléments communs
-      let commonElements = data.array1.filter(element => data.array2.includes(element));
-
+      // let data_200 = data.client_top200
+      
       // Supprimer les informations du tableau existant
-      table_entant.clear();
-      table_entant.rows.add(data.client_top200).draw(true);
+      table_200.clear();
+      table_200.rows.add(data.client_top200).draw(true);
+          })
 
-    })
     .catch(function (error) {
       // Gestion d'une erreur de requête
       /* jshint ignore:start */
@@ -199,6 +198,7 @@ function getData(startDate, endDate) {
       /* jshint ignore:end */
     });
 }
+
 
 
 // =====================================================================================================================
