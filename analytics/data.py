@@ -521,12 +521,15 @@ def top_80_20(date_debut, date_fin, search):
     df = pd.read_sql(sql=text(request_ca_client), con=connection)
     df = df.fillna(value='')
     df_2 = pd.read_sql(sql=text(request_global), con=connection)
-    keep_percent = df_2['total'][0] * 0.8
+    if df_2['total'][0] != None:
+        keep_percent = df_2['total'][0] * 0.8
+    else:
+        keep_percent = 0
 
     # Calculer la somme cumulée
     df['cumulative_sum'] = df['total_montant'].cumsum()
     result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
-    print(result)
+    # print(result)
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
     nb_clients_80_20 = result.shape[0]
