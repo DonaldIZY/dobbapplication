@@ -116,17 +116,22 @@ class VariationTop200View(LoginRequiredMixin, View):
         return render(request, 'analytics/monitoring/variation_top_200.html', greeting)
 
     def post(self, request):
+        user = request.user
+
         # Récupération des données de la requête
-        param1 = request.POST.get('param1')
-        param2 = request.POST.get('param2')
+        # param1 = request.POST.get('param1')
+        # param2 = request.POST.get('param2')
+        
+        request_data = json.load(request)
+        start_date = request_data['startDate']
+        end_date = request_data['endDate']
 
         client = data.ClientTop200()
         client_entrant = client.getClient(sheet_name='client entrant')
         client_sortant = client.getClient(sheet_name='client sortant')
-        client_entrant2 = client.getClientEntrant(date_debut='2022-01-01', date_fin='2022-03-01')
-        # print(client_entrant2)
+        client_entrant2, client_top200 = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
         response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
-                         'client_entrant2': client_entrant2}
+                         'client_entrant2': client_entrant2, 'client_top200': client_top200}
 
         return JsonResponse(response_data)
 
@@ -183,7 +188,7 @@ class DashboardView(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
+        gros_clients, pourcent_client, nb_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -193,7 +198,8 @@ class DashboardView(LoginRequiredMixin, View):
             'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
-            'pourcent_client': float(pourcent_client)
+            'pourcent_client': float(pourcent_client),
+            'nb_client': int(nb_client)
         }
         return JsonResponse(response_data)
 

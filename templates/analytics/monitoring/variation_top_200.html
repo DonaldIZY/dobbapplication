@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{% static cssurl %}" >
     {% endfor %}
 
+    {% for cssurl in dz_array.global.css %}
+	<link rel="stylesheet" href="{% static cssurl %}" >
+	{% endfor %}
+
     <link rel="stylesheet" href="{% static 'finlab/vendor/wow-master/css/libs/animate.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/bootstrap-select-country/css/bootstrap-select-country.min.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
@@ -62,18 +66,18 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="client-entrant" class="display">
+                <table id="client-200" class="display">
                     <thead>
                         <tr>
                             <th>client</th>
                             <th>Segment</th>
                             <th>Commercial</th>
-                            <th>Mobile</th>
-                            <th>Fixe</th>
-                            <th>ICT</th>
-                            <th>Broadband</th>
-                            <th>Rang</th>
-                            <th>Rang Prec</th>
+                            <th class="text-center">Mobile</th>
+                            <th class="text-center">Fixe</th>
+                            <th class="text-center">ICT</th>
+                            <th class="text-center">Broadband</th>
+                            <th class="text-center">Rang</th>
+                            <th class="text-center">Rang Prec</th>
                         </tr>
                     </thead>
                 </table>

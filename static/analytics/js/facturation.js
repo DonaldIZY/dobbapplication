@@ -76,6 +76,7 @@ let optionParcActif = {
       type: 'value',
       name: 'Parc Actif',
       scale: true,
+      min: 0,
       axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
         formatter: '{value}',
@@ -87,6 +88,7 @@ let optionParcActif = {
       type: 'value',
       name: 'CA Parc Actif',
       scale: true,
+      min: 0,
       axisZero: true, // définir l'option "yAxis.axisZero" pour mettre à la même origine les entrées Y
       axisLabel: {
         formatter: '{value}',

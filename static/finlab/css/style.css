@@ -306,6 +306,11 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   color:#fff;
 }
 
+#client-200 tr td:nth-child(n+4):nth-child(-n+9) {
+  text-align: center;
+}
+
+
 #name-group{
   color:#ededed;
   font-size: 0.7rem;
@@ -347,6 +352,8 @@ table.my_table{
 table.my_table thead tr th, table.my_table tbody tr td{
   font-size: 75%;
 }
+
+
 
 
 *,
@@ -25432,6 +25439,7 @@ code {
 .table thead th {
   border-bottom: 0.0625rem solid #EEEEEE;
   text-transform: capitalize;
+  padding: 1% 0;
   color: #fff;
   font-size: 1rem;
   white-space: nowrap;

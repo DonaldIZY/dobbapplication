@@ -342,4 +342,6 @@ document.getElementById('product').addEventListener('change', function (qualifie
     getData(univers=univers, product=this.value, startDate=defaultStartDate, endDate=defaultEndDate);
   }
 
+
 });
+

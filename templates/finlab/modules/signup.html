@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="fr-fr" class="h-100">
 
     <head>
         {% load static custom_tags widget_tweaks %}
@@ -56,8 +56,8 @@
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
                                                     <div class="form-group">
-                                                        <label class="mb-1"><strong>First Name</strong></label>
-                                                        {{ form.first_name|attr:"class:form-control"|attr:"placeholder:First Name"|attr:"type:text" }}   
+                                                        <label class="mb-1"><strong>Prénoms</strong></label>
+                                                        {{ form.first_name|attr:"class:form-control"|attr:"placeholder:Prénoms"|attr:"type:text" }}   
                                                     </div>
                                                         <div class="text-danger w-100 d-block ">
                                                         {{ form.first_name.errors }}
@@ -65,8 +65,8 @@
                                                 </div>
                                                 <div class="col-md-6 mb-3">
                                                     <div class="form-group">
-                                                        <label class="mb-1 "><strong>Last Name</strong></label>
-                                                        {{ form.last_name|attr:"class:form-control"|attr:"placeholder:Last Name"|attr:"type:text" }}   
+                                                        <label class="mb-1 "><strong>Nom</strong></label>
+                                                        {{ form.last_name|attr:"class:form-control"|attr:"placeholder:Nom"|attr:"type:text" }}   
                                                     </div>
                                                     <div class="text-danger w-100 d-block ">
                                                         {{ form.last_name.errors }}
@@ -84,8 +84,8 @@
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-group">
-                                                        <label class="mb-1"><strong>Password</strong></label>
-                                                        {{ form.password1|attr:"class:form-control"|attr:"placeholder:Password"|attr:"type:password" }}
+                                                        <label class="mb-1"><strong>Mot de passe</strong></label>
+                                                        {{ form.password1|attr:"class:form-control"|attr:"placeholder:Mot de passe"|attr:"type:password" }}
                                                     </div>
                                                         <div class="text-danger w-100 d-block mt-1">
                                                         {{ form.password1.errors }}
@@ -93,20 +93,20 @@
                                                 </div>
                                                 <div class="col-md-12 mb-3">
                                                     <div class="form-group">
-                                                        <label class="mb-1"><strong>Confirm Password</strong></label>
-                                                        {{ form.password2|attr:"class:form-control"|attr:"placeholder:Confirm Password"|attr:"type:password" }}
+                                                        <label class="mb-1"><strong>Confirmation du mot de passe</strong></label>
+                                                        {{ form.password2|attr:"class:form-control"|attr:"placeholder:Confirmation du mot de passe"|attr:"type:password" }}
                                                     </div>
                                                         <div class="text-danger w-100 d-block mt-1">
                                                         {{ form.password2.errors }}
                                                         </div>
                                                 </div>
                                                 <div class="text-center mt-4">
-                                                    <button type="submit" class="btn text-white bg-primary btn-block w-100 ">Sign me up</button>
+                                                    <button type="submit" class="btn text-white bg-primary btn-block w-100 ">S'enregistrer</button>
                                                 </div>
                                             </div> 
                                         </form>
                                         <div class="new-account mt-3">
-                                            <p>Already have an account? <a class="text-primary" href="{% url 'finlab:login' %}">Sign in</a></p>
+                                            <p>Avez-vous un compte? <a class="text-primary" href="{% url 'finlab:login' %}">Se connecter</a></p>
                                         </div>
                                         {% endif %}
 
@@ -114,7 +114,7 @@
 
                                         {% if message %}
                                         <div class="mt-4">
-                                            <h2 class="mb-3 text-center">Verification link sent!</h2>
+                                            <h2 class="mb-3 text-center">Lien de vérification envoyé</h2>
                                             <p>{{message|safe}}</p>
                                         </div>
         

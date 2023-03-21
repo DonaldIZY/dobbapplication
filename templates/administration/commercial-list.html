@@ -4,6 +4,7 @@
 {% block title %} {{ page_title }} {% endblock %}
 
 {% block additional_css %}
+    <link rel="stylesheet" href="{% static 'finlab/vendor/bootstrap-select-country/css/bootstrap-select-country.min.css' %}" >
 
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.users %}
     <link rel="stylesheet" href="{% static cssurl %}" >
@@ -58,12 +59,12 @@
                                     </div>
                                 </th> -->
 
-                                <th>Nom et prénoms</th>
-                                <th>Email</th>
+                                <th class="p-2">Nom et prénoms</th>
+                                <th class="p-2">Email</th>
                                 <!-- <th>Genre</th> -->
-                                <th>Segment</th>
-                                <th>Manager</th>
-                                <th>Statut</th>
+                                <th class="p-2">Segment</th>
+                                <th class="p-2">Manager</th>
+                                <th class="text-center">Statut</th>
 
                                 <!-- {% if perms.administration.delete_commercial or perms.administration.change_commercial %}
                                 <th scope="col">Action</th>
@@ -82,7 +83,7 @@
                                     </div>
                                 </td> -->
                                 <!-- Champ "Nom et Prénoms" du tableau -->
-                                <td>
+                                <td class="p-2">
                                     <a href="{% url 'analytics:manager_commercial' id=commercial_obj.id %}">
                                         <div class="d-flex align-items-center">
                                             <img src="/media/{{ commercial_obj.commercial.avatar }}" class="rounded-lg me-2" width="24" alt="">
@@ -91,19 +92,19 @@
                                      </a>
                                 </td>
                                 <!-- Champ "Email" du tableau -->
-                                <td><strong>{{ commercial_obj.commercial.email }}</strong></td>
+                                <td class="p-2"><strong>{{ commercial_obj.commercial.email }}</strong></td>
                                 <!-- <td>{{ commercial_obj.commercial.gender }}</td> -->
                                 <!-- Champ "Segment" du tableau -->
-                                <td>
+                                <td class="p-2">
                                     <span class="badge  badge-xs light badge-primary">{{ commercial_obj.equipe.name }}</span>
                                 </td>
                                 <!-- Champ "Manager du segment" du tableau -->
-                                <td>
+                                <td class="p-2">
                                     <img src="/media/{{ commercial_obj.equipe.manager.avatar }}" class="rounded-lg me-2" width="24" alt="">
                                     <span class="w-space-no">{{ commercial_obj.equipe.manager }}</span>
                                 </td>
                                 <!-- Champ "Statut" du tableau -->
-                                <td>
+                                <td class="p-2">
                                     <div class="d-flex align-items-center justify-content-center">
                                         {% if commercial_obj.commercial.is_active %}
                                         <i class="fa fa-circle text-success me-1"></i>

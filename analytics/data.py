@@ -246,6 +246,7 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
 class ClientTop200:
 
     def getEntrant(self, date_debut, date_fin):
+        print(date_debut)
         diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
         diff = diff + relativedelta(months=1)
 
@@ -271,9 +272,9 @@ class ClientTop200:
 
         # Supprimer les colonnes sélectionnées
         client_entrant = client_entrant[cols_to_keep_entrant].copy().reset_index(drop=True)
-
+        client_top200 = client_entrant.copy()
         client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
-        return client_entrant
+        return client_entrant, client_top200
 
     def getClient(self, sheet_name):
         df = pd.read_excel("analytics/data/client.xlsx", sheet_name=sheet_name)
@@ -289,14 +290,23 @@ class ClientTop200:
         return data
 
     def getClientEntrant(self, date_debut, date_fin):
-        client_entrant = self.getEntrant(date_debut=date_debut, date_fin=date_fin)
+        client_entrant, client_top200 = self.getEntrant(date_debut=date_debut, date_fin=date_fin)
         client_entrant['commercial'] = client_entrant['commercial'].fillna(value='')
         client_entrant = client_entrant.fillna(0)
         client_entrant = client_entrant[['client', 'segment', 'commercial', 'mobile', 'fixe',
                                          'ict', 'broadband', 'rang', 'rang_prec']]
         client_entrant = client_entrant.round(2)
-        data = client_entrant.astype(str).values.tolist()
-        return data
+        data_client_entrant = client_entrant.astype(str).values.tolist()
+
+        client_top200['commercial'] = client_top200['commercial'].fillna(value='')
+        client_top200 = client_top200.fillna(0)
+        client_top200 = client_top200[['client', 'segment', 'commercial', 'mobile', 'fixe',
+                                         'ict', 'broadband', 'rang', 'rang_prec']]
+        client_top200 = client_top200.round(2)
+        client_top200['rang_prec'] = client_top200['rang_prec'].astype(int)
+        data_client_200 = client_top200.astype(str).values.tolist()
+
+        return data_client_entrant, data_client_200
 
     def getGraphData(self, sheet_name, date_debut, date_fin, search):
         request = f"""
@@ -460,7 +470,9 @@ def produit(date_debut, date_fin, search):
     df = pd.read_sql(sql=text(request), con=connection)
 
     product = df['groupe_produit'].tolist()
+    product.reverse()
     ca = df['total_montant'].tolist()
+    ca.reverse()
     data_final = {'product': product, 'ca': ca}
 
     return data_final
@@ -516,9 +528,10 @@ def top_80_20(date_debut, date_fin, search):
     result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
+    nb_clients_80_20 = result.shape[0]
 
     data = result.astype(str).values.tolist()
-    return data, client_part
+    return data, client_part, nb_clients_80_20
 
 
 def recapData(colonne, date_debut, date_fin, search):
