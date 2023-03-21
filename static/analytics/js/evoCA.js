@@ -119,7 +119,8 @@ let optionMoMCAF = {
     {
       type: 'value',
       name: 'Parc Actif',
-      scale: true,
+      // scale: true,
+      min: 0,
       axisLabel: {
         formatter: '{value}',
         fontSize: '80%'
@@ -128,14 +129,13 @@ let optionMoMCAF = {
     },
     {
       type: 'value',
-      scale: true,
+      // scale: true,
+      min: 0,
       name: 'CA Parc Actif',
       axisLabel: {
         formatter: '{value}',
         fontSize: '80%'
       },
-      min: 0,
-      max: 100,
       show: false
     }
   ],
@@ -393,10 +393,10 @@ function getData(startDate, endDate) {
       optionMoMCAF.xAxis[0].data = data.mom_caf.axis;
 
       //Echelle des axes
-      optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf);
-      optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf);
-      optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent);
-      optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent);
+      // optionMoMCAF.yAxis[0].min = Math.min(...data.mom_caf.caf);
+      // optionMoMCAF.yAxis[0].max = Math.max(...data.mom_caf.caf);
+      // optionMoMCAF.yAxis[1].min = Math.min(...data.mom_caf.pourcent);
+      // optionMoMCAF.yAxis[1].max = Math.max(...data.mom_caf.pourcent);
 
       optionMoMCAF.series[0].data = data.mom_caf.caf;
       optionMoMCAF.series[1].data = data.mom_caf.pourcent;

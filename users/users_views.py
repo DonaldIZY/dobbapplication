@@ -33,7 +33,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Password Update Successfully')
+            messages.success(request, 'Mise à jour du mot de passe réussie')
             return redirect('/password/')
         else:
             messages.warning(request, 'Form is not valid')
@@ -74,9 +74,9 @@ def delete_user(request, id):
     usr = CustomUser.objects.get(id=id)
     if usr:
         usr.delete()
-        messages.success(request, "User deleted successfully")
+        messages.success(request, "L'utilisateur a été supprimé avec succès")
     else:
-        messages.warning(request, "User does not exist")
+        messages.warning(request, "L'utilisateur n'existe pas")
 
     return redirect('finlab:users')
 
@@ -90,9 +90,9 @@ def delete_multiple_user(request):
         user_obj = CustomUser.objects.get(pk=id)
         if user_obj:
             user_obj.delete()
-            response = JsonResponse({"success": 'user deleted successfully'})
+            response = JsonResponse({"success": 'L\'utilisateur a été supprimé avec succès'})
         else:
-            response = JsonResponse({"warning": 'User does not exist'})
+            response = JsonResponse({"warning": 'L\'utilisateur n\'existe pas'})
 
     response.status_code = 200
     return response
@@ -108,7 +108,7 @@ def add_user(request):
             user_obj.groups.clear()
             for i in form.cleaned_data.get('groups'):
                 user_obj.groups.add(i)
-            messages.success(request, f'le compte de {user_obj.first_name} {user_obj.last_name} a bien été créé')
+            messages.success(request, f'Le compte de {user_obj.first_name} {user_obj.last_name} a bien été créé')
             return redirect('finlab:users')
     else:
         form = CustomUserForm()
@@ -151,16 +151,16 @@ def signup(request):
                 send_mail(subject, message, EmailSender, ReceiversList, fail_silently=False)
                 if user_obj.is_active == False:
                     message = f'''
-                    We emailed a confirmation link to <span class="text-primary">{email}</span>.
-                    Check your email for a link to activate you account.
+                    Un mail vous a été envoyé à l'adresse <span class="text-primary">{email}</span>.
+                    Vérifiez le lien dans votre boîte mail pour activer votre compte.
                     '''
                     return render(request, 'finlab/modules/signup.html', {'message': message})
             except:
-                messages.warning(request, 'Email Not valid')
+                messages.warning(request, 'L\'Email est non valide.')
                 user_obj.delete()
 
         else:
-            messages.warning(request, 'Form is not valid')
+            messages.warning(request, 'Le formulaire n\'est pas valide.')
     else:
         if request.user.is_authenticated:
             return redirect('finlab:index')
@@ -211,17 +211,17 @@ def login_user(request):
             if user is not None and user.is_active:
                 login(request, user)
                 usergroup = ','.join(request.user.groups.values_list('name', flat=True))
-                messages.success(request, f'Welcome To {usergroup} Dashborad')
+                messages.success(request, f'Bienvenue dans le tableau de bord {usergroup}.')
                 next_url = request.GET.get('next')
                 if next_url:
                     return HttpResponseRedirect(next_url)
                 else:
                     return redirect('finlab:index')
             else:
-                messages.warning(request, 'User is Not Active')
+                messages.warning(request, 'L\'utilisateur n\'est pas actif')
 
         else:
-            messages.warning(request, 'Form is Not valid! Please Check The Email and Password')
+            messages.warning(request, 'Le formulaire n\'est pas valide ! Veuillez vérifier l\'e-mail et le mot de passe.')
             return render(request, 'finlab/modules/login.html', context={'form': form})
     else:
         if request.user.is_authenticated:
@@ -232,7 +232,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, 'Logout Successfully')
+    messages.success(request, 'Déconnexion réussie')
     return redirect('finlab:login')
 
 
@@ -262,7 +262,7 @@ def group_edit(request, id):
             group_obj.name = data['name'][0]
             group_obj.save()
         except:
-            response = JsonResponse({"error": "Group Name already exist"})
+            response = JsonResponse({"error": "Le nom du groupe existe déjà."})
             response.status_code = 403
             return response
 
@@ -272,7 +272,7 @@ def group_edit(request, id):
         else:
             group_obj.permissions.clear()
 
-        response = JsonResponse({"success": "Save Successfully"})
+        response = JsonResponse({"success": "Sauvegardé avec succès"})
         response.status_code = 200
         return response
 
@@ -287,7 +287,7 @@ def group_edit(request, id):
 def group_delete(request, id):
     g = get_object_or_404(Group, id=id)
     g.delete()
-    messages.success(request, 'Group Deleted Sucessfully')
+    messages.success(request, 'Groupe supprimé avec succès')
     return redirect('finlab:groups')
 
 
@@ -298,10 +298,10 @@ def group_add(request):
         form = GroupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Group Created Successfully')
+            messages.success(request, 'Groupe créé avec succès.')
             return redirect('finlab:groups')
         else:
-            messages.warning(request, 'Name Already Exist')
+            messages.warning(request, 'Le nom existe déjà')
             return render(request, 'finlab/modules/group-add.html', {'form': form, 'page_title': 'Add Group'})
     else:
         form = GroupForm()
@@ -341,7 +341,7 @@ def edit_permissions(request, id):
 def delete_permissions(request, id):
     perm_obj = get_object_or_404(Permission, id=id)
     perm_obj.delete()
-    messages.success(request, 'Permission Delete Successfully')
+    messages.success(request, 'Permission supprimée avec succès.')
     return redirect('finlab:permissions')
 
 
@@ -358,7 +358,7 @@ def assign_permissions_to_user(request, id):
             user_obj.user_permissions.set(data['user_permissions[]'])
         else:
             user_obj.user_permissions.clear()
-        response = JsonResponse({"success": "Save Successfully"})
+        response = JsonResponse({"success": "Sauvegardé avec succès."})
         response.status_code = 200
         return response
 

@@ -4,6 +4,10 @@
 {% block title %} {{ page_title }} {% endblock %}
 
 {% block additional_css %}
+<link rel="stylesheet" href="{% static 'finlab/vendor/wow-master/css/libs/animate.css' %}" >
+<link rel="stylesheet" href="{% static 'finlab/vendor/bootstrap-select-country/css/bootstrap-select-country.min.css' %}" >
+<link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
+<link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.users %}
     <link rel="stylesheet" href="{% static cssurl %}" >
@@ -22,10 +26,40 @@
 
 
 {% block content %}
+<!-- --Ligne de la bar de titre-- -->
+<div class="row">
+	<div class="page-titles style1 justify-content-between">
+		<!-- Titre du dashboard -->
+		<div class="col-sm-5">
+			<h2 class="heading" id="title-name">Informations sur les segments</h2>
+		</div>
+		<!-- Liste déroulante et date picker -->
+		<div class="col-sm-7 d-flex justify-content-end">
+			<div class="d-flex justify-content-end align-items-center">
+				<h6 class="m-0" style="font-size: 0.8rem;">Choisir la période:</h6>
+				<div class="input-group-append d-lg-none mx-2">
+					<span class="input-group-text p-2"><img src="{% static 'finlab/images/calendrier.png' %}" class="img-fluid" alt=""></span>
+				</div>
+				<form class="d-none d-lg-flex">
+					<div class="input-group input-group-sm d-flex justify-content-around align-items-center">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-left" id="start_date" placeholder="Début" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<input name="datepicker" type="text" class="form-control mx-1 rounded-right" id="end_date" placeholder="Fin" data-provide="datepicker" autocomplete="off" autoclose="true">
+						<div class="input-group-append">
+							<button class="btn btn-primary btn-sm" type="submit" id="full-date">Actualiser</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
-    <div class="col-lg-12">
+
+<div class="row">
+    <!-- Tableau des segments -->
+    <div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header px-4 py-2">
                 <h4 class="card-title">{{ page_title }}</h4>
                 {% if perms.administration.add_equipe %}
                 <a href="{% url 'administration:add-equipe' %}" class="btn btn-primary btn-sm content-justify-right">
@@ -33,9 +67,9 @@
                 </a>
                 {% endif %}
             </div>
-            <div class="card-body">
+            <div class="card-body p-1 custome-tooltip">
                 <div class="table-responsive">
-                    <table id="example3" class="display table-bordered">
+                    <table id="segmentTable" class="my_table">
                         <thead>
                             <tr>
                                 <th scope="col">Nom du segment</th>
@@ -47,17 +81,17 @@
                             </tr>
                         </thead>
                         <tbody>
-
+    
                             {% for equipe_obj in equipes %}
                             <tr>
                                 <!-- <a href="{% url 'administration:details-equipe' id=equipe_obj.id %}">
                                     <div class="d-flex align-items-center">
                                         <span class="w-space-no">{{ equipe_obj.name }}</span>
                                     </div>
-                                 </a> -->
-                                <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.name }}</span></td>
-                                <td><span class="badge  badge-xs light badge-primary">{{ equipe_obj.manager }}</span></td>
-
+                                    </a> -->
+                                <td><span class="badge badge-xs light badge-primary">{{ equipe_obj.name }}</span></td>
+                                <td><span class="w-space-no">{{ equipe_obj.manager }}</span></td>
+    
                                 <td class="d-flex justify-content-center">
                                     <a href="{% url 'administration:commercial' %}">
                                         <span class="badge badge-{{ colors.dark }}">
@@ -65,7 +99,7 @@
                                         </span>
                                     </a>
                                 </td>
-
+    
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
                                 <td>
                                     <span class="sweetalert d-flex justify-content-center">
@@ -84,7 +118,7 @@
                                 </td>
                                 {% endif %}
                             </tr>
-
+    
                             {% endfor %}
                         </tbody>
                     </table>
@@ -92,6 +126,28 @@
             </div>
         </div>
     </div>
+	<div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">
+		<div class="card crypto-chart ">
+			<!-- titre du graphique -->
+			<div class="card-header border-0 px-4 py-1 flex-wrap">
+				<div class="mb-2 mb-sm-0">
+					<div class="chart-title mb-3">
+						<h2 class="heading">CA par segment</h2>
+					</div>
+				</div>
+			</div>
+			<!-- Graphique -->
+			<div class="card-body p-1 custome-tooltip">
+                <div class="text-center loader">
+                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+				<div class="dashboard-graph" id="caSegment" style="height: 250px"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 {% endblock %}
 
@@ -106,6 +162,17 @@
     {% for jsurl in dz_array.pagelevel.finlab.finlab_views.js.users %}
         <script src="{% static jsurl %}"></script>
     {% endfor %}
+
+    <script src="{% static 'finlab/vendor/peity/jquery.peity.min.js' %}"></script>
+    <script src="{% static 'finlab/vendor/swiper/js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'finlab/vendor/wow-master/dist/wow.min.js' %}"></script>
+    <script src="{% static 'finlab/vendor/bootstrap-datetimepicker/js/moment.js' %}"></script>
+    <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- -- Perso -- -->
+    <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
+    <script src="{% static 'analytics/js/global_variable.js' %}"></script>
+    <script src="{% static 'analytics/js/equipe-list.js' %}"></script>
 
 <script>
     $('.sweet-success-cancel').on('click', function (event) {
@@ -130,6 +197,63 @@
                }
            })
        });
+
+       $(document).ready(function(){
+
+// Initialise le datepicker de début
+$('#start_date').datepicker({
+  format: "mm/yyyy",
+  startView: "months",
+  minViewMode: "months",
+  minDate: '{{ min_date }}',
+  maxDate: '{{ max_date }}',
+  language: 'fr',
+  autoclose: true,
+  todayHighlight: true,
+}).on('changeDate', function(selected){
+  var minDate = new Date(selected.date.valueOf());
+  $('#end_date').datepicker('setStartDate', minDate);
+  //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+});
+
+// Initialise le datepicker de fin
+$('#end_date').datepicker({
+  format: "mm/yyyy",
+  startView: "months",
+  minViewMode: "months",
+  minDate: '{{ min_date }}',
+  maxDate: '{{ max_date }}',
+  language: 'fr',
+  autoclose: true,
+  todayHighlight: true,
+}).on('changeDate', function(selected){
+  var maxDate = new Date(selected.date.valueOf());
+  $('#start_date').datepicker('setEndDate', maxDate);
+  //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
+});
+
+// Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
+function checkDates() {
+  var startDate = $('#start_date').datepicker('getDate');
+  var endDate = $('#end_date').datepicker('getDate');
+  if (!startDate || !endDate) {
+    alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
+    return false;
+  }
+  return true;
+}
+
+// Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
+$('#full-date').on('click', function(event) {
+    event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
+    checkDates();
+    var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+    var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+
+    getData(startDate, endDate);
+});
+});
+
 </script>
 
 {% endblock %}

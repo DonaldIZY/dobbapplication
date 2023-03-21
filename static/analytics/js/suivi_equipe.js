@@ -226,12 +226,3 @@ window.addEventListener('resize', function() {
 topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
 topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
 
-
-var table = $('.my_table').DataTable({
-    searching: false, // Désactive la recherche
-    lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    bFilter: false, // Désactive la recherche
-    bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    paging: false, // Désactive la pagination
-    info: false, // Désactive le texte d'information
-  });

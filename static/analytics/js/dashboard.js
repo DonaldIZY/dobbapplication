@@ -163,13 +163,14 @@ var topClientsOption = {
         fontFamily: fontFamily // changer la police en celle HTML
         },
       fontSize: '80%',
-      fontWeight: 500
+      fontWeight: 600
       },
     },
   yAxis: {
     type: 'value',
+    min: 0,
     scale: true,
-    show: false
+    show: true
     },
   series: [
     {
@@ -242,7 +243,8 @@ var topProduitsOption = {
   xAxis: {
     type: 'value',
     scale: true,
-    show: false
+    show: true,
+    min: 0
     },
   series: [
     {

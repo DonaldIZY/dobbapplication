@@ -460,7 +460,9 @@ def produit(date_debut, date_fin, search):
     df = pd.read_sql(sql=text(request), con=connection)
 
     product = df['groupe_produit'].tolist()
+    product.reverse()
     ca = df['total_montant'].tolist()
+    ca.reverse()
     data_final = {'product': product, 'ca': ca}
 
     return data_final
