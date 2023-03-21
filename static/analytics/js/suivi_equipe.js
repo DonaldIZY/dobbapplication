@@ -67,14 +67,12 @@ var topPerformerByUniversOption = {
     },
   xAxis: {
     type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
     scale: true,
     show: true,
     },
   series: [
     {
         type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
         itemStyle: {
             borderWidth: 1,
             borderType: 'solid',
@@ -138,14 +136,12 @@ var topPerformerByProductOption = {
     },
   xAxis: {
     type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
     scale: true,
     show: true,
     },
   series: [
     {
         type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
         itemStyle: {
             borderWidth: 1,
             borderType: 'solid',
@@ -252,7 +248,20 @@ function getData(univers, product, startDate, endDate) {
     }),
   })
     .then(function (response) {
+      document.getElementById("topPerformerByUnivers").style.display = "none";
+      document.getElementById("topPerformerByProduct").style.display = "none";
+      var loaders = document.getElementsByClassName("loader");
+      for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "block";
+      }
+
       if (response.ok) {
+        for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "none";
+        }
+        document.getElementById("topPerformerByUnivers").style.display = "block";
+        document.getElementById("topPerformerByProduct").style.display = "block";
+
         // Récupération des données reçues
         return response.json();
       } else {
