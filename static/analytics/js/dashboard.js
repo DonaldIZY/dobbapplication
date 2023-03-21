@@ -467,7 +467,6 @@ function getData(startDate, endDate) {
       document.getElementById("dashboardCaUnivers").style.display = "none";
       document.getElementById("dashbordTopClients").style.display = "none";
       document.getElementById("dashboardTopProduits").style.display = "none";
-      // document.getElementById("loader").style.display = "block";
       var loaders = document.getElementsByClassName("loader");
       for (var i = 0; i < loaders.length; i++) {
           loaders[i].style.display = "block";
@@ -476,10 +475,9 @@ function getData(startDate, endDate) {
       if (response.ok) {
         // Récupération des données reçues
         // Rétablissement de l'affichage du contenu
-        // document.getElementById("loader").style.display = "none";
         for (var i = 0; i < loaders.length; i++) {
           loaders[i].style.display = "none";
-      }
+        }
         document.getElementById("dashbordPerformGen").style.display = "block";
         document.getElementById("dashboardCaUnivers").style.display = "block";
         document.getElementById("dashbordTopClients").style.display = "block";

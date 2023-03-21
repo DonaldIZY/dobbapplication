@@ -521,3 +521,81 @@ def top_80_20(date_debut, date_fin, search):
 
     data = result.astype(str).values.tolist()
     return data, client_part
+
+
+def recapData(colonne, date_debut, date_fin, search):
+    request = f"""
+        select {colonne},
+        count(CASE WHEN (montant> 0) THEN id else null END) as "Nb Client",
+        sum(montant) as "CA Cumulé"
+        from public.base_dobb
+        where date_facture between '{date_debut}' and '{date_fin}' {search}
+        group by {colonne};
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+    nb_mois = getNbMois(date_debut, date_fin)
+    df['CA Moyen'] = df['CA Cumulé'] / nb_mois
+    df['CA Moyen'] = df['CA Moyen'].round(0)
+
+    data = df.astype(str).values.tolist()
+    return data
+
+
+def getDistinctProduct(colonne):
+    request = f"""select distinct {colonne} from public.base_dobb;"""
+    df = pd.read_sql(sql=text(request), con=connection)
+    return df[colonne].tolist()
+
+
+def getTopPerformers(colonne, choix, date_debut, date_fin, search):
+    request = f"""
+        SELECT commercial, SUM(montant) AS total_montant FROM PUBLIC.base_dobb
+            WHERE {colonne}='{choix}' AND date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+        GROUP BY commercial
+        ORDER BY total_montant DESC
+        LIMIT 10;
+    """
+
+    df = pd.read_sql(sql=text(request), con=connection)
+    commerciaux = df['commercial'].tolist()
+    total_montant = df['total_montant'].tolist()
+    data_final = {'commerciaux': commerciaux, 'total_montant': total_montant}
+    return data_final
+
+
+
+client_sortant = f"""
+    WITH top200_previous AS (
+        -- récupérer le top 200 précédent
+        SELECT client
+        FROM (
+            SELECT client, ROW_NUMBER() OVER (ORDER BY total_montant_ DESC, max_montant_ DESC) AS rang
+            FROM (
+                SELECT client, COALESCE(SUM(montant), 0) AS total_montant_, COALESCE(MAX(montant), 0) AS max_montant_
+                FROM public.base_dobb
+                WHERE date_facture BETWEEN '2021-10-01' AND '2022-01-01'
+                GROUP BY client
+            ) subq
+            ORDER BY total_montant_ DESC, max_montant_ DESC
+            LIMIT 200
+        ) subq
+    )
+    SELECT client
+    FROM top200_previous
+    WHERE client NOT IN (
+        -- récupérer le top 200 actuel
+        SELECT client
+        FROM (
+            SELECT client, ROW_NUMBER() OVER (ORDER BY total_montant_ DESC, max_montant_ DESC) AS rang
+            FROM (
+                SELECT client, COALESCE(SUM(montant), 0) AS total_montant_, COALESCE(MAX(montant), 0) AS max_montant_
+                FROM public.base_dobb
+                WHERE date_facture BETWEEN '2022-01-01' AND '2022-03-01'
+                GROUP BY client
+            ) subq
+            ORDER BY total_montant_ DESC, max_montant_ DESC
+            LIMIT 200
+        ) subq
+    );
+"""

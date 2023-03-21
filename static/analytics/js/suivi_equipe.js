@@ -1,5 +1,7 @@
 /* jshint esversion: 6 */
 
+let url = window.location.href;
+
 function setColor(color) {
     'use strict';
     return {
@@ -13,26 +15,21 @@ function setColor(color) {
     };
   }
   
-  let url = window.location.href;
-  /* jshint ignore:start */
-  console.log(url);
-  /* jshint ignore:end */
   
-  
-  // Sélectionnez l'élément avec la classe "input-group-append d-lg-none"
-  const calendarIcon = document.querySelector('.input-group-append.d-lg-none');
-  // Ajouter un événement de clic à l'icône de calendrier
-  calendarIcon.addEventListener('click', function() {
-    // Sélectionnez l'élément span contenant l'icône de calendrier
-    const calendarSpan = calendarIcon.querySelector('span');
-    // Sélectionnez l'élément contenant le formulaire de sélection de date
-    const datepickerForm = document.querySelector('.d-none.d-lg-flex');
-    
-    // Ajouter la classe "d-none" à l'élément span contenant l'icône de calendrier
-    calendarSpan.classList.add('d-none');
-    // Supprimer la classe "d-none" de l'élément contenant le formulaire de sélection de date
-    datepickerForm.classList.remove('d-none');
-  });
+// Sélectionnez l'élément avec la classe "input-group-append d-lg-none"
+const calendarIcon = document.querySelector('.input-group-append.d-lg-none');
+// Ajouter un événement de clic à l'icône de calendrier
+calendarIcon.addEventListener('click', function() {
+  // Sélectionnez l'élément span contenant l'icône de calendrier
+  const calendarSpan = calendarIcon.querySelector('span');
+  // Sélectionnez l'élément contenant le formulaire de sélection de date
+  const datepickerForm = document.querySelector('.d-none.d-lg-flex');
+
+  // Ajouter la classe "d-none" à l'élément span contenant l'icône de calendrier
+  calendarSpan.classList.add('d-none');
+  // Supprimer la classe "d-none" de l'élément contenant le formulaire de sélection de date
+  datepickerForm.classList.remove('d-none');
+});
   
 //==========================================================================================================================================
 
@@ -70,14 +67,12 @@ var topPerformerByUniversOption = {
     },
   xAxis: {
     type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
     scale: true,
     show: true,
     },
   series: [
     {
         type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
         itemStyle: {
             borderWidth: 1,
             borderType: 'solid',
@@ -141,14 +136,12 @@ var topPerformerByProductOption = {
     },
   xAxis: {
     type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
     scale: true,
     show: true,
     },
   series: [
     {
         type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
         itemStyle: {
             borderWidth: 1,
             borderType: 'solid',
@@ -177,17 +170,6 @@ var topPerformerByProductOption = {
     }
   ],
 };
-
-
-
-
-
-
-
-
-
-
-
 
 //=========================================================================================================================================
 window.addEventListener('resize', function() {
@@ -226,3 +208,115 @@ window.addEventListener('resize', function() {
 topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
 topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
 
+<<<<<<< HEAD
+=======
+
+var table_univers = $('#resume-univers').DataTable({
+    searching: false, // Désactive la recherche
+    lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+    bFilter: false, // Désactive la recherche
+    bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+    paging: false, // Désactive la pagination
+    info: false, // Désactive le texte d'information
+  });
+var table_produit = $('#resume-produit').DataTable({
+    searching: false, // Désactive la recherche
+    lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+    bFilter: false, // Désactive la recherche
+    bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+    paging: false, // Désactive la pagination
+    info: false, // Désactive le texte d'information
+  });
+
+
+
+function getData(univers, product, startDate, endDate) {
+  "use strict";
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      /* jshint ignore:start */
+      'X-CSRFToken': getCookie('csrftoken')
+      /* jshint ignore:end */
+    },
+    body: JSON.stringify({
+      univers: univers,
+      product: product,
+      startDate: startDate,
+      endDate: endDate,
+    }),
+  })
+    .then(function (response) {
+      document.getElementById("topPerformerByUnivers").style.display = "none";
+      document.getElementById("topPerformerByProduct").style.display = "none";
+      var loaders = document.getElementsByClassName("loader");
+      for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "block";
+      }
+
+      if (response.ok) {
+        for (var i = 0; i < loaders.length; i++) {
+          loaders[i].style.display = "none";
+        }
+        document.getElementById("topPerformerByUnivers").style.display = "block";
+        document.getElementById("topPerformerByProduct").style.display = "block";
+
+        // Récupération des données reçues
+        return response.json();
+      } else {
+        // Gestion d'une erreur de requête
+        throw new Error('Error while fetching data');
+      }
+    })
+    .then(function (data) {
+      // Utilisation des données reçues
+      /* jshint ignore:start */
+      console.log(data);
+      /* jshint ignore:end */
+      // ===============================================================================================================
+      table_univers.rows.add(data.recap_univers).draw(true);
+      table_produit.rows.add(data.recap_product).draw(true);
+
+      //   =============================================================================================================
+      // Option de modification des graphs Top performers par univers
+      topPerformerByUniversOption.xAxis.data = data.top_performers_univers.commerciaux;
+      topPerformerByUniversOption.series[0].data = data.top_performers_univers.total_montant;
+      topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
+
+      //   =============================================================================================================
+      // Option de modification des graphs Top performers par univers
+      topPerformerByProductOption.xAxis.data = data.top_performers_product.commerciaux;
+      topPerformerByProductOption.series[0].data = data.top_performers_product.total_montant;
+      topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
+
+    })
+    .catch(function (error) {
+      // Gestion d'une erreur de requête
+      /* jshint ignore:start */
+      console.error(error);
+      /* jshint ignore:end */
+    });
+}
+
+// =====================================================================================================================
+document.addEventListener('DOMContentLoaded', function() {
+  'use strict';
+  getData('Mobile', 'ADSL', '2022-01-01', '2022-12-01');
+});
+// =====================================================================================================================
+
+document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {
+  // code à exécuter lorsque la valeur change
+  var u = document.getElementById("product");
+  console.log(u);
+
+
+  var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+  var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+
+  getData(this.value, startDate, endDate);
+});
+>>>>>>> 2342d0a582d83c05003f08ca273593d61595318c
