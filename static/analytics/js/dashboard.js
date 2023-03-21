@@ -539,6 +539,7 @@ function getData(startDate, endDate) {
 
     //   ===============================================================
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
+      table.rows().remove().draw();
       table.rows.add(data.gros_clients).draw(true);
 
     })
@@ -554,5 +555,5 @@ function getData(startDate, endDate) {
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
-  getData('2022-01-01', '2022-12-01');
+  getData(defaultStartDate, defaultEndDate);
 });

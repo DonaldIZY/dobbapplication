@@ -290,7 +290,10 @@ $(document).ready(function(){
         var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
         var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
 
-        getData(startDate, endDate);
+        let univers = document.getElementById('univers').value;
+        let product = document.getElementById('product').value;
+
+        getData(univers, product, startDate, endDate);
     });
 });
 

@@ -613,7 +613,7 @@ function getData(univers, startDate, endDate) {
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
-  getData('Mobile', '2022-01-01', '2022-12-01');
+  getData('Mobile', defaultStartDate, defaultEndDate);
 });
 // =====================================================================================================================
 
@@ -625,10 +625,18 @@ document.getElementById('univers').addEventListener('change', function (qualifie
   for (let ele of elements) {
     ele.innerHTML = this.value;
   }
-  var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
-  var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
 
-  getData(this.value, startDate, endDate);
+  var startDate = $('#start_date').datepicker('getDate');
+  var endDate = $('#end_date').datepicker('getDate');
+
+  if (startDate !== null && endDate !== null) {
+    startDate = startDate.toISOString().slice(0,10);
+    endDate = endDate.toISOString().slice(0,10);
+    getData(this.value, startDate, endDate);
+  }
+  else {
+    getData(this.value, defaultStartDate, defaultEndDate);
+  }
 });
 
 window.addEventListener('resize', function() {

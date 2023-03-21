@@ -1,6 +1,10 @@
 //Récupération de la police du HTML
 var fontFamily = window.getComputedStyle(document.body).getPropertyValue('font-family');
 
+
+var defaultStartDate = '2022-01-01';
+var defaultEndDate = '2022-11-01';
+
 //Variations de rouge (Baisse)
 var color_red = "#AD1919";
 var color_red_1 = "#D44235";
