@@ -7,7 +7,9 @@
             <li><a href="{% url 'analytics:facturation' %}" aria-expanded="false">
                     <i class="material-icons-outlined">payments</i>
                     <span class="nav-text">Facturation</span>
-                </a></li>
+                </a>
+            </li>
+            {% if perms.administration.view_equipe or perms.administration.view_commercial %}
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <i class="material-icons-outlined">dashboard</i>
                     <span class="nav-text">Top 200</span>
@@ -17,6 +19,7 @@
                     <li><a href="{% url 'analytics:ca_top_200' %}">Contribution au CA</a></li>
                 </ul>
             </li>
+            {% endif %}
 
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                 <i class="material-icons-outlined">account_balance_wallet</i>

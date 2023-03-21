@@ -275,9 +275,9 @@ function getData(univers, product, startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===============================================================================================================
-      table_univers.rows().remove().draw();
+      table_univers.rows().clear().draw();
       table_univers.rows.add(data.recap_univers).draw(true);
-      table_produit.rows().remove().draw();
+      table_produit.rows().clear().draw();
       table_produit.rows.add(data.recap_product).draw(true);
 
       //   =============================================================================================================
