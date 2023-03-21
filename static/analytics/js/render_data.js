@@ -183,7 +183,13 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
-      table_entant.rows.add(data.client_entrant2).draw(true);
+
+      // Trouver les éléments communs
+      let commonElements = data.array1.filter(element => data.array2.includes(element));
+
+      // Supprimer les informations du tableau existant
+      table_entant.clear();
+      table_entant.rows.add(data.client_top200).draw(true);
 
     })
     .catch(function (error) {
