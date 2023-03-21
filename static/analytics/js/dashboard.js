@@ -283,35 +283,35 @@ let caUniversOption = {
 // Gérer la responsivité du graphe en fonction de son conteneur
 window.addEventListener('resize', function() {
   'use strict';
-  topProduits.resize();
-  var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
-  topProduits.setOption({
-    series: [{
-      label: {
-        fontSize: fontSizeTopProduit + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSizeTopProduit + '%'
-      }
-    }]
-  });
-
-  topClients.resize();
-  var fontSizeClient = document.getElementById('dashbordTopClients').offsetWidth / 50;
-  topClients.setOption({
-    series: [{
-      label: {
-        fontSize: fontSizeClient + '%'
-      }
-    }],
-    tooltip: [{
-      textStyle: {
-        fontSize: fontSizeClient + '%'
-      }
-    }]
-  });
+  // topProduits.resize();
+  // var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
+  // topProduits.setOption({
+  //   series: [{
+  //     label: {
+  //       fontSize: fontSizeTopProduit + '%'
+  //     }
+  //   }],
+  //   tooltip: [{
+  //     textStyle: {
+  //       fontSize: fontSizeTopProduit + '%'
+  //     }
+  //   }]
+  // });
+  //
+  // topClients.resize();
+  // var fontSizeClient = document.getElementById('dashbordTopClients').offsetWidth / 50;
+  // topClients.setOption({
+  //   series: [{
+  //     label: {
+  //       fontSize: fontSizeClient + '%'
+  //     }
+  //   }],
+  //   tooltip: [{
+  //     textStyle: {
+  //       fontSize: fontSizeClient + '%'
+  //     }
+  //   }]
+  // });
 
   caUnivers.resize();
   var fontSizeCaUnivers = document.getElementById('dashboardCaUnivers').offsetWidth / 50;
@@ -474,6 +474,7 @@ function getData(startDate, endDate) {
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
       document.getElementById("nb-top80").innerHTML = `${data.nb_client}`;
 
+      table.rows().remove().draw();
       table.rows.add(data.gros_clients).draw(true);
 
     })
@@ -489,5 +490,5 @@ function getData(startDate, endDate) {
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
-  getData('2022-01-01', '2022-12-01');
+  getData(defaultStartDate, defaultEndDate);
 });

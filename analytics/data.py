@@ -526,6 +526,7 @@ def top_80_20(date_debut, date_fin, search):
     # Calculer la somme cumulée
     df['cumulative_sum'] = df['total_montant'].cumsum()
     result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
+    print(result)
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
     nb_clients_80_20 = result.shape[0]

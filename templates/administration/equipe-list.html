@@ -126,9 +126,9 @@
             </div>
         </div>
     </div>
-	<!-- <div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">
+	<div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">
 		<div class="card crypto-chart ">
-			
+			<!-- titre du graphique -->
 			<div class="card-header border-0 px-4 py-1 flex-wrap">
 				<div class="mb-2 mb-sm-0">
 					<div class="chart-title mb-3">
@@ -136,7 +136,7 @@
 					</div>
 				</div>
 			</div>
-			
+			<!-- Graphique -->
 			<div class="card-body p-1 custome-tooltip">
                 <div class="text-center loader">
                     <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
@@ -145,7 +145,7 @@
 				<div class="dashboard-graph" id="caSegment" style="height: 250px"></div>
 			</div>
 		</div>
-	</div> -->
+	</div>
 </div>
 
 
@@ -170,9 +170,9 @@
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
     <!-- -- Perso -- -->
-    <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
-    <script src="{% static 'analytics/js/global_variable.js' %}"></script>
-    <script src="{% static 'analytics/js/equipe-list.js' %}"></script>
+{#    <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>#}
+{#    <script src="{% static 'analytics/js/global_variable.js' %}"></script>#}
+{#    <script src="{% static 'analytics/js/equipe-list.js' %}"></script>#}
 
 <script>
     $('.sweet-success-cancel').on('click', function (event) {
@@ -198,60 +198,60 @@
            })
        });
 
-       $(document).ready(function(){
+    $(document).ready(function(){
 
-// Initialise le datepicker de début
-$('#start_date').datepicker({
-  format: "mm/yyyy",
-  startView: "months",
-  minViewMode: "months",
-  minDate: '{{ min_date }}',
-  maxDate: '{{ max_date }}',
-  language: 'fr',
-  autoclose: true,
-  todayHighlight: true,
-}).on('changeDate', function(selected){
-  var minDate = new Date(selected.date.valueOf());
-  $('#end_date').datepicker('setStartDate', minDate);
-  //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
-});
+    // Initialise le datepicker de début
+    $('#start_date').datepicker({
+      format: "mm/yyyy",
+      startView: "months",
+      minViewMode: "months",
+      minDate: '{{ min_date }}',
+      maxDate: '{{ max_date }}',
+      language: 'fr',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('changeDate', function(selected){
+      var minDate = new Date(selected.date.valueOf());
+      $('#end_date').datepicker('setStartDate', minDate);
+      //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+    });
 
-// Initialise le datepicker de fin
-$('#end_date').datepicker({
-  format: "mm/yyyy",
-  startView: "months",
-  minViewMode: "months",
-  minDate: '{{ min_date }}',
-  maxDate: '{{ max_date }}',
-  language: 'fr',
-  autoclose: true,
-  todayHighlight: true,
-}).on('changeDate', function(selected){
-  var maxDate = new Date(selected.date.valueOf());
-  $('#start_date').datepicker('setEndDate', maxDate);
-  //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
-});
+    // Initialise le datepicker de fin
+    $('#end_date').datepicker({
+      format: "mm/yyyy",
+      startView: "months",
+      minViewMode: "months",
+      minDate: '{{ min_date }}',
+      maxDate: '{{ max_date }}',
+      language: 'fr',
+      autoclose: true,
+      todayHighlight: true,
+    }).on('changeDate', function(selected){
+      var maxDate = new Date(selected.date.valueOf());
+      $('#start_date').datepicker('setEndDate', maxDate);
+      //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
+    });
 
-// Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
-function checkDates() {
-  var startDate = $('#start_date').datepicker('getDate');
-  var endDate = $('#end_date').datepicker('getDate');
-  if (!startDate || !endDate) {
-    alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
-    return false;
-  }
-  return true;
-}
+    // Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
+    function checkDates() {
+      var startDate = $('#start_date').datepicker('getDate');
+      var endDate = $('#end_date').datepicker('getDate');
+      if (!startDate || !endDate) {
+        alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
+        return false;
+      }
+      return true;
+    }
 
-// Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
-$('#full-date').on('click', function(event) {
-    event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
-    checkDates();
-    var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
-    var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+    // Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
+    $('#full-date').on('click', function(event) {
+        event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
+        checkDates();
+        var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+        var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
 
-    getData(startDate, endDate);
-});
+        getData(startDate, endDate);
+    });
 });
 
 </script>

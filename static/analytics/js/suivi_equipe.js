@@ -208,8 +208,6 @@ window.addEventListener('resize', function() {
 topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
 topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
 
-<<<<<<< HEAD
-=======
 
 var table_univers = $('#resume-univers').DataTable({
     searching: false, // Désactive la recherche
@@ -277,7 +275,9 @@ function getData(univers, product, startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===============================================================================================================
+      table_univers.rows().clear().draw();
       table_univers.rows.add(data.recap_univers).draw(true);
+      table_produit.rows().clear().draw();
       table_produit.rows.add(data.recap_product).draw(true);
 
       //   =============================================================================================================
@@ -304,19 +304,44 @@ function getData(univers, product, startDate, endDate) {
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
-  getData('Mobile', 'ADSL', '2022-01-01', '2022-12-01');
+  getData('Mobile', 'ADSL', defaultStartDate, defaultEndDate);
 });
 // =====================================================================================================================
 
 document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {
   // code à exécuter lorsque la valeur change
-  var u = document.getElementById("product");
-  console.log(u);
+  let product = document.getElementById('product').value;
 
+  var startDate = $('#start_date').datepicker('getDate');
+  var endDate = $('#end_date').datepicker('getDate');
 
-  var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
-  var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+  if (startDate !== null && endDate !== null) {
+    startDate = startDate.toISOString().slice(0,10);
+    endDate = endDate.toISOString().slice(0,10);
+    getData(univers=this.value, product=product, startDate=startDate, endDate=endDate);
+  }
+  else {
+    getData(univers=this.value, product=product, startDate=defaultStartDate, endDate=defaultEndDate);
+  }
 
-  getData(this.value, startDate, endDate);
 });
->>>>>>> 2342d0a582d83c05003f08ca273593d61595318c
+
+document.getElementById('product').addEventListener('change', function (qualifiedName, value) {
+  // code à exécuter lorsque la valeur change
+  let univers = document.getElementById('univers').value;
+
+  var startDate = $('#start_date').datepicker('getDate');
+  var endDate = $('#end_date').datepicker('getDate');
+
+  if (startDate !== null && endDate !== null) {
+    startDate = startDate.toISOString().slice(0,10);
+    endDate = endDate.toISOString().slice(0,10);
+    getData(univers=univers, product=this.value, startDate=startDate, endDate=endDate);
+  }
+  else {
+    getData(univers=univers, product=this.value, startDate=defaultStartDate, endDate=defaultEndDate);
+  }
+
+
+});
+
