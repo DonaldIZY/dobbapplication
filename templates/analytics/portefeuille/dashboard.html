@@ -360,11 +360,13 @@ $(document).ready(function(){
         var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
         var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
 
+        console.log($('#start_date').datepicker('getDate'))
+        console.log($('#end_date').datepicker('getDate'))
+
         getData(startDate, endDate);
     });
 
 });
 
 </script>
-
 {% endblock %}

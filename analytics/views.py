@@ -86,6 +86,7 @@ class FacturationView(LoginRequiredMixin, View):
         self.univers = univers
         start_date = request_data['startDate']
         end_date = request_data['endDate']
+        start_date = f'{start_date[:-2]}01'
 
         # Obtention des données
         parc_actif = data.getParcAtif(univers=univers, get='parc', debut_periode=start_date,
@@ -227,7 +228,9 @@ class DashboardViewManager(LoginRequiredMixin, View):
         # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
+        start_date = f'{start_date[:-2]}01'
         end_date = request_data['endDate']
+
 
         # user = request.user
         full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"

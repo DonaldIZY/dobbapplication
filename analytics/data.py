@@ -17,8 +17,6 @@ engine = create_engine(
 )
 connection = engine.connect()
 
-M = 1000000
-
 
 def extremitePeriode(univers, date, search):
     request = f"""
