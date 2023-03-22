@@ -472,7 +472,7 @@ function getData(startDate, endDate) {
 
     //   ===============================================================
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
-      document.getElementById("nb-top80").innerHTML = `${data.nb_client}`;
+      document.getElementById("nb-top80").innerHTML = `${data.nb_client} sur ${data.nb_client_total}`;
 
       table.rows().remove().draw();
       table.rows.add(data.gros_clients).draw(true);

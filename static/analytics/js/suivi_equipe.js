@@ -218,12 +218,12 @@ var table_univers = $('#resume-univers').DataTable({
     info: false, // Désactive le texte d'information
   });
 var table_produit = $('#resume-produit').DataTable({
-    searching: false, // Désactive la recherche
-    lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    bFilter: false, // Désactive la recherche
-    bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    paging: false, // Désactive la pagination
-    info: false, // Désactive le texte d'information
+    searching: false,
+    lengthChange: false,
+    bFilter: false,
+    bLengthChange: false,
+    paging: false,
+    info: false,
   });
 
 
