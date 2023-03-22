@@ -117,12 +117,6 @@ class VariationTop200View(LoginRequiredMixin, View):
         return render(request, 'analytics/monitoring/variation_top_200.html', greeting)
 
     def post(self, request):
-        user = request.user
-
-        # Récupération des données de la requête
-        # param1 = request.POST.get('param1')
-        # param2 = request.POST.get('param2')
-        
         request_data = json.load(request)
         start_date = request_data['startDate']
         end_date = request_data['endDate']
@@ -179,20 +173,25 @@ class DashboardView(LoginRequiredMixin, View):
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
-        perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
-        produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
-        top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
+        # univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
+        # performance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
+        # # produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
+        # # top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
-                                                                                   date_fin=end_date, search=search)
+        # gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
+        #                                                                            date_fin=end_date, search=search)
+
+        instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
+        univers = instance.caUnivers()
+        performance = instance.dataPerformance()
+        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
 
         # Préparation de la réponse
         response_data = {
             'univers': univers,
-            'performance': perfomance,
-            'product': produit,
-            'top_client': top_client,
+            'performance': performance,
+            # 'product': produit,
+            # 'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client),
@@ -231,27 +230,26 @@ class DashboardViewManager(LoginRequiredMixin, View):
         start_date = f'{start_date[:-2]}01'
         end_date = request_data['endDate']
 
-
-        # user = request.user
         full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
         search = f"""
-            and LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
+            AND LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
         """
 
-        univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
-        perfomance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
-        produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
+        # produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
-                                                                                   date_fin=end_date, search=search)
+
+        instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
+        univers = instance.caUnivers()
+        performance = instance.dataPerformance()
+        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
 
         # Préparation de la réponse
         response_data = {
             'full_name': full_name,
             'univers': univers,
-            'performance': perfomance,
-            'product': produit,
+            'performance': performance,
+            # 'product': produit,
             'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),

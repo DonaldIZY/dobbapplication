@@ -200,7 +200,6 @@ def getEvoPeriode(univers, debut_periode, fin_periode, evo_type, search):
 
 
 def getHausseBasse(univers, debut_periode, fin_periode, search):
-
     request = f"""
         SELECT date_facture as dates,
             sum(case when (statut in ('Activation', 'Montée en valeur', 'Retour de suspension')) then dif_montant else NULL end) as hausse,
@@ -299,7 +298,7 @@ class ClientTop200:
         client_top200['commercial'] = client_top200['commercial'].fillna(value='')
         client_top200 = client_top200.fillna(0)
         client_top200 = client_top200[['client', 'segment', 'commercial', 'mobile', 'fixe',
-                                         'ict', 'broadband', 'rang', 'rang_prec']]
+                                       'ict', 'broadband', 'rang', 'rang_prec']]
         client_top200 = client_top200.round(2)
         client_top200['rang_prec'] = client_top200['rang_prec'].astype(int)
         data_client_200 = client_top200.astype(str).values.tolist()
@@ -403,27 +402,6 @@ def CAUnivers(date_debut, date_fin, search):
     return data_final
 
 
-def caUniversCommerciaux(date_debut, date_fin, search):
-    request = f"""
-        SELECT
-            COALESCE(sum(case when (univers='Broadband') then montant end), 0) as "Broadband",
-            COALESCE(sum(case when (univers='Fixe') then montant end), 0) as "Fixe",
-            COALESCE(sum(case when (univers='ICT') then montant end), 0) as "ICT",
-            COALESCE(sum(case when (univers='Mobile') then montant end), 0) as "Mobile"
-        FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-    """
-
-    ca_univers = pd.read_sql(sql=text(request), con=connection)
-    ca_univers = dataToDictAg(data=ca_univers)
-
-    data = []
-    for key, value in ca_univers[0].items():
-        data.append({"value": value, "name": key})
-
-    return data
-
-
 def getNbMois(date_debut, date_fin):
     request = f"""
         select count(distinct date_facture) from public.base_dobb
@@ -433,26 +411,6 @@ def getNbMois(date_debut, date_fin):
     df = pd.read_sql(sql=text(request), con=connection)
     nb_mois = df['count'][0]
     return nb_mois
-
-
-def performGenerale(date_debut, date_fin, search):
-    request = f"""      
-        SELECT date_facture, 
-            COALESCE(SUM(montant), 0) as total_montant
-        FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY date_facture;
-    """
-
-    df = pd.read_sql(sql=text(request), con=connection)
-    df['dates'] = pd.to_datetime(df['date_facture'], format='%Y-%m-%d').dt.strftime('%b %y')
-    df['dates'] = df['dates'].astype(str)
-
-    dates = df['dates'].tolist()
-    total_montant = df['total_montant'].tolist()
-    data_final = {'total_montant': total_montant, 'dates': dates}
-
-    return data_final
 
 
 def produit(date_debut, date_fin, search):
@@ -493,48 +451,6 @@ def topClient(date_debut, date_fin, search):
     data_final = {'client': client, 'total_montant': total_montant}
 
     return data_final
-
-
-def top_80_20(date_debut, date_fin, search):
-    request_ca_client = f"""
-        SELECT client, secteur_activite,
-        COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
-        COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe,
-        COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict,
-        COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband,
-        SUM(montant) AS total_montant
-        FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY client, secteur_activite
-        HAVING SUM(montant) > 0
-        ORDER BY SUM(montant) DESC;
-    """
-
-    request_global = f"""
-        SELECT SUM(montant) as total, COUNT(DISTINCT client) as nb_client
-        FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search};
-    """
-
-    df = pd.read_sql(sql=text(request_ca_client), con=connection)
-    df = df.fillna(value='')
-    df_2 = pd.read_sql(sql=text(request_global), con=connection)
-    if df_2['total'][0] != None:
-        keep_percent = df_2['total'][0] * 0.8
-    else:
-        keep_percent = 0
-
-    # Calculer la somme cumulée
-    df['cumulative_sum'] = df['total_montant'].cumsum()
-    result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
-    # print(result)
-    result = result.drop(columns=['cumulative_sum'])
-    client_part = (result.shape[0] / df_2['nb_client']) * 100
-    nb_client_total = df_2['nb_client'][0]
-    nb_clients_80_20 = result.shape[0]
-
-    data = result.astype(str).values.tolist()
-    return data, client_part, nb_clients_80_20, nb_client_total
 
 
 def recapData(colonne, date_debut, date_fin, search):
@@ -579,7 +495,6 @@ def getTopPerformers(colonne, choix, date_debut, date_fin, search):
     return data_final
 
 
-
 client_sortant = f"""
     WITH top200_previous AS (
         -- récupérer le top 200 précédent
@@ -614,3 +529,81 @@ client_sortant = f"""
         ) subq
     );
 """
+
+
+class PortefeuilleDashboard:
+    f"""Ensemble des graphiques de la page tableau de bord du portefeuille"""
+
+    def __init__(self, date_debut, date_fin, search):
+        self.date_debut = date_debut
+        self.date_fin = date_fin
+        self.search = search
+
+    def dataPerformance(self):
+        request = f"""      
+            SELECT date_facture, 
+                COALESCE(SUM(montant), 0) as total_montant
+            FROM public.base_dobb
+            WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search}
+            GROUP BY date_facture;
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+        df['dates'] = pd.to_datetime(df['date_facture'], format='%Y-%m-%d').dt.strftime('%b %y').astype(str)
+        data = {'total_montant': df['total_montant'].tolist(), 'dates': df['dates'].tolist()}
+
+        return data
+
+    def caUnivers(self):
+        request = f"""
+            SELECT
+                COALESCE(sum(case when (univers='Broadband') then montant end), 0) as "Broadband",
+                COALESCE(sum(case when (univers='Fixe') then montant end), 0) as "Fixe",
+                COALESCE(sum(case when (univers='ICT') then montant end), 0) as "ICT",
+                COALESCE(sum(case when (univers='Mobile') then montant end), 0) as "Mobile"
+            FROM public.base_dobb
+            WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search}
+        """
+
+        ca_univers = pd.read_sql(sql=text(request), con=connection)
+        ca_univers = dataToDictAg(data=ca_univers)
+
+        data = [{"value": value, "name": key} for key, value in ca_univers[0].items()]
+        return data
+
+    def loiPareto(self):
+        request_ca_client = f"""
+            SELECT client, secteur_activite,
+            COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
+            COALESCE(sum(case when (univers='Fixe') then montant end), 0) as fixe,
+            COALESCE(sum(case when (univers='ICT') then montant end), 0) as ict,
+            COALESCE(sum(case when (univers='Broadband') then montant end), 0) as broadband,
+            SUM(montant) AS total_montant
+            FROM public.base_dobb
+            WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search}
+            GROUP BY client, secteur_activite
+            HAVING SUM(montant) > 0
+            ORDER BY SUM(montant) DESC;
+        """
+
+        request_global = f"""
+            SELECT SUM(montant) as total, COUNT(DISTINCT client) as nb_client
+            FROM public.base_dobb
+            WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search};
+        """
+
+        df = pd.read_sql(sql=text(request_ca_client), con=connection)
+        df = df.fillna(value='')
+        df_2 = pd.read_sql(sql=text(request_global), con=connection)
+        keep_percent = df_2['total'][0] * 0.8 if df_2['total'][0] is not None else 0
+
+        # Calculer la somme cumulée
+        df['cumulative_sum'] = df['total_montant'].cumsum()
+        result = df[df['cumulative_sum'] >= keep_percent].copy().reset_index(drop=True)
+        result = result.drop(columns=['cumulative_sum'])
+        client_part = (result.shape[0] / df_2['nb_client']) * 100
+        nb_client_total = df_2['nb_client'][0]
+        nb_clients_80_20 = result.shape[0]
+
+        data = result.astype(str).values.tolist()
+        return data, client_part, nb_clients_80_20, nb_client_total
