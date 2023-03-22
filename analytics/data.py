@@ -566,7 +566,8 @@ def getDistinctProduct(colonne):
 def getTopPerformers(colonne, choix, date_debut, date_fin, search):
     request = f"""
         SELECT commercial, SUM(montant) AS total_montant FROM PUBLIC.base_dobb
-            WHERE {colonne}='{choix}' AND date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
+            WHERE {colonne}='{choix}' AND date_facture BETWEEN '{date_debut}' AND '{date_fin}' AND
+            commercial IS NOT NULL {search}
         GROUP BY commercial
         ORDER BY total_montant DESC
         LIMIT 10;
