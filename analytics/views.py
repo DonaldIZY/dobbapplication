@@ -174,11 +174,6 @@ class DashboardView(LoginRequiredMixin, View):
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
-        delta = relativedelta(datetime.strptime(end_date, '%Y-%m-%d'), datetime.strptime(start_date, '%Y-%m-%d'))
-        nb_months = delta.months + 12 * delta.years
-        # print(f"{type(nb_months)}: {nb_months}")
-
-        searche = ''
         user = request.user
         entities = get_user_entities(user)
         search = getSearch(entities, user)
@@ -188,7 +183,8 @@ class DashboardView(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        gros_clients, pourcent_client, nb_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
+        gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
+                                                                                   date_fin=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -199,7 +195,8 @@ class DashboardView(LoginRequiredMixin, View):
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client),
-            'nb_client': int(nb_client)
+            'nb_client': int(nb_client),
+            'nb_client_total': int(nb_client_total)
         }
         return JsonResponse(response_data)
 
@@ -232,7 +229,6 @@ class DashboardViewManager(LoginRequiredMixin, View):
         start_date = request_data['startDate']
         end_date = request_data['endDate']
 
-        searche = ''
         # user = request.user
         full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
         search = f"""
@@ -244,7 +240,8 @@ class DashboardViewManager(LoginRequiredMixin, View):
         produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
         top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        gros_clients, pourcent_client = data.top_80_20(date_debut=start_date, date_fin=end_date, search=search)
+        gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
+                                                                                   date_fin=end_date, search=search)
 
         # Préparation de la réponse
         response_data = {
@@ -255,7 +252,9 @@ class DashboardViewManager(LoginRequiredMixin, View):
             'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
-            'pourcent_client': float(pourcent_client)
+            'pourcent_client': float(pourcent_client),
+            'nb_client': int(nb_client),
+            'nb_client_total': int(nb_client_total)
         }
         return JsonResponse(response_data)
 

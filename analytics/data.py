@@ -532,10 +532,11 @@ def top_80_20(date_debut, date_fin, search):
     # print(result)
     result = result.drop(columns=['cumulative_sum'])
     client_part = (result.shape[0] / df_2['nb_client']) * 100
+    nb_client_total = df_2['nb_client'][0]
     nb_clients_80_20 = result.shape[0]
 
     data = result.astype(str).values.tolist()
-    return data, client_part, nb_clients_80_20
+    return data, client_part, nb_clients_80_20, nb_client_total
 
 
 def recapData(colonne, date_debut, date_fin, search):
