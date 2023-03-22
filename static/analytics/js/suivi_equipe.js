@@ -272,13 +272,13 @@ function getData(args) {
       /* jshint ignore:end */
       // ===============================================================================================================
       if (typeof data.recap_univers !== 'undefined') {
-        table_univers.rows().clear().draw();
-        table_univers.rows.add(data.recap_univers).draw(false);
+        table_univers.rows().remove().draw();
+        table_univers.rows.add(data.recap_univers).draw(true);
       }
 
       if (typeof data.recap_product !== 'undefined') {
-        table_produit.rows().clear().draw();
-        table_produit.rows.add(data.recap_product).draw(false);
+        table_produit.rows().remove().draw();
+        table_produit.rows.add(data.recap_product).draw(true);
       }
 
       //   =============================================================================================================
@@ -331,15 +331,17 @@ document.getElementById('univers').addEventListener('change', function () {
 
   if (startDate !== null && endDate !== null) {
     startDate = startDate.toISOString().slice(0,10);
+    startDate = `${endDate.slice(0,8)}01`;
     endDate = endDate.toISOString().slice(0,10);
-    console.log(endDate.toISOString().slice(0,8));
-    getData({
-    body: {
-      univers: this.value,
-      startDate: startDate,
-      endDate: endDate,
-    },
-  });
+    if (new Date(startDate) > new Date(endDate)) {
+      getData({
+        body: {
+          univers: this.value,
+          startDate: startDate,
+          endDate: endDate,
+        },
+      });
+    }
   }
   else {
     getData({
@@ -361,15 +363,17 @@ document.getElementById('product').addEventListener('change', function () {
 
   if (startDate !== null && endDate !== null) {
     startDate = startDate.toISOString().slice(0,10);
+    startDate = `${endDate.slice(0,8)}01`;
     endDate = endDate.toISOString().slice(0,10);
-    console.log(endDate.toISOString().slice(0,8));
-    getData({
-    body: {
-      product: this.value,
-      startDate: startDate,
-      endDate: endDate,
-    },
-  });
+    if (new Date(startDate) > new Date(endDate)) {
+      getData({
+        body: {
+          product: this.value,
+          startDate: startDate,
+          endDate: endDate,
+        },
+      });
+    }
   }
   else {
     getData({
