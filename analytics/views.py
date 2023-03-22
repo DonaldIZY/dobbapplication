@@ -22,6 +22,18 @@ conn = psycopg2.connect(
 )
 
 
+def getDateBorne():
+    query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
+
+    with conn.cursor() as cursor:
+        cursor.execute(query)
+        dates = cursor.fetchall()
+
+    min_date = dates[0][0]
+    max_date = dates[0][1]
+    return min_date, max_date
+
+
 def get_user_entities(user):
     # Vérifier si l'utilisateur est chef d'agence
     if Commercial.objects.filter(commercial=user).exists():
@@ -55,14 +67,7 @@ class FacturationView(LoginRequiredMixin, View):
     def get(self, request):
         univers = data.getDistinctProduct(colonne='univers')
         products = data.getDistinctProduct(colonne='groupe_produit')
-        query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
-
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            dates = cursor.fetchall()
-
-        min_date = dates[0][0]
-        max_date = dates[0][1]
+        min_date, max_date = getDateBorne()
 
         greeting = {
             'heading': self.univers,
@@ -173,24 +178,20 @@ class DashboardView(LoginRequiredMixin, View):
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        # univers = data.caUniversCommerciaux(date_debut=start_date, date_fin=end_date, search=search)
-        # performance = data.performGenerale(date_debut=start_date, date_fin=end_date, search=search)
-        # # produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
-        # # top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
-        # gros_clients, pourcent_client, nb_client, nb_client_total = data.top_80_20(date_debut=start_date,
-        #                                                                            date_fin=end_date, search=search)
 
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
         univers = instance.caUnivers()
         performance = instance.dataPerformance()
         gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        # top_produit = instance.topProduit()
+        # top_client = instance.topClient()
 
         # Préparation de la réponse
         response_data = {
             'univers': univers,
             'performance': performance,
-            # 'product': produit,
+            # 'product': top_produit,
             # 'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
@@ -201,14 +202,7 @@ class DashboardView(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
     def get(self, request):
-        query = f"""SELECT MIN(date_facture) AS date_min, MAX(date_facture) AS date_max FROM public.base_dobb; """
-
-        with conn.cursor() as cursor:
-            cursor.execute(query)
-            dates = cursor.fetchall()
-
-        min_date = dates[0][0]
-        max_date = dates[0][1]
+        min_date, max_date = getDateBorne()
 
         greeting = {
             'heading': self.univers,
@@ -235,22 +229,22 @@ class DashboardViewManager(LoginRequiredMixin, View):
             AND LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
         """
 
-        # produit = data.produit(date_debut=start_date, date_fin=end_date, search=search)
-        top_client = data.topClient(date_debut=start_date, date_fin=end_date, search=search)
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
 
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
-        univers = instance.caUnivers()
+        ca_univers = instance.caUnivers()
         performance = instance.dataPerformance()
         gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        # top_produit = instance.topProduit()
+        # top_client = instance.topClient()
 
         # Préparation de la réponse
         response_data = {
             'full_name': full_name,
-            'univers': univers,
+            'univers': ca_univers,
             'performance': performance,
             # 'product': produit,
-            'top_client': top_client,
+            # 'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client),
@@ -260,6 +254,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
     def get(self, request, id):
+        min_date, max_date = getDateBorne()
         greeting = {
             'pageview': "Dashboards",
         }
@@ -276,14 +271,14 @@ class ClienteleView(LoginRequiredMixin, View):
         if entities == 'Commercial':
             commercial_obj = Commercial.objects.get(commercial=user)
             full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
-            searche = f"""
-                LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
+            search = f"""
+                LOWER(TRIM(commercial)) = '{full_name.strip().lower()}'
             """
 
             query = f"""
                 SELECT client, secteur_activite, SUM(montant) as total_montant
                 FROM public.base_dobb
-                WHERE {searche}
+                WHERE {search}
                 GROUP BY client, secteur_activite ORDER BY total_montant DESC;
             """
 
@@ -295,14 +290,12 @@ class ClienteleView(LoginRequiredMixin, View):
             'heading': self.univers,
             'pageview': "Dashboards",
             'product_type': self.univers,
-            "menu_wallet": True,
             'clients': clients
         }
         return render(request, 'analytics/portefeuille/clientele.html', greeting)
 
 
 class SuiviEquipeView(LoginRequiredMixin, View):
-
     def get(self, request):
         univers = data.getDistinctProduct(colonne='univers')
         products = data.getDistinctProduct(colonne='groupe_produit')
@@ -317,29 +310,48 @@ class SuiviEquipeView(LoginRequiredMixin, View):
     def post(self, request):
         # Récupération des données de la requête
         request_data = json.load(request)
-        start_date = request_data['startDate']
-        end_date = request_data['endDate']
-        product = request_data['product']
-        univers = request_data['univers']
+        start_date = request_data.get('startDate')
+        end_date = request_data.get('endDate')
+        univers = request_data.get('univers')
+        product = request_data.get('product')
 
-        searche = ''
         user = request.user
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        recap_univers = data.recapData(colonne='univers', date_debut=start_date, date_fin=end_date, search=search)
-        recap_product = data.recapData(colonne='groupe_produit', date_debut=start_date,
-                                       date_fin=end_date, search=search)
-        top_performers_univers = data.getTopPerformers(colonne='univers', choix=univers, date_debut=start_date,
-                                                       date_fin=end_date, search=search)
-        top_performers_product = data.getTopPerformers(colonne='groupe_produit', choix=product, date_debut=start_date,
-                                                       date_fin=end_date, search=search)
+        if univers and product:
+            instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
+            recap_univers = instance.recapProduit(colonne='univers')
+            recap_product = instance.recapProduit(colonne='groupe_produit')
+            top_performers_univers = instance.topPerformer(colonne='univers', choix=univers)
+            top_performers_product = instance.topPerformer(colonne='groupe_produit', choix=product)
 
-        # Préparation de la réponse
-        response_data = {
-            'recap_univers': recap_univers,
-            'recap_product': recap_product,
-            'top_performers_univers': top_performers_univers,
-            'top_performers_product': top_performers_product
-        }
-        return JsonResponse(response_data)
+            response_data = {
+                'recap_univers': recap_univers,
+                'recap_product': recap_product,
+                'top_performers_univers': top_performers_univers,
+                'top_performers_product': top_performers_product
+            }
+            return JsonResponse(response_data)
+
+        elif product:
+            instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
+            recap_product = instance.recapProduit(colonne='groupe_produit')
+            top_performers_product = instance.topPerformer(colonne='groupe_produit', choix=product)
+            response_data = {
+                'recap_product': recap_product,
+                'top_performers_product': top_performers_product
+            }
+            return JsonResponse(response_data)
+
+        elif univers:
+            instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
+            recap_univers = instance.recapProduit(colonne='univers')
+            top_performers_univers = instance.topPerformer(colonne='univers', choix=univers)
+            response_data = {
+                'recap_univers': recap_univers,
+                'top_performers_univers': top_performers_univers,
+            }
+            return JsonResponse(response_data)
+
+

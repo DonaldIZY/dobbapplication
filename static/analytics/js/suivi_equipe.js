@@ -1,7 +1,5 @@
 /* jshint esversion: 6 */
 
-let url = window.location.href;
-
 function setColor(color) {
     'use strict';
     return {
@@ -175,31 +173,31 @@ var topPerformerByProductOption = {
 window.addEventListener('resize', function() {
     'use strict';
     topPerformerByProduct.resize();
-    var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
+    var fontPerformerByProduct = document.getElementById('dashboardTopProduits').offsetWidth / 50;
     topPerformerByProduct.setOption({
       series: [{
         label: {
-          fontSize: fontSizeTopProduit + '%'
+          fontSize: fontPerformerByProduct + '%'
         }
       }],
       tooltip: [{
         textStyle: {
-          fontSize: fontSizeTopProduit + '%'
+          fontSize: fontPerformerByProduct + '%'
         }
       }]
     });
 
     topPerformerByUnivers.resize();
-    var fontSizeTopProduit = document.getElementById('dashboardTopProduits').offsetWidth / 50;
+    var fontPerformerByUnivers = document.getElementById('dashboardTopProduits').offsetWidth / 50;
     topPerformerByUnivers.setOption({
       series: [{
         label: {
-          fontSize: fontSizeTopProduit + '%'
+          fontSize: fontPerformerByUnivers + '%'
         }
       }],
       tooltip: [{
         textStyle: {
-          fontSize: fontSizeTopProduit + '%'
+          fontSize: fontPerformerByUnivers + '%'
         }
       }]
     });
@@ -228,8 +226,11 @@ var table_produit = $('#resume-produit').DataTable({
 
 
 
-function getData(univers, product, startDate, endDate) {
+function getData(args) {
   "use strict";
+
+  var url = window.location.href;
+  var body = JSON.stringify(args.body);
 
   fetch(url, {
     method: 'POST',
@@ -240,12 +241,7 @@ function getData(univers, product, startDate, endDate) {
       'X-CSRFToken': getCookie('csrftoken')
       /* jshint ignore:end */
     },
-    body: JSON.stringify({
-      univers: univers,
-      product: product,
-      startDate: startDate,
-      endDate: endDate,
-    }),
+    body: body,
   })
     .then(function (response) {
       document.getElementById("topPerformerByUnivers").style.display = "none";
@@ -275,23 +271,31 @@ function getData(univers, product, startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===============================================================================================================
-      table_univers.rows().clear().draw();
-      table_univers.rows.add(data.recap_univers).draw(true);
-      table_produit.rows().clear().draw();
-      table_produit.rows.add(data.recap_product).draw(true);
+      if (typeof data.recap_univers !== 'undefined') {
+        table_univers.rows().clear().draw();
+        table_univers.rows.add(data.recap_univers).draw(false);
+      }
+
+      if (typeof data.recap_product !== 'undefined') {
+        table_produit.rows().clear().draw();
+        table_produit.rows.add(data.recap_product).draw(false);
+      }
 
       //   =============================================================================================================
       // Option de modification des graphs Top performers par univers
-      topPerformerByUniversOption.xAxis.data = data.top_performers_univers.commerciaux;
-      topPerformerByUniversOption.series[0].data = data.top_performers_univers.total_montant;
-      topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
+      if (typeof data.top_performers_univers !== 'undefined') {
+        topPerformerByUniversOption.xAxis.data = data.top_performers_univers.commerciaux;
+        topPerformerByUniversOption.series[0].data = data.top_performers_univers.total_montant;
+        topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
+      }
 
       //   =============================================================================================================
       // Option de modification des graphs Top performers par univers
-      topPerformerByProductOption.xAxis.data = data.top_performers_product.commerciaux;
-      topPerformerByProductOption.series[0].data = data.top_performers_product.total_montant;
-      topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
-
+      if (typeof data.top_performers_product !== 'undefined') {
+        topPerformerByProductOption.xAxis.data = data.top_performers_product.commerciaux;
+        topPerformerByProductOption.series[0].data = data.top_performers_product.total_montant;
+        topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
+      }
     })
     .catch(function (error) {
       // Gestion d'une erreur de requête
@@ -304,13 +308,23 @@ function getData(univers, product, startDate, endDate) {
 // =====================================================================================================================
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
-  getData('Mobile', 'ADSL', defaultStartDate, defaultEndDate);
+  // getData('Mobile', 'ADSL', defaultStartDate, defaultEndDate);
+  let univers = document.getElementById('univers').value;
+  let product = document.getElementById('product').value;
+
+  getData({
+    body: {
+      univers: univers,
+      product: product,
+      startDate: defaultStartDate,
+      endDate: defaultEndDate,
+    },
+  });
 });
 // =====================================================================================================================
 
-document.getElementById('univers').addEventListener('change', function (qualifiedName, value) {
-  // code à exécuter lorsque la valeur change
-  let product = document.getElementById('product').value;
+document.getElementById('univers').addEventListener('change', function () {
+  'use strict';
 
   var startDate = $('#start_date').datepicker('getDate');
   var endDate = $('#end_date').datepicker('getDate');
@@ -318,17 +332,29 @@ document.getElementById('univers').addEventListener('change', function (qualifie
   if (startDate !== null && endDate !== null) {
     startDate = startDate.toISOString().slice(0,10);
     endDate = endDate.toISOString().slice(0,10);
-    getData(univers=this.value, product=product, startDate=startDate, endDate=endDate);
+    console.log(endDate.toISOString().slice(0,8));
+    getData({
+    body: {
+      univers: this.value,
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
   }
   else {
-    getData(univers=this.value, product=product, startDate=defaultStartDate, endDate=defaultEndDate);
+    getData({
+    body: {
+      univers: this.value,
+      startDate: defaultStartDate,
+      endDate: defaultEndDate,
+    },
+  });
   }
 
 });
 
-document.getElementById('product').addEventListener('change', function (qualifiedName, value) {
-  // code à exécuter lorsque la valeur change
-  let univers = document.getElementById('univers').value;
+document.getElementById('product').addEventListener('change', function () {
+  'use strict';
 
   var startDate = $('#start_date').datepicker('getDate');
   var endDate = $('#end_date').datepicker('getDate');
@@ -336,12 +362,24 @@ document.getElementById('product').addEventListener('change', function (qualifie
   if (startDate !== null && endDate !== null) {
     startDate = startDate.toISOString().slice(0,10);
     endDate = endDate.toISOString().slice(0,10);
-    getData(univers=univers, product=this.value, startDate=startDate, endDate=endDate);
+    console.log(endDate.toISOString().slice(0,8));
+    getData({
+    body: {
+      product: this.value,
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
   }
   else {
-    getData(univers=univers, product=this.value, startDate=defaultStartDate, endDate=defaultEndDate);
+    getData({
+    body: {
+      product: this.value,
+      startDate: defaultStartDate,
+      endDate: defaultEndDate,
+    },
+  });
   }
-
 
 });
 
