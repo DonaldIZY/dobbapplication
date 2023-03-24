@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from sqlalchemy import create_engine, text
 import pandas as pd
 import numpy as np
@@ -413,86 +411,10 @@ def getNbMois(date_debut, date_fin):
     return nb_mois
 
 
-def produit(date_debut, date_fin, search):
-    request = f"""
-        SELECT groupe_produit, COALESCE(SUM(montant), 0) as total_montant
-            FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY groupe_produit
-        ORDER BY total_montant DESC
-        limit 5;
-    """
-
-    df = pd.read_sql(sql=text(request), con=connection)
-
-    product = df['groupe_produit'].tolist()
-    product.reverse()
-    ca = df['total_montant'].tolist()
-    ca.reverse()
-    data_final = {'product': product, 'ca': ca}
-
-    return data_final
-
-
-def topClient(date_debut, date_fin, search):
-    request = f"""
-        SELECT client, SUM(montant) AS total_montant
-        FROM public.base_dobb
-        WHERE date_facture BETWEEN '{date_debut}' AND '{date_fin}' {search}
-        GROUP BY client
-        ORDER BY total_montant DESC
-        LIMIT 5;
-    """
-
-    df = pd.read_sql(sql=text(request), con=connection)
-
-    client = df['client'].tolist()
-    total_montant = df['total_montant'].tolist()
-    data_final = {'client': client, 'total_montant': total_montant}
-
-    return data_final
-
-
-def recapData(colonne, date_debut, date_fin, search):
-    request = f"""
-        select {colonne},
-        count(CASE WHEN (montant> 0) THEN id else null END) as "Nb Client",
-        sum(montant) as "CA Cumulé"
-        from public.base_dobb
-        where date_facture between '{date_debut}' and '{date_fin}' {search}
-        group by {colonne};
-    """
-
-    df = pd.read_sql(sql=text(request), con=connection)
-    nb_mois = getNbMois(date_debut, date_fin)
-    df['CA Moyen'] = df['CA Cumulé'] / nb_mois
-    df['CA Moyen'] = df['CA Moyen'].round(0)
-
-    data = df.astype(str).values.tolist()
-    return data
-
-
 def getDistinctProduct(colonne):
     request = f"""select distinct {colonne} from public.base_dobb;"""
     df = pd.read_sql(sql=text(request), con=connection)
     return df[colonne].tolist()
-
-
-def getTopPerformers(colonne, choix, date_debut, date_fin, search):
-    request = f"""
-        SELECT commercial, SUM(montant) AS total_montant FROM PUBLIC.base_dobb
-            WHERE {colonne}='{choix}' AND date_facture BETWEEN '{date_debut}' AND '{date_fin}' AND
-            commercial IS NOT NULL {search}
-        GROUP BY commercial
-        ORDER BY total_montant DESC
-        LIMIT 10;
-    """
-
-    df = pd.read_sql(sql=text(request), con=connection)
-    commerciaux = df['commercial'].tolist()
-    total_montant = df['total_montant'].tolist()
-    data_final = {'commerciaux': commerciaux, 'total_montant': total_montant}
-    return data_final
 
 
 client_sortant = f"""
@@ -607,3 +529,84 @@ class PortefeuilleDashboard:
 
         data = result.astype(str).values.tolist()
         return data, client_part, nb_clients_80_20, nb_client_total
+
+    def topProduit(self):
+        request = f"""
+            SELECT groupe_produit, COALESCE(SUM(montant), 0) as total_montant
+                FROM public.base_dobb
+                WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search}
+                GROUP BY groupe_produit
+                ORDER BY total_montant DESC
+            limit 5;
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+        data = {
+            'product': df['groupe_produit'].tolist().reverse(),
+            'ca': df['total_montant'].tolist().reverse()
+        }
+
+        return data
+
+    def topClient(self):
+        request = f"""
+            SELECT client, SUM(montant) AS total_montant
+                FROM public.base_dobb
+                WHERE date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' {self.search}
+                GROUP BY client
+                ORDER BY total_montant DESC
+            LIMIT 5;
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+        data = {
+            'client': df['client'].tolist(),
+            'total_montant': df['total_montant'].tolist()
+        }
+        return data
+
+
+class ManagerSegment:
+    def __init__(self, date_debut, date_fin, search):
+        self.date_debut = date_debut
+        self.date_fin = date_fin
+        self.search = search
+
+    def recapProduit(self, colonne):
+        request = f"""
+            select {colonne},
+                count(CASE WHEN (montant> 0) THEN id else null END) as "Nb Client",
+                sum(montant) as "CA Cumulé"
+                from public.base_dobb
+                where date_facture between '{self.date_debut}' and '{self.date_fin}' {self.search}
+            group by {colonne};
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+        nb_mois = getNbMois(self.date_debut, self.date_fin)
+        df['CA Moyen'] = df['CA Cumulé'] / nb_mois
+        df['CA Moyen'] = df['CA Moyen'].round(0)
+
+        data = df.astype(str).values.tolist()
+        return data
+
+    def topPerformer(self, colonne, choix):
+        request = f"""
+            SELECT commercial, SUM(montant) AS total_montant FROM PUBLIC.base_dobb
+                WHERE {colonne}='{choix}' AND date_facture BETWEEN '{self.date_debut}' AND '{self.date_fin}' AND
+                commercial IS NOT NULL {self.search}
+                GROUP BY commercial
+                ORDER BY total_montant DESC
+            LIMIT 10;
+        """
+
+        df = pd.read_sql(sql=text(request), con=connection)
+        data_final = {
+            'commerciaux': df['commercial'].tolist(),
+            'total_montant': df['total_montant'].tolist()
+        }
+        return data_final
+
+
+def getdata(**kwargs):
+    pass

@@ -266,7 +266,15 @@ $(document).ready(function(){
         let univers = document.getElementById('univers').value;
         let product = document.getElementById('product').value;
 
-        getData(univers, product, startDate, endDate);
+        {#getData(univers, product, startDate, endDate);#}
+      getData({
+        body: {
+          univers: univers,
+          product: product,
+          startDate: startDate,
+          endDate: endDate,
+        },
+      });
     });
 });
 
