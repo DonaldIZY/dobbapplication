@@ -127,11 +127,12 @@ class VariationTop200View(LoginRequiredMixin, View):
         end_date = request_data['endDate']
 
         client = data.ClientTop200()
-        client_entrant = client.getClient(sheet_name='client entrant')
-        client_sortant = client.getClient(sheet_name='client sortant')
-        client_entrant2, client_top200 = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
-                         'client_entrant2': client_entrant2, 'client_top200': client_top200}
+        client_top200, client_top200_ = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
+
+        response_data = {
+            'client_top200': client_top200,
+            'client_top200_': client_top200_
+        }
 
         return JsonResponse(response_data)
 
@@ -183,7 +184,7 @@ class DashboardView(LoginRequiredMixin, View):
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
         univers = instance.caUnivers()
         performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
         # top_produit = instance.topProduit()
         # top_client = instance.topClient()
 
@@ -191,6 +192,7 @@ class DashboardView(LoginRequiredMixin, View):
         response_data = {
             'univers': univers,
             'performance': performance,
+            'data_2': data_2,
             # 'product': top_produit,
             # 'top_client': top_client,
             'gros_clients': gros_clients,
@@ -234,7 +236,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
         ca_univers = instance.caUnivers()
         performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
         # top_produit = instance.topProduit()
         # top_client = instance.topClient()
 
@@ -243,6 +245,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
             'full_name': full_name,
             'univers': ca_univers,
             'performance': performance,
+            'data_2': data_2,
             # 'product': produit,
             # 'top_client': top_client,
             'gros_clients': gros_clients,
@@ -330,7 +333,7 @@ class SuiviEquipeView(LoginRequiredMixin, View):
                 'recap_univers': recap_univers,
                 'recap_product': recap_product,
                 'top_performers_univers': top_performers_univers,
-                'top_performers_product': top_performers_product
+                'top_performers_product': top_performers_product,
             }
             return JsonResponse(response_data)
 
@@ -340,6 +343,7 @@ class SuiviEquipeView(LoginRequiredMixin, View):
             top_performers_product = instance.topPerformer(colonne='groupe_produit', choix=product)
             response_data = {
                 'recap_product': recap_product,
+                # 'recap_product_2': recap_product_2,
                 'top_performers_product': top_performers_product
             }
             return JsonResponse(response_data)
@@ -350,8 +354,7 @@ class SuiviEquipeView(LoginRequiredMixin, View):
             top_performers_univers = instance.topPerformer(colonne='univers', choix=univers)
             response_data = {
                 'recap_univers': recap_univers,
+                # 'recap_univers_2': recap_univers_2,
                 'top_performers_univers': top_performers_univers,
             }
             return JsonResponse(response_data)
-
-

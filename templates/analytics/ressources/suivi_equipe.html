@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 
+    <link rel="stylesheet" href="{% static 'analytics/css/ag-grid-custom.css' %}" >
+
     <!-- -- Datepicker -- -->
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}
     <link rel="stylesheet" href="{% static cssurl %}" >
@@ -54,6 +56,69 @@
 	</div>
 </div>
 
+{#<div class="row">#}
+{#    <!-- Récapitulatif Univers -->#}
+{#	<div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">#}
+{#		<div class="card crypto-chart ">#}
+{#			<!-- titre du tableau -->#}
+{#			<div class="card-header border-0 px-4 py-1 flex-wrap">#}
+{#				<div class="mb-2 mb-sm-0">#}
+{#					<div class="chart-title mb-3">#}
+{#						<h2 class="heading">Récapitulatif univers</h2>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#			<!-- Tableau -->#}
+{#			<div class="card-body p-2 custome-tooltip">#}
+{#                <div class="table-responsive w-100">#}
+{##}
+{#                    <table id="resume-univers" class="my_table table-hover">#}
+{#                        <thead>#}
+{#                            <tr>#}
+{#                                <th>Univers</th>#}
+{#                                <th>Nb clients</th>#}
+{#                                <th>CA cumulé</th>#}
+{#                                <th>CA moyen</th>#}
+{#                            </tr>#}
+{#                        </thead>#}
+{#                    </table>#}
+{#                </div>#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+{##}
+{#	<!-- Récapitulatif Produits -->#}
+{#	<div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.75s">#}
+{#		<div class="card crypto-chart">#}
+{#			<div class="card-header border-0 px-4 py-1 flex-wrap">#}
+{#				<!-- titre du tableau -->#}
+{#				<div class="mb-2 mb-sm-0">#}
+{#					<div class="chart-title mb-3">#}
+{#						<h2 class="heading">Récapitulatif produits</h2>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#			<!-- Tableau -->#}
+{#			<div class="card-body p-2 custome-tooltip">#}
+{#                <div class="table-responsive w-100">#}
+{#                    <table id="resume-produit" class="my_table table-hover">#}
+{#                        <thead>#}
+{#                            <tr>#}
+{#                                <th>Produits</th>#}
+{#                                <th>Nb clients</th>#}
+{#                                <th>CA cumulé</th>#}
+{#                                <th>CA moyen</th>#}
+{#                            </tr>#}
+{#                        </thead>#}
+{#                    </table>#}
+{#                </div>#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+{#</div>#}
+
+
+{#=========================== Test ===================================#}
 <div class="row">
     <!-- Récapitulatif Univers -->
 	<div class="col-lg-6 p-1 wow fadeInUp" data-wow-delay="0.5s">
@@ -69,17 +134,7 @@
 			<!-- Tableau -->
 			<div class="card-body p-2 custome-tooltip">
                 <div class="table-responsive w-100">
-
-                    <table id="resume-univers" class="my_table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Univers</th>
-                                <th>Nb clients</th>
-                                <th>CA cumulé</th>
-                                <th>CA moyen</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div id="grid-recap-univers" style="height: 300px" class="ag-theme-material ag-table"></div>
                 </div>
 			</div>
 		</div>
@@ -99,21 +154,14 @@
 			<!-- Tableau -->
 			<div class="card-body p-2 custome-tooltip">
                 <div class="table-responsive w-100">
-                    <table id="resume-produit" class="my_table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Produits</th>
-                                <th>Nb clients</th>
-                                <th>CA cumulé</th>
-                                <th>CA moyen</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div id="grid-recap-produit" style="height: 300px" class="ag-theme-material ag-table"></div>
                 </div>
 			</div>
 		</div>
 	</div>
 </div>
+
+{#=========================== Test ===================================#}
 
 <!-- Premième ligne du tableau de bord de Portefeuille -->
 <div class="row">
@@ -205,79 +253,80 @@
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
     <!-- -- Perso -- -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.2.0/dist/ag-grid-community.min.js"></script>
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/suivi_equipe.js' %}"></script>
 
-<script>
+    <script>
 
-$(document).ready(function(){
+    $(document).ready(function(){
 
-    // Initialise le datepicker de début
-    $('#start_date').datepicker({
-      format: "mm/yyyy",
-      startView: "months",
-      minViewMode: "months",
-	  minDate: '{{ min_date }}',
-      maxDate: '{{ max_date }}',
-      language: 'fr',
-      autoclose: true,
-      todayHighlight: true,
-    }).on('changeDate', function(selected){
-      var minDate = new Date(selected.date.valueOf());
-      $('#end_date').datepicker('setStartDate', minDate);
-      //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+        // Initialise le datepicker de début
+        $('#start_date').datepicker({
+          format: "mm/yyyy",
+          startView: "months",
+          minViewMode: "months",
+          minDate: '{{ min_date }}',
+          maxDate: '{{ max_date }}',
+          language: 'fr',
+          autoclose: true,
+          todayHighlight: true,
+        }).on('changeDate', function(selected){
+          var minDate = new Date(selected.date.valueOf());
+          $('#end_date').datepicker('setStartDate', minDate);
+          //console.log('Date de début: ', $('#start_date').datepicker('getDate').toISOString().slice(0,10));
+        });
+
+        // Initialise le datepicker de fin
+        $('#end_date').datepicker({
+          format: "mm/yyyy",
+          startView: "months",
+          minViewMode: "months",
+          minDate: '{{ min_date }}',
+          maxDate: '{{ max_date }}',
+          language: 'fr',
+          autoclose: true,
+          todayHighlight: true,
+        }).on('changeDate', function(selected){
+          var maxDate = new Date(selected.date.valueOf());
+          $('#start_date').datepicker('setEndDate', maxDate);
+          //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
+        });
+
+        // Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
+        function checkDates() {
+          var startDate = $('#start_date').datepicker('getDate');
+          var endDate = $('#end_date').datepicker('getDate');
+          if (!startDate || !endDate) {
+            alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
+            return false;
+          }
+          return true;
+        }
+
+        // Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
+        $('#full-date').on('click', function(event) {
+            event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
+            checkDates();
+            var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
+            var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
+
+            let univers = document.getElementById('univers').value;
+            let product = document.getElementById('product').value;
+
+            {#getData(univers, product, startDate, endDate);#}
+          getData({
+            body: {
+              univers: univers,
+              product: product,
+              startDate: startDate,
+              endDate: endDate,
+            },
+          });
+        });
     });
 
-    // Initialise le datepicker de fin
-    $('#end_date').datepicker({
-      format: "mm/yyyy",
-      startView: "months",
-      minViewMode: "months",
-	  minDate: '{{ min_date }}',
-      maxDate: '{{ max_date }}',
-      language: 'fr',
-      autoclose: true,
-      todayHighlight: true,
-    }).on('changeDate', function(selected){
-      var maxDate = new Date(selected.date.valueOf());
-      $('#start_date').datepicker('setEndDate', maxDate);
-      //console.log('Date de fin: ', $('#end_date').datepicker('getDate').toISOString().slice(0,10));
-    });
-
-    // Fonction pour vérifier si les deux dates ont été sélectionnées avant l'envoi du formulaire
-    function checkDates() {
-      var startDate = $('#start_date').datepicker('getDate');
-      var endDate = $('#end_date').datepicker('getDate');
-      if (!startDate || !endDate) {
-        alert('Veuillez sélectionner les deux dates avant de soumettre le formulaire.');
-        return false;
-      }
-      return true;
-    }
-
-    // Lorsque le formulaire est soumis, vérifiez si les deux dates ont été sélectionnées
-    $('#full-date').on('click', function(event) {
-        event.preventDefault(); // Empêcher le comportement par défaut du bouton submit
-        checkDates();
-        var startDate = $('#start_date').datepicker('getDate').toISOString().slice(0,10);
-        var endDate = $('#end_date').datepicker('getDate').toISOString().slice(0,10);
-
-        let univers = document.getElementById('univers').value;
-        let product = document.getElementById('product').value;
-
-        {#getData(univers, product, startDate, endDate);#}
-      getData({
-        body: {
-          univers: univers,
-          product: product,
-          startDate: startDate,
-          endDate: endDate,
-        },
-      });
-    });
-});
-
-</script>
+    </script>
 
 {% endblock %}

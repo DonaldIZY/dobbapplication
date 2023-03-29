@@ -64,3 +64,33 @@ var table = $('.my_table').DataTable({
 
 // ============================================= E-chart Options =======================================================
 var grid = {top:'10%', left: '1%', right: '1%', bottom: '5%', containLabel: true};
+
+
+var tooltipBar = {
+  trigger: 'axis',
+  textStyle: {
+    fontFamily: fontFamily,
+    fontSize: '100%'
+  },
+  axisPointer: {
+    type: 'shadow',
+    crossStyle: {
+      color: '#999'
+    }
+  }
+};
+
+var yAxisBar = {
+  type: 'value',
+  scale: true,
+  min: 0,
+  axisTick: {show: false},
+  axisLine: {show: false},
+  axisLabel: {
+    textStyle: {
+      fontFamily: fontFamily // changer la police en celle HTML
+      },
+    fontSize: '80%',
+    fontWeight: 600
+    },
+};

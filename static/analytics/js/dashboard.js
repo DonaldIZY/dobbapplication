@@ -36,6 +36,111 @@ calendarIcon.addEventListener('click', function() {
 
 
 // =====================================================================================================================
+let defaultCol = {
+  width: 90,
+  resizable: true,
+  flex: 1
+};
+
+const colLoiPareto = [
+  {
+    field: 'client',
+    minWidth: 130,
+    pinned: 'left',
+  },
+  {
+    headerName: "Secteur d'activité",
+    field: 'secteur_activite',
+    minWidth: 180,
+    filter: true,
+  },
+  {
+    headerName: 'Mobile ( XOF )',
+    field: 'mobile',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'Fixe ( XOF )',
+    field: 'fixe',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'ICT ( XOF )',
+    field: 'ict',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'Broadband ( XOF )',
+    field: 'broadband',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'Total ( XOF )',
+    field: 'total_montant',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+];
+
+const gridOptionsLoiPareto = {
+  columnDefs: colLoiPareto,
+  rowClass: 'custom',
+  rowHeight: 35,
+  paginationPageSize: 10,
+  pagination: true,
+  defaultColDef: defaultCol,
+  getRowStyle: params => {
+    'use strict';
+    if (params.node.rowIndex % 2 === 0) {
+      return { background: '#eee' };
+    }
+  },
+};
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
+  const gridDivLoiPareto = document.querySelector('#grid-gros-client');
+  new agGrid.Grid(gridDivLoiPareto, gridOptionsLoiPareto);
+});
+
+function onBtnExport() {
+  'use strict';
+  var params = {
+    columnSeparator: ';',
+    fileName: 'Mon top client.csv' // nom du fichier de sortie
+  };
+  gridOptionsLoiPareto.api.exportDataAsCsv(params);
+}
+
+// =====================================================================================================================
 // GRAPHIQUE : PERFORMANCE GENERALE
 
 var performGenerale = echarts.init(document.getElementById('dashbordPerformGen'), null, {renderer: 'canvas', force: true} );
@@ -347,35 +452,6 @@ function separateurMillier(nombre) {
 
 
 // =====================================================================================================================
-var table = $('#gros-client').DataTable({
-  dom: 'Bfrtip',
-  buttons: [
-      {
-          extend: 'csvHtml5',
-          text: 'Télécharger en CSV',
-          className: 'btn-download-table'
-      },
-  ],
-  language: {
-    "search": "Chercher",
-    "decimal": ',',
-          "thousands": ' ',
-    "emptyTable": "Aucune donnée disponible dans le tableau",
-    "loadingRecords": "Chargement en cours...",
-    "processing": "Traitement en cours...",
-    "lengthMenu": "Afficher _MENU_ entrées",
-    "zeroRecords": "Aucun enregistrement correspondant trouvé",
-    "info": "Page _PAGE_ sur _PAGES_",
-    "infoEmpty": "Aucun enregistrement",
-    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
-    paginate: {
-      next: '<i class="fa-solid fa-angle-right"></i>',
-      previous: '<i class="fa-solid fa-angle-left"></i>'
-    }
-    },
-});
-
-// =====================================================================================================================
 function getData(startDate, endDate) {
   "use strict";
 
@@ -476,6 +552,8 @@ function getData(startDate, endDate) {
 
       table.rows().remove().draw();
       table.rows.add(data.gros_clients).draw(true);
+
+      gridOptionsLoiPareto.api.setRowData(data.data_2);
 
     })
     .catch(function (error) {
