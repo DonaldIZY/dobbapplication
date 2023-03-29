@@ -1,23 +1,84 @@
-const cellClassRules = {
-  "negative-value": params => params.value < 0,
-  "positive-value": params => params.value > 0
+let defaultCol = {
+  width: 90,
+  resizable: true,
+  flex: 1
 };
 
-let defaultCol = {
-    width: 90,
-    resizable: true
-  };
-
 const colTop200 = [
-  {field: 'client', pinned: 'left', minWidth: 120 },
-  { field: 'segment', cellClass: 'custom-ag-color', minWidth: 150 },
-  { field: 'commercial', minWidth: 200 },
-  { field: 'mobile', minWidth: 80 },
-  { field: 'fixe', minWidth: 80 },
-  { headerName: 'ICT', field: 'ict', minWidth: 80 },
-  { field: 'broadband', minWidth: 110 },
-  { field: 'rang', minWidth: 60 },
-  { headerName: 'Rang Préc', field: 'rang_prec', minWidth: 100 },
+  {
+    field: 'client',
+    minWidth: 130,
+    pinned: 'left',
+  },
+  {
+    field: 'segment',
+    cellClass: 'custom-ag-color',
+    minWidth: 150,
+    filter: true,
+  },
+  {
+    field: 'commercial',
+    minWidth: 150,
+    filter: true,
+  },
+  {
+    field: 'mobile',
+    minWidth: 120,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value + ' %';
+    }
+  },
+  {
+    field: 'fixe',
+    minWidth: 120,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value + ' %';
+    }
+  },
+  {
+    headerName: 'ICT',
+    field: 'ict',
+    minWidth: 120,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value + ' %';
+    }
+  },
+  {
+    field: 'broadband',
+    minWidth: 150,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value + ' %';
+    }
+  },
+  {
+    field: 'rang',
+    minWidth: 100,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return parseInt(params.value);
+    }
+  },
+  {
+    headerName: 'Rang Préc',
+    field: 'rang_prec',
+    minWidth: 120,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return parseInt(params.value);
+    }
+  },
 ];
 
 const gridOptionsTop200 = {
@@ -26,8 +87,7 @@ const gridOptionsTop200 = {
   rowClassRules: {
     "row-vert-ciel": function(params) { return params.data.rang_prec > 200; },
   },
-  rowHeight: 38,
-  sortable: true,
+  rowHeight: 35,
   paginationPageSize: 10,
   pagination: true,
   defaultColDef: defaultCol,
@@ -44,47 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
   new agGrid.Grid(gridDivTop200, gridOptionsTop200);
 });
 
-
-var table_200 = $('#client-200').DataTable({
-  language: {
-    "search": "Chercher",
-    "decimal": ',',
-          "thousands": ' ',
-    "emptyTable": "Aucune donnée disponible dans le tableau",
-    "loadingRecords": "Chargement en cours...",
-    "processing": "Traitement en cours...",
-    "lengthMenu": "Afficher _MENU_ entrées",
-    "zeroRecords": "Aucun enregistrement correspondant trouvé",
-    "info": "Page _PAGE_ sur _PAGES_",
-    "infoEmpty": "Aucun enregistrement",
-    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
-    paginate: {
-      next: '<i class="fa-solid fa-angle-right"></i>',
-      previous: '<i class="fa-solid fa-angle-left"></i>'
-    }
-    },
-});
-
-
-var table_sortant = $('#client-sortant').DataTable({
-  language: {
-    "search": "Chercher",
-    "decimal": ',',
-          "thousands": ' ',
-    "emptyTable": "Aucune donnée disponible dans le tableau",
-    "loadingRecords": "Chargement en cours...",
-    "processing": "Traitement en cours...",
-    "lengthMenu": "Afficher _MENU_ entrées",
-    "zeroRecords": "Aucun enregistrement correspondant trouvé",
-    "info": "Page _PAGE_ sur _PAGES_",
-    "infoEmpty": "Aucun enregistrement",
-    "infoFiltered": "(Nombre de résultats trouvés: _TOTAL_ / _MAX_ enregistrements)",
-    paginate: {
-      next: '<i class="fa-solid fa-angle-right"></i>',
-      previous: '<i class="fa-solid fa-angle-left"></i>'
-    }
-    },
-});
 
 // =====================================================================================================================
 let url = window.location.href;
@@ -121,12 +140,6 @@ function getData(startDate, endDate) {
       console.log(data);
       /* jshint ignore:end */
       // ===========================================================
-      // let data_200 = data.client_top200
-      
-      // Supprimer les informations du tableau existant
-      table_200.clear();
-      table_200.rows.add(data.client_top200).draw(true);
-
       gridOptionsTop200.api.setRowData(data.client_top200_);
     })
 

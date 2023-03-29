@@ -173,7 +173,7 @@ var topPerformerByProductOption = {
   ],
 };
 
-//=========================================================================================================================================
+//======================================================================================================================
 window.addEventListener('resize', function() {
     'use strict';
     topPerformerByProduct.resize();
@@ -207,46 +207,20 @@ window.addEventListener('resize', function() {
     });
 });
 
-// var table_univers = $('#resume-univers').DataTable({
-//     searching: false, // Désactive la recherche
-//     lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-//     bFilter: false, // Désactive la recherche
-//     bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-//     paging: false, // Désactive la pagination
-//     info: false, // Désactive le texte d'information
-//   });
-// var table_produit = $('#resume-produit').DataTable({
-//     searching: false,
-//     lengthChange: false,
-//     bFilter: false,
-//     bLengthChange: false,
-//     paging: false,
-//     info: false,
-//   });
-
-
 // =====================================================================================================================
-
-
-const cellClassRules = {
-  "negative-value": params => params.value < 0,
-  "positive-value": params => params.value > 0
-};
-
-let rowHeight = 20;
 let defaultCol = {
-    width: 90,
-    resizable: true
-  };
+  width: 90,
+  resizable: true,
+  flex: 1
+};
 
 // ============================================== client entrant et sortant ============================================
 const colUnivers = [
-  { headerName: 'Univers', field: 'univers', width: 105, pinned: 'left'},
+  { headerName: 'Univers', field: 'univers', minWidth: 130, pinned: 'left'},
   {
     headerName: 'Nb Client',
     field: 'nb_client',
-    width: 110,
-    cellClass: 'custom-ag-color',
+    minWidth: 120,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
@@ -254,22 +228,23 @@ const colUnivers = [
     }
   },
   {
-    headerName: 'CA Cumulé',
-    field: 'ca_cumule', width: 170,
+    headerName: 'CA Cumulé ( XOF )',
+    field: 'ca_cumule',
+    minWidth: 180,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
   },
   {
-    headerName: 'CA Moyen',
+    headerName: 'CA Moyen ( XOF )',
     field: 'ca_moyen',
-    width: 150,
+    minWidth: 180,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
   },
 ];
@@ -277,6 +252,7 @@ const colUnivers = [
 const gridOptionsRecapUnivers = {
   columnDefs: colUnivers,
   rowHeight: 50,
+  rowClass: 'custom',
   defaultColDef: defaultCol,
   getRowStyle: params => {
     'use strict';
@@ -294,11 +270,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 const colProduit = [
-  { headerName: 'Univers', field: 'groupe_produit', width: 105, pinned: 'left'},
+  { headerName: 'Univers', field: 'groupe_produit', minWidth: 120, pinned: 'left'},
   {
     headerName: 'Nb Client',
     field: 'nb_client',
-    width: 110,
+    minWidth: 120,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
@@ -306,29 +282,31 @@ const colProduit = [
     }
   },
   {
-    headerName: 'CA Cumulé',
-    field: 'ca_cumule', width: 170,
+    headerName: 'CA Cumulé ( XOF )',
+    field: 'ca_cumule',
+    minWidth: 180,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
   },
   {
-    headerName: 'CA Moyen',
+    headerName: 'CA Moyen ( XOF )',
     field: 'ca_moyen',
-    width: 150,
+    minWidth: 180,
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
   },
 ];
 
 const gridOptionsRecapProduit = {
   columnDefs: colProduit,
-  rowHeight: rowHeight,
+  rowHeight: 30,
+  rowClass: 'custom',
   defaultColDef: defaultCol,
   getRowStyle: params => {
     if (params.node.rowIndex % 2 === 0) {

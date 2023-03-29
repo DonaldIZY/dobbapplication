@@ -2,8 +2,9 @@
 .ag-theme-material {
     --ag-header-height: 22px;
     --ag-header-foreground-color: #E67900;
-    --ag-header-background-color: #2E2E2D;
-    --ag-header-cell-hover-background-color: #F16E00;
+    --ag-header-background-color: #2E2E2D !important;
+    --ag-header-color: #FFFFFF !important;
+    --ag-header-cell-hover-background-color: #F16E00 !important;
     --ag-header-cell-moving-background-color: #eee;
 
     --ag-control-panel-background-color: #eee;
@@ -16,9 +17,10 @@
     --ag-header-column-resize-handle-width: 1px;
     --ag-header-column-resize-handle-color: #FFFFFF;
 
-    --ag-row-hover-color: #868482;
+    --ag-row-hover-color: #c8c9c9 !important;
+    /*--ag-row-hover-color: #F16E00 !important;*/
     --ag-font-size: 10px !important;
-    --ag-font-family: poppins;
+    --ag-font-family: poppins !important;
 }
 
 .ag-header-group-cell-label {
@@ -32,6 +34,7 @@
 }
 
 .ag-theme-material .ag-header-cell-label {
+    color: #fff !important;
     font-size: 11px;
     font-weight: 900;
     text-align: center !important;
@@ -41,6 +44,8 @@
 
 .custom {
     font-size: 13px;
+    color: #656569;
+    font-weight: 500;
 }
 
 .table-header {
@@ -56,10 +61,9 @@
 }
 
 .row-vert-ciel {
-    background-color: #a1f79e;
-    color: #06c400;
+    background-color: #d3f5d2 !important;
+    /*color: #06c400;*/
     font-weight: 500;
-    font-size: 13px;
 }
 
 /*============== End Table CSS ===============*/
