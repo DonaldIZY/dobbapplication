@@ -1,9 +1,3 @@
-:root {
-    --custom-green: #148d08;
-    --custom-red: #da1111;
-}
-
-
 /*============== AG-Grid Config  ===============*/
 .ag-theme-material {
     --ag-header-height: 22px;
@@ -24,7 +18,7 @@
 
     --ag-row-hover-color: #868482;
     --ag-font-size: 10px !important;
-    --ag-font-family: poppins 'sans-serif';
+    --ag-font-family: poppins;
 }
 
 .ag-header-group-cell-label {
@@ -43,14 +37,11 @@
     text-align: center !important;
 }
 
-.negative-value {
-    color: var(--custom-red);
-}
-.positive-value {
-    color: var(--custom-green);
-}
+/*======================= End Ag-Grid config ==================================*/
 
-/*======================= En Ag-Grid config ==================================*/
+.custom {
+    font-size: 13px;
+}
 
 .table-header {
     text-align: center !important;
@@ -58,18 +49,17 @@
     padding: 10px;
     margin-top: 0;
 }
-.client-entrant {
-    background-color: var(--custom-green);
-    color: #fff !important;
-}
-.client-sortant {
-    background-color: var(--custom-red);
-    color: #ffffff;
-}
 
 .ag-table {
     width:98%;
     margin: auto
+}
+
+.row-vert-ciel {
+    background-color: #a1f79e;
+    color: #06c400;
+    font-weight: 500;
+    font-size: 13px;
 }
 
 /*============== End Table CSS ===============*/

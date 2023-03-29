@@ -127,11 +127,12 @@ class VariationTop200View(LoginRequiredMixin, View):
         end_date = request_data['endDate']
 
         client = data.ClientTop200()
-        client_entrant = client.getClient(sheet_name='client entrant')
-        client_sortant = client.getClient(sheet_name='client sortant')
-        client_entrant2, client_top200 = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
-        response_data = {'client_entrant': client_entrant, 'client_sortant': client_sortant,
-                         'client_entrant2': client_entrant2, 'client_top200': client_top200}
+        client_top200, client_top200_ = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
+
+        response_data = {
+            'client_top200': client_top200,
+            'client_top200_': client_top200_
+        }
 
         return JsonResponse(response_data)
 
@@ -321,8 +322,8 @@ class SuiviEquipeView(LoginRequiredMixin, View):
 
         if univers and product:
             instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
-            recap_univers, recap_univers_2 = instance.recapProduit(colonne='univers')
-            recap_product, recap_product_2 = instance.recapProduit(colonne='groupe_produit')
+            recap_univers = instance.recapProduit(colonne='univers')
+            recap_product = instance.recapProduit(colonne='groupe_produit')
             top_performers_univers = instance.topPerformer(colonne='univers', choix=univers)
             top_performers_product = instance.topPerformer(colonne='groupe_produit', choix=product)
 
@@ -331,29 +332,27 @@ class SuiviEquipeView(LoginRequiredMixin, View):
                 'recap_product': recap_product,
                 'top_performers_univers': top_performers_univers,
                 'top_performers_product': top_performers_product,
-                'recap_univers_2': recap_univers_2,
-                'recap_product_2': recap_product_2
             }
             return JsonResponse(response_data)
 
         elif product:
             instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
-            recap_product, recap_product_2 = instance.recapProduit(colonne='groupe_produit')
+            recap_product = instance.recapProduit(colonne='groupe_produit')
             top_performers_product = instance.topPerformer(colonne='groupe_produit', choix=product)
             response_data = {
                 'recap_product': recap_product,
-                'recap_product_2': recap_product_2,
+                # 'recap_product_2': recap_product_2,
                 'top_performers_product': top_performers_product
             }
             return JsonResponse(response_data)
 
         elif univers:
             instance = data.ManagerSegment(date_debut=start_date, date_fin=end_date, search=search)
-            recap_univers, recap_univers_2 = instance.recapProduit(colonne='univers')
+            recap_univers = instance.recapProduit(colonne='univers')
             top_performers_univers = instance.topPerformer(colonne='univers', choix=univers)
             response_data = {
                 'recap_univers': recap_univers,
-                'recap_univers_2': recap_univers_2,
+                # 'recap_univers_2': recap_univers_2,
                 'top_performers_univers': top_performers_univers,
             }
             return JsonResponse(response_data)

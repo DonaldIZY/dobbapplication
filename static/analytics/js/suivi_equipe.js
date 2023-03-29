@@ -246,6 +246,7 @@ const colUnivers = [
     headerName: 'Nb Client',
     field: 'nb_client',
     width: 110,
+    cellClass: 'custom-ag-color',
     type: 'numericColumn',
     valueFormatter: function(params) {
       'use strict';
@@ -278,14 +279,16 @@ const gridOptionsRecapUnivers = {
   rowHeight: 50,
   defaultColDef: defaultCol,
   getRowStyle: params => {
+    'use strict';
     if (params.node.rowIndex % 2 === 0) {
       return { background: '#eee' };
     }
   },
 };
 document.addEventListener('DOMContentLoaded', () => {
-    const gridDivRecapUnivers = document.querySelector('#grid-recap-univers');
-    new agGrid.Grid(gridDivRecapUnivers, gridOptionsRecapUnivers);
+  'use strict';
+  const gridDivRecapUnivers = document.querySelector('#grid-recap-univers');
+  new agGrid.Grid(gridDivRecapUnivers, gridOptionsRecapUnivers);
 });
 
 
@@ -392,14 +395,14 @@ function getData(args) {
         // table_univers.rows().remove().draw();
         // table_univers.rows.add(data.recap_univers).draw(true);
 
-        gridOptionsRecapUnivers.api.setRowData(data.recap_univers_2);
+        gridOptionsRecapUnivers.api.setRowData(data.recap_univers);
       }
 
       if (typeof data.recap_product !== 'undefined') {
         // table_produit.rows().remove().draw();
         // table_produit.rows.add(data.recap_product).draw(true);
 
-        gridOptionsRecapProduit.api.setRowData(data.recap_product_2);
+        gridOptionsRecapProduit.api.setRowData(data.recap_product);
       }
 
       //   =============================================================================================================
