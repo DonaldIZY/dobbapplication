@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def toInt(data):
     df = data.copy()
     df = df.fillna(0)
@@ -21,6 +22,3 @@ def pourcentCol(data, *col_liste):
     for col in col_liste[0]:
         df[col] = df[col] * 100
     return df.copy()
-
-
-

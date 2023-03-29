@@ -241,7 +241,6 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
 class ClientTop200:
 
     def getEntrant(self, date_debut, date_fin):
-        print(date_debut)
         diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
         diff = diff + relativedelta(months=1)
 
@@ -586,9 +585,13 @@ class ManagerSegment:
         nb_mois = getNbMois(self.date_debut, self.date_fin)
         df['CA Moyen'] = df['CA Cumulé'] / nb_mois
         df['CA Moyen'] = df['CA Moyen'].round(0)
-
         data = df.astype(str).values.tolist()
-        return data
+        df.rename(str.lower, axis='columns', inplace=True)
+        df.columns = [str(col).replace(' ', '_') for col in df.columns]
+        df = df.rename(columns={'ca_cumulé': 'ca_cumule'})
+        data_2 = dataToDictAg(df.copy())
+
+        return data, data_2
 
     def topPerformer(self, colonne, choix):
         request = f"""

@@ -6,16 +6,16 @@
 
 /*============== AG-Grid Config  ===============*/
 .ag-theme-material {
+    --ag-header-height: 22px;
     --ag-header-foreground-color: #E67900;
-    --ag-header-background-color: #FFF;
-    --ag-header-cell-hover-background-color: #eee;
+    --ag-header-background-color: #2E2E2D;
+    --ag-header-cell-hover-background-color: #F16E00;
     --ag-header-cell-moving-background-color: #eee;
 
     --ag-control-panel-background-color: #eee;
 
     --ag-header-column-separator-height: 100%;
     --ag-header-column-separator-width: 5px;
-    --ag-header-column-separator-color: purple;
 
     --ag-header-column-resize-handle-display: block;
     --ag-header-column-resize-handle-height: 100%;
@@ -23,7 +23,8 @@
     --ag-header-column-resize-handle-color: #FFFFFF;
 
     --ag-row-hover-color: #868482;
-    --ag-font-size: 11px !important;
+    --ag-font-size: 10px !important;
+    --ag-font-family: poppins 'sans-serif';
 }
 
 .ag-header-group-cell-label {
@@ -37,8 +38,9 @@
 }
 
 .ag-theme-material .ag-header-cell-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 900;
+    text-align: center !important;
 }
 
 .negative-value {
@@ -51,7 +53,7 @@
 /*======================= En Ag-Grid config ==================================*/
 
 .table-header {
-    text-align: center;
+    text-align: center !important;
     height: 40px;
     padding: 10px;
     margin-top: 0;

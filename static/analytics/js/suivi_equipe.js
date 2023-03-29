@@ -12,7 +12,11 @@ function setColor(color) {
       }
     };
   }
-  
+
+function separateurMillier(nombre) {
+    'use strict';
+    return nombre.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
   
 // Sélectionnez l'élément avec la classe "input-group-append d-lg-none"
 const calendarIcon = document.querySelector('.input-group-append.d-lg-none');
@@ -203,26 +207,138 @@ window.addEventListener('resize', function() {
     });
 });
 
-topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
-topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);
+// var table_univers = $('#resume-univers').DataTable({
+//     searching: false, // Désactive la recherche
+//     lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+//     bFilter: false, // Désactive la recherche
+//     bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
+//     paging: false, // Désactive la pagination
+//     info: false, // Désactive le texte d'information
+//   });
+// var table_produit = $('#resume-produit').DataTable({
+//     searching: false,
+//     lengthChange: false,
+//     bFilter: false,
+//     bLengthChange: false,
+//     paging: false,
+//     info: false,
+//   });
 
 
-var table_univers = $('#resume-univers').DataTable({
-    searching: false, // Désactive la recherche
-    lengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    bFilter: false, // Désactive la recherche
-    bLengthChange: false, // Désactive le nombre d'enregistrements affichés par page
-    paging: false, // Désactive la pagination
-    info: false, // Désactive le texte d'information
-  });
-var table_produit = $('#resume-produit').DataTable({
-    searching: false,
-    lengthChange: false,
-    bFilter: false,
-    bLengthChange: false,
-    paging: false,
-    info: false,
-  });
+// =====================================================================================================================
+
+
+const cellClassRules = {
+  "negative-value": params => params.value < 0,
+  "positive-value": params => params.value > 0
+};
+
+let rowHeight = 20;
+let defaultCol = {
+    width: 90,
+    resizable: true
+  };
+
+// ============================================== client entrant et sortant ============================================
+const colUnivers = [
+  { headerName: 'Univers', field: 'univers', width: 105, pinned: 'left'},
+  {
+    headerName: 'Nb Client',
+    field: 'nb_client',
+    width: 110,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'CA Cumulé',
+    field: 'ca_cumule', width: 170,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+    }
+  },
+  {
+    headerName: 'CA Moyen',
+    field: 'ca_moyen',
+    width: 150,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+    }
+  },
+];
+
+const gridOptionsRecapUnivers = {
+  columnDefs: colUnivers,
+  rowHeight: 50,
+  defaultColDef: defaultCol,
+  getRowStyle: params => {
+    if (params.node.rowIndex % 2 === 0) {
+      return { background: '#eee' };
+    }
+  },
+};
+document.addEventListener('DOMContentLoaded', () => {
+    const gridDivRecapUnivers = document.querySelector('#grid-recap-univers');
+    new agGrid.Grid(gridDivRecapUnivers, gridOptionsRecapUnivers);
+});
+
+
+
+const colProduit = [
+  { headerName: 'Univers', field: 'groupe_produit', width: 105, pinned: 'left'},
+  {
+    headerName: 'Nb Client',
+    field: 'nb_client',
+    width: 110,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
+    headerName: 'CA Cumulé',
+    field: 'ca_cumule', width: 170,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+    }
+  },
+  {
+    headerName: 'CA Moyen',
+    field: 'ca_moyen',
+    width: 150,
+    type: 'numericColumn',
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' FCFA';
+    }
+  },
+];
+
+const gridOptionsRecapProduit = {
+  columnDefs: colProduit,
+  rowHeight: rowHeight,
+  defaultColDef: defaultCol,
+  getRowStyle: params => {
+    if (params.node.rowIndex % 2 === 0) {
+      return { background: '#eee' };
+    }
+  },
+};
+document.addEventListener('DOMContentLoaded', () => {
+    const gridDivRecapProduit = document.querySelector('#grid-recap-produit');
+    new agGrid.Grid(gridDivRecapProduit, gridOptionsRecapProduit);
+});
+
+// =====================================================================================================================
 
 
 
@@ -268,17 +384,22 @@ function getData(args) {
     .then(function (data) {
       // Utilisation des données reçues
       /* jshint ignore:start */
+      console.log(fontFamily);
       console.log(data);
       /* jshint ignore:end */
       // ===============================================================================================================
       if (typeof data.recap_univers !== 'undefined') {
-        table_univers.rows().remove().draw();
-        table_univers.rows.add(data.recap_univers).draw(true);
+        // table_univers.rows().remove().draw();
+        // table_univers.rows.add(data.recap_univers).draw(true);
+
+        gridOptionsRecapUnivers.api.setRowData(data.recap_univers_2);
       }
 
       if (typeof data.recap_product !== 'undefined') {
-        table_produit.rows().remove().draw();
-        table_produit.rows.add(data.recap_product).draw(true);
+        // table_produit.rows().remove().draw();
+        // table_produit.rows.add(data.recap_product).draw(true);
+
+        gridOptionsRecapProduit.api.setRowData(data.recap_product_2);
       }
 
       //   =============================================================================================================
@@ -387,3 +508,6 @@ document.getElementById('product').addEventListener('change', function () {
 
 });
 
+
+
+// ======================================== Requête pour obtenir les données ===========================================
