@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 	<link rel="stylesheet" href="{% static 'finlab/vendor/datatables/css/buttons-dataTables.css' %}" >
 
+    <link href="{% static 'analytics/css/ag-grid-custom.css' %}" rel="stylesheet" type="text/css" />
+
     <!-- -- Datepicker -- -->
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}
     <link rel="stylesheet" href="{% static cssurl %}" >
@@ -230,6 +232,8 @@
 <!-- </div> -->
 
 <!-- Quatrième ligne du tableau de bord de Portefeuille -->
+
+
 <div class="row">
 	<!-- Zoom 20/80 -->
 	<div class="wow fadeInUp p-0" data-wow-delay="0.5s">
@@ -237,45 +241,26 @@
 			<!-- titre du graphique -->
 			<div class="card-header border-0 px-4 py-1 flex-wrap">
 				<!-- Titre du graphique -->
-				<div class="mb-2 mb-sm-0">
+				<div class="col-sm-6 mb-2 mb-sm-0">
 					<div class="chart-title">
 						<h2 class="heading">Zoom sur <span id="header-top80" class="graph-title"></span> des clients générant 80% des revenus (<span id="nb-top80"></span>)</h2>
 					</div>
 				</div>
+                <div class="col-sm-6 d-flex justify-content-end">
+			<div class="d-flex justify-content-end align-items-center">
+                <button class="btn btn-primary" onclick="onBtnExport()">
+                    <span
+                    class="btn-icon-start text-warning"><i class="fa fa-download color-warning"></i>
+                    </span>Télécharger
+                </button>
+			</div>
+		</div>
 			</div>
 			<!-- Tableau -->
 			<div class="card-body p-2 custome-tooltip">
 				<!-- <div class="dashboard-graph" id="dashboardZoom" style="height: 250px"></div> -->
 				<div class="table-responsive">
-					<table id="gros-client" class="display">
-						<thead>
-							<tr>
-{#                                <th></th>#}
-								<th>client</th>
-								<th>secteur d'activité</th>
-								<th>Mobile</th>
-								<th>Fixe</th>
-								<th>ICT</th>
-								<th>Broadband</th>
-								<th>Total</th>
-							</tr>
-						</thead>
-{#                        l'affichage des lignes est gérée depuis le JS#}
-{#						<tbody>#}
-{##}
-{#                            <tr>#}
-{#								<td><img class="rounded-circle" width="35" src="{% static 'finlab/images/profile/small/anonyme_img.jpg' %}" alt=""></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#								<td></td>#}
-{#							</tr>#}
-{##}
-{#						</tbody>#}
-					</table>
+					<div id="grid-gros-client" style="height: 500px" class="ag-theme-material ag-table"></div>
 				</div>
 			</div>
 		</div>
@@ -302,6 +287,7 @@
 	<script src="{% static 'finlab/vendor/datatables/js/buttons-html5.js' %}"></script>
 
     <!-- -- Perso -- -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/dashboard.js' %}"></script>

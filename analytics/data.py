@@ -512,7 +512,12 @@ class PortefeuilleDashboard:
         nb_clients_80_20 = result.shape[0]
 
         data = result.astype(str).values.tolist()
-        return data, client_part, nb_clients_80_20, nb_client_total
+
+        result.rename(str.lower, axis='columns', inplace=True)
+        result.columns = [str(col).replace(' ', '_') for col in result.columns]
+        data_2 = dataToDictAg(result.astype(str).copy())
+
+        return data, client_part, nb_clients_80_20, nb_client_total, data_2
 
     def topProduit(self):
         request = f"""

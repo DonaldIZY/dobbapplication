@@ -184,7 +184,7 @@ class DashboardView(LoginRequiredMixin, View):
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
         univers = instance.caUnivers()
         performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
         # top_produit = instance.topProduit()
         # top_client = instance.topClient()
 
@@ -192,6 +192,7 @@ class DashboardView(LoginRequiredMixin, View):
         response_data = {
             'univers': univers,
             'performance': performance,
+            'data_2': data_2,
             # 'product': top_produit,
             # 'top_client': top_client,
             'gros_clients': gros_clients,
@@ -235,7 +236,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
         instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
         ca_univers = instance.caUnivers()
         performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total = instance.loiPareto()
+        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
         # top_produit = instance.topProduit()
         # top_client = instance.topClient()
 
@@ -244,6 +245,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
             'full_name': full_name,
             'univers': ca_univers,
             'performance': performance,
+            'data_2': data_2,
             # 'product': produit,
             # 'top_client': top_client,
             'gros_clients': gros_clients,

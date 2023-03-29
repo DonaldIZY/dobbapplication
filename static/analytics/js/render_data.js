@@ -12,7 +12,6 @@ const colTop200 = [
   },
   {
     field: 'segment',
-    cellClass: 'custom-ag-color',
     minWidth: 150,
     filter: true,
   },
@@ -22,34 +21,25 @@ const colTop200 = [
     filter: true,
   },
   {
+    headerName: 'Mobile ( % )',
     field: 'mobile',
     minWidth: 120,
     type: 'numericColumn',
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value + ' %';
-    }
   },
   {
+    headerName: 'Fixe ( % )',
     field: 'fixe',
     minWidth: 120,
     type: 'numericColumn',
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value + ' %';
-    }
   },
   {
-    headerName: 'ICT',
+    headerName: 'ICT ( % )',
     field: 'ict',
     minWidth: 120,
     type: 'numericColumn',
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value + ' %';
-    }
   },
   {
+    headerName: 'Broadband ( % )',
     field: 'broadband',
     minWidth: 150,
     type: 'numericColumn',
@@ -103,6 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const gridDivTop200 = document.querySelector('#grid-top-200');
   new agGrid.Grid(gridDivTop200, gridOptionsTop200);
 });
+
+
+function onBtnExport() {
+  'use strict';
+  var params = {
+    columnSeparator: ';',
+    fileName: 'Top 200.csv' // nom du fichier de sortie
+  };
+  gridOptionsTop200.api.exportDataAsCsv(params);
+}
 
 
 // =====================================================================================================================
