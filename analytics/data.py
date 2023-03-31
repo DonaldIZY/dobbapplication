@@ -384,7 +384,7 @@ def CAUnivers(date_debut, date_fin, search):
     return data_final
 
 
-def getNbMois(date_debut, date_fin):
+async def getNbMois(date_debut, date_fin):
     request = f"""
         select count(distinct date_facture) from public.base_dobb
         where date_facture between '{date_debut}' and '2{date_fin}'
@@ -392,7 +392,7 @@ def getNbMois(date_debut, date_fin):
 
     df = pd.read_sql(sql=text(request), con=connection)
     nb_mois = df['count'][0]
-    return nb_mois
+    return int(nb_mois)
 
 
 def getDistinctProduct(colonne):
@@ -445,7 +445,7 @@ class PortefeuilleDashboard:
         self.date_fin = date_fin
         self.search = search
 
-    def dataPerformance(self):
+    async def dataPerformance(self):
         request = f"""      
             SELECT date_facture, 
                 COALESCE(SUM(montant), 0) as total_montant
@@ -460,7 +460,7 @@ class PortefeuilleDashboard:
 
         return data
 
-    def caUnivers(self):
+    async def caUnivers(self):
         request = f"""
             SELECT
                 COALESCE(sum(case when (univers='Broadband') then montant end), 0) as "Broadband",
@@ -477,7 +477,7 @@ class PortefeuilleDashboard:
         data = [{"value": value, "name": key} for key, value in ca_univers[0].items()]
         return data
 
-    def loiPareto(self):
+    async def loiPareto(self):
         request_ca_client = f"""
             SELECT client, secteur_activite,
             COALESCE(sum(case when (univers='Mobile') then montant end), 0) as mobile,
@@ -511,15 +511,15 @@ class PortefeuilleDashboard:
         nb_client_total = df_2['nb_client'][0]
         nb_clients_80_20 = result.shape[0]
 
-        data = result.astype(str).values.tolist()
+        # data = result.astype(str).values.tolist()
 
         result.rename(str.lower, axis='columns', inplace=True)
         result.columns = [str(col).replace(' ', '_') for col in result.columns]
         data_2 = dataToDictAg(result.astype(str).copy())
 
-        return data, client_part, nb_clients_80_20, nb_client_total, data_2
+        return data_2, client_part, nb_clients_80_20, nb_client_total
 
-    def topProduit(self):
+    async def topProduit(self):
         request = f"""
             SELECT groupe_produit, COALESCE(SUM(montant), 0) as total_montant
                 FROM public.base_dobb
@@ -537,7 +537,7 @@ class PortefeuilleDashboard:
 
         return data
 
-    def topClient(self):
+    async def topClient(self):
         request = f"""
             SELECT client, SUM(montant) AS total_montant
                 FROM public.base_dobb
