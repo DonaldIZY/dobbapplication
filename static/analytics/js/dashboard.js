@@ -55,6 +55,17 @@ const colLoiPareto = [
     filter: true,
   },
   {
+    headerName: 'Total ( XOF )',
+    field: 'total_montant',
+    minWidth: 180,
+    type: 'numericColumn',
+    sortable: true,
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+  },
+  {
     headerName: 'Mobile ( XOF )',
     field: 'mobile',
     minWidth: 180,
@@ -90,17 +101,6 @@ const colLoiPareto = [
   {
     headerName: 'Broadband ( XOF )',
     field: 'broadband',
-    minWidth: 180,
-    type: 'numericColumn',
-    sortable: true,
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
-  },
-  {
-    headerName: 'Total ( XOF )',
-    field: 'total_montant',
     minWidth: 180,
     type: 'numericColumn',
     sortable: true,
@@ -205,18 +205,18 @@ let caUniversOption = {
   tooltip: {
     trigger: 'item',
     formatter: function(params) {
-          var value = params.value;
-          if (value >= 1000000000) {
-              value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
-          } else if (value < 1000000000 && value >= 1000000) {
-              value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
-          } else if (value < 1000000 && value >= 1000){
-              value = (value/1000).toFixed(2) + ' K';  // afficher en milliers
-          } else {
-              value = value; // afficher les valeurs directement
-          }
-          return params.name + ': ' + value + ' (' + params.percent + '%)';
-        },
+      var value = params.value;
+      if (value >= 1000000000) {
+          value = (value/1000000000).toFixed(2) + ' Md'; // afficher en milliards
+      } else if (value < 1000000000 && value >= 1000000) {
+          value = (value/1000000).toFixed(2) + ' M'; // afficher en millions
+      } else if (value < 1000000 && value >= 1000){
+          value = (value/1000).toFixed(2) + ' K';  // afficher en milliers
+      } else {
+          value = value; // afficher les valeurs directement
+      }
+      return params.name + ': ' + value + ' (' + params.percent + '%)';
+    },
     textStyle: {
       fontFamily: fontFamily,
       fontSize: '100%'
@@ -228,7 +228,19 @@ let caUniversOption = {
       radius: '65%',
       selectedMode: 'single',
       label:{
-        formatter: '{b}: {d}%',
+        // formatter: '{b}: {d}% {c}',
+        formatter: [
+          '{b}: {d}%',
+          '{montant|{c}}',
+        ].join('\n'),
+        rich: {
+          montant: {
+            color: '#000',
+            padding: [0, 0, 10, 0], // Définir un padding supérieur de 10
+            fontWeight: 700,
+            align: 'center'
+          },
+        },
         fontSize: '100%',
         fontFamily: fontFamily
       }
@@ -524,11 +536,13 @@ function getData(startDate, endDate) {
     //   Option de modification des graphs Performance Générale
       const maximum = Math.max(...data.performance.total_montant);
       const minimum = Math.min(...data.performance.total_montant);
+      const somme = data.performance.total_montant.reduce((accumulateur, valeur) => accumulateur + valeur, 0);
       const moyenne = data.performance.total_montant.reduce((acc, val) => acc + val) / data.performance.total_montant.length;
 
       document.getElementById("ca-moyen").innerHTML = `${separateurMillier(moyenne.toFixed(0))} FCFA`;
       document.getElementById("ca-min").innerHTML = `${separateurMillier(minimum)} FCFA`;
       document.getElementById("ca-max").innerHTML = `${separateurMillier(maximum)} FCFA`;
+      document.getElementById("ca-cumule").innerHTML = `${separateurMillier(somme)} FCFA`;
 
       performGeneraleOption.xAxis.data = data.performance.dates;
       performGeneraleOption.series[0].data = data.performance.total_montant;
@@ -550,10 +564,7 @@ function getData(startDate, endDate) {
       document.getElementById("header-top80").innerHTML = `${data.pourcent_client.toFixed(2)}%`;
       document.getElementById("nb-top80").innerHTML = `${data.nb_client} sur ${data.nb_client_total}`;
 
-      table.rows().remove().draw();
-      table.rows.add(data.gros_clients).draw(true);
-
-      gridOptionsLoiPareto.api.setRowData(data.data_2);
+      gridOptionsLoiPareto.api.setRowData(data.gros_clients);
 
     })
     .catch(function (error) {

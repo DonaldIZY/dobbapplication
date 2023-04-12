@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 import psycopg2
+import asyncio
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
 from django.views import View
@@ -130,7 +131,6 @@ class VariationTop200View(LoginRequiredMixin, View):
         client_top200, client_top200_ = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
 
         response_data = {
-            'client_top200': client_top200,
             'client_top200_': client_top200_
         }
 
@@ -166,6 +166,15 @@ class CATop200View(LoginRequiredMixin, View):
         return JsonResponse(response_data)
 
 
+async def get_data(start_date, end_date, search):
+    instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
+    ca_univers = await instance.caUnivers()
+    performance = await instance.dataPerformance()
+    gros_clients, pourcent_client, nb_client, nb_client_total = await instance.loiPareto()
+
+    return ca_univers, performance, gros_clients, pourcent_client, nb_client, nb_client_total
+
+
 class DashboardView(LoginRequiredMixin, View):
     univers = 'Mobile'
 
@@ -179,22 +188,18 @@ class DashboardView(LoginRequiredMixin, View):
         entities = get_user_entities(user)
         search = getSearch(entities, user)
 
-        nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
-        instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
-        univers = instance.caUnivers()
-        performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
-        # top_produit = instance.topProduit()
-        # top_client = instance.topClient()
+        univers, performance, gros_clients, pourcent_client, nb_client, nb_client_total = loop.run_until_complete(
+            get_data(start_date, end_date, search))
+        loop.close()
+        nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
 
         # Préparation de la réponse
         response_data = {
             'univers': univers,
             'performance': performance,
-            'data_2': data_2,
-            # 'product': top_produit,
-            # 'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client),
@@ -232,22 +237,17 @@ class DashboardViewManager(LoginRequiredMixin, View):
         """
 
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
-        instance = data.PortefeuilleDashboard(date_debut=start_date, date_fin=end_date, search=search)
-        ca_univers = instance.caUnivers()
-        performance = instance.dataPerformance()
-        gros_clients, pourcent_client, nb_client, nb_client_total, data_2 = instance.loiPareto()
-        # top_produit = instance.topProduit()
-        # top_client = instance.topClient()
+        univers, performance, gros_clients, pourcent_client, nb_client, nb_client_total = loop.run_until_complete(
+            get_data(start_date, end_date, search))
 
         # Préparation de la réponse
         response_data = {
             'full_name': full_name,
-            'univers': ca_univers,
+            'univers': univers,
             'performance': performance,
-            'data_2': data_2,
-            # 'product': produit,
-            # 'top_client': top_client,
             'gros_clients': gros_clients,
             'nb_mois': int(nb_mois),
             'pourcent_client': float(pourcent_client),
