@@ -84,16 +84,19 @@
     
                             {% for equipe_obj in equipes %}
                             <tr>
-                                <!-- <a href="{% url 'administration:details-equipe' id=equipe_obj.id %}">
-                                    <div class="d-flex align-items-center">
-                                        <span class="w-space-no">{{ equipe_obj.name }}</span>
-                                    </div>
-                                    </a> -->
+                                <td class="p-2">
+                                    <a href="{% url 'analytics:manager_commercial' id=equipe_obj.manager.id %}">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/media/{{ equipe_obj.manager.avatar }}" class="rounded-lg me-2" width="24" alt="">
+                                            <span class="w-space-no">{{ equipe_obj.manager.first_name }} {{ equipe_obj.manager.last_name }}</span>
+                                        </div>
+                                     </a>
+                                </td>
                                 <td><span class="badge badge-xs light badge-primary">{{ equipe_obj.name }}</span></td>
-                                <td><span class="w-space-no">{{ equipe_obj.manager }}</span></td>
+{#                                <td><span class="w-space-no">{{ equipe_obj.manager }}</span></td>#}
     
                                 <td class="d-flex justify-content-center">
-                                    <a href="{% url 'administration:commercial' %}">
+                                    <a href="{% url 'administration:commercial-filtre' id=equipe_obj.manager.id %}">
                                         <span class="badge badge-{{ colors.dark }}">
                                             <i class="bi bi-people-fill" aria-hidden="true"></i> &nbsp;{{ equipe_obj.nb_commerciaux }}
                                         </span>

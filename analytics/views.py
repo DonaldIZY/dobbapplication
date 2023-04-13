@@ -4,6 +4,7 @@ from datetime import datetime
 import psycopg2
 import asyncio
 from dateutil.relativedelta import relativedelta
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -224,17 +225,15 @@ class DashboardView(LoginRequiredMixin, View):
 class DashboardViewManager(LoginRequiredMixin, View):
 
     def post(self, request, id):
-        commercial_obj = Commercial.objects.get(id=id)
-        # Récupération des données de la requête
         request_data = json.load(request)
         start_date = request_data['startDate']
         start_date = f'{start_date[:-2]}01'
         end_date = request_data['endDate']
 
-        full_name = f"{commercial_obj.commercial.first_name} {commercial_obj.commercial.last_name}"
-        search = f"""
-            AND LOWER(TRIM(commercial)) = '{full_name.lower().strip()}'
-        """
+        user = CustomUser.objects.get(id=id)
+
+        entities = get_user_entities(user)
+        search = getSearch(entities, user)
 
         nb_mois = data.getNbMois(date_debut=start_date, date_fin=end_date)
         loop = asyncio.new_event_loop()
@@ -245,7 +244,7 @@ class DashboardViewManager(LoginRequiredMixin, View):
 
         # Préparation de la réponse
         response_data = {
-            'full_name': full_name,
+            'full_name': str(user),
             'univers': univers,
             'performance': performance,
             'gros_clients': gros_clients,

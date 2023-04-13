@@ -129,13 +129,42 @@ class CommercialView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        print(user)
         try:
             equipe = user.equipe
             if equipe:
                 commerciaux = models.Commercial.objects.filter(equipe=equipe).order_by('id')
                 # paginator = Paginator(commerciaux, 7)  # Show 7 Users per page.
                 # self.context["commerciaux"] = paginator.get_page(request.GET.get('page'))
+                self.context["commerciaux"] = commerciaux
+                return render(request, "administration/commercial-list.html", self.context)
+            else:
+                pass
+        except models.Equipe.DoesNotExist:
+            pass
+
+        if user.has_perm('administration.view_commercial'):
+            commerciaux = models.Commercial.objects.all().order_by('id')
+            self.context["commerciaux"] = commerciaux
+            return render(request, "administration/commercial-list.html", self.context)
+        else:
+            messages.warning(request, "Vous êtes pas autorisé à accéder à cette page.")
+            return HttpResponseForbidden("Vous êtes pas autorisé à accéder à cette page.")
+            # À utiliser en production
+            # raise PermissionDenied()
+
+
+class CommercialFiltreView(LoginRequiredMixin, View):
+    context = {
+        "colors": {'primary': 'primary', 'success': 'success', 'dark': 'dark'},
+        "page_title": "Commerciaux"
+    }
+
+    def get(self, request, id):
+        user = CustomUser.objects.get(id=id)
+        try:
+            equipe = user.equipe
+            if equipe:
+                commerciaux = models.Commercial.objects.filter(equipe=equipe).order_by('id')
                 self.context["commerciaux"] = commerciaux
                 return render(request, "administration/commercial-list.html", self.context)
             else:

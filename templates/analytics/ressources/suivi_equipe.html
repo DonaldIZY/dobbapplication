@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 
-    <link rel="stylesheet" href="{% static 'analytics/css/ag-grid-custom.css' %}" >
+    <link rel="stylesheet" href="{% static 'analytics/css/ag-grid-custom.css' %}" type="text/css">
 
     <!-- -- Datepicker -- -->
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}
@@ -253,7 +253,8 @@
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
     <!-- -- Perso -- -->
-    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.2.0/dist/ag-grid-community.min.js"></script>
+{#    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.2.0/dist/ag-grid-community.min.js"></script>#}
+    <script src="{% static 'finlab/vendor/ag-grid-community/dist/ag-grid-community.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
     <script src="{% static 'analytics/js/suivi_equipe.js' %}"></script>

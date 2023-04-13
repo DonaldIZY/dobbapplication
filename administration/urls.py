@@ -13,6 +13,7 @@ urlpatterns = [
 
     # Gestionnaire
     path('commercial/', views.CommercialView.as_view(), name='commercial'),
+    path('commercial/<int:id>', views.CommercialFiltreView.as_view(), name='commercial-filtre'),
     path('ajouter-commercial/', views.AddCommercialView.as_view(), name="add-commercial"),
     path('supprimer-commercial/<int:id>/', views.DeleteCommercialView.as_view(), name='delete-commercial'),
     path('supprimer-multiple-commercial/', views.DeleteMultipleCommercialView.as_view(),
