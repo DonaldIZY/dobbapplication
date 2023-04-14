@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="{% static 'finlab/vendor/datepicker/css/bootstrap-datepicker.min.css' %}" >
     <link rel="stylesheet" href="{% static 'finlab/vendor/swiper/css/swiper-bundle.min.css' %}" >
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'analytics/css/ag-grid-custom.css' %}" type="text/css">
+=======
+    <link rel="stylesheet" href="{% static 'analytics/css/ag-grid-custom.css' %}" >
+    <link href="{% static 'analytics/css/ag-grid-custom.css' %}" rel="stylesheet" type="text/css" />
+>>>>>>> fbdbfe792bdd283c67b58350bc09d7ebc842d4f9
 
     <!-- -- Datepicker -- -->
     {% for cssurl in dz_array.pagelevel.finlab.finlab_views.css.form_pickers %}
@@ -253,7 +258,11 @@
     <script src="{% static 'finlab/vendor/datepicker/js/bootstrap-datepicker.min.js' %}"></script>
 
     <!-- -- Perso -- -->
+<<<<<<< HEAD
 {#    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.2.0/dist/ag-grid-community.min.js"></script>#}
+=======
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@29.2.0/dist/ag-grid-community.min.js"></script>
+>>>>>>> fbdbfe792bdd283c67b58350bc09d7ebc842d4f9
     <script src="{% static 'finlab/vendor/ag-grid-community/dist/ag-grid-community.min.js' %}"></script>
     <script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
     <script src="{% static 'analytics/js/global_variable.js' %}"></script>
@@ -316,7 +325,7 @@
             let univers = document.getElementById('univers').value;
             let product = document.getElementById('product').value;
 
-            {#getData(univers, product, startDate, endDate);#}
+            //{#getData(univers, product, startDate, endDate);#}
           getData({
             body: {
               univers: univers,

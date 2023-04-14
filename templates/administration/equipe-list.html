@@ -73,7 +73,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="p-3">Nom du segment</th>
-                                <th scope="col" class="p-3">Manager</th>
+                                <th scope="col" class="p-2">Manager</th>
                                 <th scope="col" class="text-center">Nombre de commerciaux</th>
                                 {% if perms.administration.change_equipe or perms.administration.delete_equipe %}
                                 <th scope="col">Actions</th>
@@ -188,8 +188,8 @@
                type: "warning",
                icon: 'question',
                showCancelButton: true,
-               confirmButtonText: "Yes, delete it !!",
-               confirmButtonText: 'Delete',
+               confirmButtonText: "Supprimer",
+               cancelButtonText: 'Annuler',
                confirmButtonColor: "#DD6B55"
 
            }).then((result) => {

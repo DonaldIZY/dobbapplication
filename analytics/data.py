@@ -30,12 +30,12 @@ def dataToDictAg(data):
     df = data.copy()
 
     def formatype(col_type, index_col, row):
-        if col_type == 'float64' or col_type == 'float32':
+        if col_type == 'float64':
             try:
                 value = float(round(df.iloc[row, index_col], 2))
             except:
                 value = None
-        elif col_type == 'int64' or col_type == 'int32':
+        elif col_type == 'int64':
             try:
                 value = int(df.iloc[row, index_col])
             except:
@@ -241,6 +241,7 @@ def getHausseBasse(univers, debut_periode, fin_periode, search):
 class ClientTop200:
 
     def getEntrant(self, date_debut, date_fin):
+        print(date_debut)
         diff = datetime.strptime(date_fin, "%Y-%m-%d") - datetime.strptime(date_debut, "%Y-%m-%d")
         diff = diff + relativedelta(months=1)
 
@@ -270,8 +271,27 @@ class ClientTop200:
         client_entrant = client_entrant[client_entrant['rang_prec'] > 200].copy().reset_index(drop=True)
         return client_entrant, client_top200
 
+    def getClient(self, sheet_name):
+        df = pd.read_excel("analytics/data/client.xlsx", sheet_name=sheet_name)
+        pourcents = ['Total', 'Fixe', 'Mobile', 'Broadband']
+        df = utils.pourcentCol(df, pourcents)
+
+        df.rename(str.lower, axis='columns', inplace=True)
+        df.rename(str.strip, axis='columns', inplace=True)
+        df.columns = [str(col).replace(' ', '_') for col in df.columns]
+        df = df.fillna(0)
+        data = dataToDictAg(data=df)
+
+        return data
+
     def getClientEntrant(self, date_debut, date_fin):
         client_entrant, client_top200 = self.getEntrant(date_debut=date_debut, date_fin=date_fin)
+        client_entrant['commercial'] = client_entrant['commercial'].fillna(value='')
+        client_entrant = client_entrant.fillna(0)
+        client_entrant = client_entrant[['client', 'segment', 'commercial', 'mobile', 'fixe',
+                                         'ict', 'broadband', 'rang', 'rang_prec']]
+        client_entrant = client_entrant.round(2)
+        data_client_entrant = client_entrant.astype(str).values.tolist()
 
         client_top200['commercial'] = client_top200['commercial'].fillna(value='')
         client_top200 = client_top200.fillna(0)
@@ -281,11 +301,7 @@ class ClientTop200:
         client_top200['rang_prec'] = client_top200['rang_prec'].astype(int)
         data_client_200 = client_top200.astype(str).values.tolist()
 
-        client_top200.rename(str.lower, axis='columns', inplace=True)
-        client_top200.columns = [str(col).replace(' ', '_') for col in client_top200.columns]
-        data_2 = dataToDictAg(client_top200.astype(str).copy())
-
-        return data_client_200, data_2
+        return data_client_entrant, data_client_200
 
     def getGraphData(self, sheet_name, date_debut, date_fin, search):
         request = f"""
@@ -584,12 +600,9 @@ class ManagerSegment:
         nb_mois = getNbMois(self.date_debut, self.date_fin)
         df['CA Moyen'] = df['CA Cumulé'] / nb_mois
         df['CA Moyen'] = df['CA Moyen'].round(0)
-        df.rename(str.lower, axis='columns', inplace=True)
-        df.columns = [str(col).replace(' ', '_') for col in df.columns]
-        df = df.rename(columns={'ca_cumulé': 'ca_cumule'})
-        data_2 = dataToDictAg(df.copy())
 
-        return data_2
+        data = df.astype(str).values.tolist()
+        return data
 
     def topPerformer(self, colonne, choix):
         request = f"""
