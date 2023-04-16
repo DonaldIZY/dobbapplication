@@ -222,10 +222,6 @@ const colUnivers = [
     field: 'nb_client',
     minWidth: 120,
     type: 'numericColumn',
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
   },
   {
     headerName: 'CA Cumulé ( XOF )',
@@ -296,10 +292,10 @@ const colProduit = [
     field: 'ca_moyen',
     minWidth: 180,
     type: 'numericColumn',
-    valueFormatter: function(params) {
-      'use strict';
-      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    }
+    // valueFormatter: function(params) {
+    //   'use strict';
+    //   return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // }
   },
 ];
 
@@ -309,6 +305,7 @@ const gridOptionsRecapProduit = {
   rowClass: 'custom',
   defaultColDef: defaultCol,
   getRowStyle: params => {
+    "use strict";
     if (params.node.rowIndex % 2 === 0) {
       return { background: '#eee' };
     }
