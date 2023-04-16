@@ -131,6 +131,8 @@ class VariationTop200View(LoginRequiredMixin, View):
         client = data.ClientTop200()
         client_top200, client_top200_ = client.getClientEntrant(date_debut=start_date, date_fin=end_date)
 
+        print(client_top200_)
+
         response_data = {
             'client_top200_': client_top200_
         }
