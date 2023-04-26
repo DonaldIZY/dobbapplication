@@ -299,9 +299,12 @@ class ClientTop200:
                                        'ict', 'broadband', 'rang', 'rang_prec']]
         client_top200 = client_top200.round(2)
         client_top200['rang_prec'] = client_top200['rang_prec'].astype(int)
-        data_client_200 = client_top200.astype(str).values.tolist()
 
-        return data_client_entrant, data_client_200
+        client_top200.rename(str.lower, axis='columns', inplace=True)
+        client_top200.columns = [str(col).replace(' ', '_') for col in client_top200.columns]
+        data = dataToDictAg(client_top200.astype(str).replace('0', '').copy())
+
+        return data_client_entrant, data
 
     def getGraphData(self, sheet_name, date_debut, date_fin, search):
         request = f"""
@@ -590,7 +593,7 @@ class ManagerSegment:
         request = f"""
             select {colonne},
                 count(CASE WHEN (montant> 0) THEN id else null END) as "Nb Client",
-                sum(montant) as "CA Cumulé"
+                sum(montant) as "CA Cumule"
                 from public.base_dobb
                 where date_facture between '{self.date_debut}' and '{self.date_fin}' {self.search}
             group by {colonne};
@@ -598,10 +601,12 @@ class ManagerSegment:
 
         df = pd.read_sql(sql=text(request), con=connection)
         nb_mois = getNbMois(self.date_debut, self.date_fin)
-        df['CA Moyen'] = df['CA Cumulé'] / nb_mois
-        df['CA Moyen'] = df['CA Moyen'].round(0)
+        df['CA Moyen'] = df['CA Cumule'] / nb_mois
+        df['CA Moyen'] = df['CA Moyen'].round(0).astype(int)
 
-        data = df.astype(str).values.tolist()
+        df.rename(str.lower, axis='columns', inplace=True)
+        df.columns = [str(col).replace(' ', '_') for col in df.columns]
+        data = dataToDictAg(df.astype(str).replace('0', '').copy())
         return data
 
     def topPerformer(self, colonne, choix):
