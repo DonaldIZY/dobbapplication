@@ -46,7 +46,6 @@ def get_user_entities(user):
         return 'Manager'
     return None
 
-
 def getSearch(entities, user):
     search = ''
     if entities == 'Commercial':

@@ -1,5 +1,0 @@
-Paramètre du titre du logo dans la navbar : style.css ligne 9179
-
-Paramètre du nom et de la fonction de l'utilisateur : style.css
-    .name-user
-    #name-group

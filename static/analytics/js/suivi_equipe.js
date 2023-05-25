@@ -292,10 +292,10 @@ const colProduit = [
     field: 'ca_moyen',
     minWidth: 180,
     type: 'numericColumn',
-    // valueFormatter: function(params) {
-    //   'use strict';
-    //   return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    // }
+    valueFormatter: function(params) {
+      'use strict';
+      return params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
   },
 ];
 

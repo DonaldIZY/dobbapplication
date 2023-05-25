@@ -35,149 +35,81 @@ function setColor(color) {
   });
   
   //==========================================================================================================================================
-
-var caSegment = echarts.init(document.getElementById('caSegment'), null, {renderer: 'canvas', force: true} );
-var caSegmentOption = {
-  grid: grid,
-  // Centrer horizontalement le graphe
-  center: ['50%', '50%'],
-  tooltip: {
-    trigger: 'axis',
-    textStyle: {
-      fontFamily: fontFamily,
-      fontSize: '100%'
+  var caPerSegment = echarts.init(document.getElementById('caPerSegment'), null, {renderer: 'canvas', force: true} );
+  var caPerSegmentOption = {
+    tooltip: {
+      trigger: 'axis'
     },
-    axisPointer: {
-      type: 'shadow',
-      crossStyle: {
-        color: '#999'
+    legend: {
+      data: ['Corporate', 'SME', 'Secteur public', 'TPE']
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    toolbox: {
+      feature: {
+        saveAsImage: {}
       }
-    }
-  },
-  yAxis: {
-    type: 'value',
-    scale: true,
-    min: 0,
-    axisTick: {show: false},
-    axisLine: {show: false},
-    axisLabel: {
-      textStyle: {
-        fontFamily: fontFamily // changer la police en celle HTML
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ['Jan-23', 'Fev-23', 'Mar-23', 'Avr-23', 'Mai-23', 'Juin-23', 'Juil-23']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        name: 'Corporate',
+        type: 'line',
+        stack: 'Total',
+        areaStyle: {},
+        emphasis: {
+          focus: 'series'
         },
-      fontSize: '80%',
-      fontWeight: 600
+        data: [32120, 34132, 10100, 13400, 9000, 23230, 21000],
+        smooth: true
       },
-    },
-  xAxis: {
-    type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
-    scale: true,
-    show: true,
-    },
-  series: [
-    {
-        type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
-        itemStyle: {
-            borderWidth: 1,
-            borderType: 'solid',
-            borderColor: color_blue_1,
-            shadowColor: color_blue_1,
-            shadowBlur: 0.15,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: color_blue_2},
-            {offset: 0.5, color: color_blue_1},
-            {offset: 1, color: color_blue}
-            ]),
-            barBorderRadius: 2,
+      {
+        name: 'SME',
+        type: 'line',
+        stack: 'Total',
+        areaStyle: {},
+        emphasis: {
+          focus: 'series'
         },
-        //étiquettes de barres
-        label: {
-            show: true,
-            formatter: etiquette_format,
-            fontWeight: 600,
-            fontSize: '80%',
-            position: 'top',
-            textStyle: {
-            fontFamily: fontFamily // changer la police en celle HTML
-        },
-            color: '#000'
-        },
-    }
-  ],
-};
-
-var topPerformerByProduct = echarts.init(document.getElementById('topPerformerByProduct'), null, {renderer: 'canvas', force: true} );
-var topPerformerByProductOption = {
-  grid: grid,
-  // Centrer horizontalement le graphe
-  center: ['50%', '50%'],
-  tooltip: {
-    trigger: 'axis',
-    textStyle: {
-      fontFamily: fontFamily,
-      fontSize: '100%'
-    },
-    axisPointer: {
-      type: 'shadow',
-      crossStyle: {
-        color: '#999'
-      }
-    }
-  },
-  yAxis: {
-    type: 'value',
-    scale: true,
-    min: 0,
-    axisTick: {show: false},
-    axisLine: {show: false},
-    axisLabel: {
-      textStyle: {
-        fontFamily: fontFamily // changer la police en celle HTML
-        },
-      fontSize: '80%',
-      fontWeight: 600
+        data: [67220, 18200, 19100, 23400, 29000, 33000, 31000],
+        smooth: true
       },
-    },
-  xAxis: {
-    type: 'category',
-    data: ['Commercial 1', 'Commercial 2', 'Commercial 3', 'Commercial 4', 'Commercial 5', 'Commercial 6', 'Commercial 7'],
-    scale: true,
-    show: true,
-    },
-  series: [
-    {
-        type: 'bar',
-        data: [23, 24, 18, 25, 27, 28, 25],
-        itemStyle: {
-            borderWidth: 1,
-            borderType: 'solid',
-            borderColor: color_blue_1,
-            shadowColor: color_blue_1,
-            shadowBlur: 0.15,
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: color_blue_2},
-            {offset: 0.5, color: color_blue_1},
-            {offset: 1, color: color_blue}
-            ]),
-            barBorderRadius: 2,
+      {
+        name: 'Secteur public',
+        type: 'line',
+        stack: 'Total',
+        areaStyle: {},
+        emphasis: {
+          focus: 'series'
         },
-        //étiquettes de barres
-        label: {
-            show: true,
-            formatter: etiquette_format,
-            fontWeight: 600,
-            fontSize: '80%',
-            position: 'top',
-            textStyle: {
-            fontFamily: fontFamily // changer la police en celle HTML
+        data: [15000, 52232, 18201, 23154, 56190, 20330, 21410],
+        smooth: true
+      },
+      {
+        name: 'TPE',
+        type: 'line',
+        stack: 'Total',
+        areaStyle: {},
+        emphasis: {
+          focus: 'series'
         },
-            color: '#000'
-        },
-    }
-  ],
-};
-
+        data: [32000, 33200, 30100, 33400, 39000, 33000, 32000],
+        smooth: true
+      },
+    ]
+  };
+  caPerSegment.setOption(caPerSegmentOption);
 
 //=========================================================================================================================================
 window.addEventListener('resize', function() {
@@ -212,6 +144,3 @@ window.addEventListener('resize', function() {
       }]
     });
 });
-
-topPerformerByProductOption && topPerformerByProduct.setOption(topPerformerByProductOption);
-topPerformerByUniversOption && topPerformerByUnivers.setOption(topPerformerByUniversOption);

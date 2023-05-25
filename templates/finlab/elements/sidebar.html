@@ -29,8 +29,14 @@
                 <ul aria-expanded="false">
                     <li><a href="{% url 'analytics:dashboard' %}">Tableau de bord</a></li>
                     {% for group in request.user.groups.all %}
+                        {% if group.name == 'Directeur' or group.name == 'Manager' %}
+                        <li><a href="{% url 'finlab:map-jqvmap' %}">Dimension régionale</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% for group in request.user.groups.all %}
                         {% if group.name == 'Commercial' %}
                             <li><a href="{% url 'analytics:clientele' %}">Clientèle</a></li>
+                            <li><a href="{% url 'finlab:calendar' %}">Calendrier</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>

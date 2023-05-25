@@ -14,23 +14,23 @@
 
         <!-- Vectormap -->
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">World Map</h4>
+                        <h4 class="card-title">Dimension régionale</h4>
                     </div>
                     <div class="card-body">
                         <div id="world-map"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">USA</h4>
+                        <h4 class="card-title">CA par région</h4>
                     </div>
                     <div class="card-body">
-                        <div id="usa" style="height: 450px;"></div>
+                        <div id="main" style="height: 450px;"></div>
                     </div>
                 </div>
             </div>
@@ -40,5 +40,95 @@
 
 
 {% block additional_js %}
+
+
+<!-- -- Perso -- -->
+<script src="{% static 'finlab/vendor/echarts/dist/echarts.min.js' %}"></script>
+<script src="{% static 'analytics/js/global_variable.js' %}"></script>
+
+
+<script>
+var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+var option;
+
+const data = [];
+for (let i = 0; i < 8; ++i) {
+  data.push(Math.round(Math.random() * 200));
+}
+option = {
+  xAxis: {
+    max: 'dataMax'
+  },
+  yAxis: {
+    type: 'category',
+    data: [
+      'Région A',
+      'Région B',
+      'Région C',
+      'Région D',
+      'Région E',
+      'Région F',
+      'Région G',
+      'Région H'
+    ],
+    inverse: true,
+    animationDuration: 300,
+    animationDurationUpdate: 300,
+    max: 7 // only the largest 3 bars will be displayed
+  },
+  series: [
+    {
+      realtimeSort: true,
+      name: 'X',
+      type: 'bar',
+      data: data,
+      label: {
+        show: true,
+        position: 'right',
+        valueAnimation: true
+      },
+      itemStyle: {  // Add this property to set color
+        color: '#F16E00'
+      }
+    }
+  ],
+  legend: {
+    show: false
+  },
+  animationDuration: 0,
+  animationDurationUpdate: 3000,
+  animationEasing: 'linear',
+  animationEasingUpdate: 'linear'
+};
+function run() {
+  for (var i = 0; i < data.length; ++i) {
+    if (Math.random() > 0.9) {
+      data[i] += Math.round(Math.random() * 2000);
+    } else {
+      data[i] += Math.round(Math.random() * 200);
+    }
+  }
+  myChart.setOption({
+    series: [
+      {
+        type: 'bar',
+        data
+      }
+    ]
+  });
+}
+setTimeout(function () {
+  run();
+}, 0);
+setInterval(function () {
+  run();
+}, 3000);
+
+option && myChart.setOption(option);
+
+
+</script>
+
 
 {% endblock %}
