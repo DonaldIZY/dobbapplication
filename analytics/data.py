@@ -10,7 +10,7 @@ from analytics import utils
 locale.setlocale(locale.LC_ALL, '')
 
 engine = create_engine(
-    "postgresql+psycopg2://postgres:password@localhost:5432/BSCS",
+    "postgresql+psycopg2://postgres:password@localhost:5432/postgres",
     # isolation_level="SERIALIZABLE",
 )
 connection = engine.connect()

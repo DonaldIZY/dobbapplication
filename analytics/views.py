@@ -16,7 +16,7 @@ from analytics import data
 from django.http import JsonResponse
 
 conn = psycopg2.connect(
-    dbname='BSCS',
+    dbname='postgres',
     user='postgres',
     password='password',
     host='localhost',
